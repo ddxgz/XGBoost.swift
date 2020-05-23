@@ -1,0 +1,7 @@
+* XGBoost.swift
+A new coming Swift interface for XGBoost
+
+** TODO
+- [ ] Proper memory management
+- [ ] Better error handling
+- [ ] Support more data representation models
