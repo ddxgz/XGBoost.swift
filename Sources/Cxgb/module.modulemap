@@ -1,5 +1,5 @@
 module Cxgb [system] {
-  header "swiftxgb.h"
+  header "xgbcapi.h"
   link "xgboost"
   export *
 }
