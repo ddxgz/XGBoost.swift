@@ -10,7 +10,7 @@ struct XGBooster {
 
 func LastError() -> String {
     let err = XGBGetLastError()
-    let errMsg = err!.pointee
+    let errMsg = String(cString: err!)
     return String(errMsg)
 }
 
@@ -58,6 +58,15 @@ func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
     return nCol
 }
 
+func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float] {
+    var result: UnsafePointer<Float>?
+    var len: UInt64 = 0
+    XGDMatrixGetFloatInfo(dTest, "label", &len, &result)
+
+    let buf = UnsafeBufferPointer(start: result, count: Int(len))
+    return [Float](buf)
+}
+
 func BoosterCreate(dmHandle: inout DMatrixHandle?, lenDm: UInt64) -> BoosterHandle? {
     var handle: BoosterHandle?
     guard XGBoosterCreate(&dmHandle, lenDm, &handle) >= 0 else {
@@ -91,6 +100,21 @@ func BoosterUpdateOneIter(handle: BoosterHandle, nIter: Int, dmHandle: DMatrixHa
         print("create booster failed, err msg: \(errMsg)")
         return
     }
+}
+
+func BoosterEvalOneIter(handle: BoosterHandle, nIter: Int, dmHandle: inout [DMatrixHandle?],
+                        evalNames: [String]) -> String {
+    var names: [UnsafePointer<Int8>?] = evalNames.map { UnsafePointer<Int8>($0) }
+    // var dms:
+    var result: UnsafePointer<Int8>?
+
+    guard XGBoosterEvalOneIter(handle, Int32(nIter), &dmHandle, &names,
+                               UInt64(evalNames.count), &result) >= 0 else {
+        let errMsg = LastError()
+        return "booster eval one iter failed, err msg: \(errMsg)"
+    }
+
+    return String(cString: result!)
 }
 
 func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
