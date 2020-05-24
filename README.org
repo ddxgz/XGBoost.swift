@@ -1,7 +1,16 @@
 * XGBoost.swift
 A new coming Swift interface for XGBoost.
 
-The current interface is wrapping around the XGBoost version 1.1.0.
+The current interface is wrapping around the C API of XGBoost version 1.1.0.
+
+** Usage
+#+begin_src rust
+let train = DMatrix(filename: "data/agaricus.txt.train")
+let test = DMatrix(filename: "data/agaricus.txt.test")
+
+let bst = XGBoost(data: train, numRound: 10)
+bst.predict(data: test)
+#+end_src
 
 ** TODO
 - [ ] Proper memory management
