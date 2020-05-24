@@ -1,18 +1,18 @@
 import Cxgb
 
-struct DMatrix {
-    private var handle: DMatrixHandle?
-}
-
-struct XGBooster {
-    private var handle: BoosterHandle?
-}
-
 func LastError() -> String {
     let err = XGBGetLastError()
     let errMsg = String(cString: err!)
     return String(errMsg)
 }
+
+// func PrintIfError(_ err: Int) {
+//     if err >=0 {
+//         let errMsg = LastError()
+//         print("create xgdmatrix from file failed, err msg: \(errMsg)")
+//         return nil
+//     }
+// }
 
 func DMatrixFromFile(name fname: String, silent: Bool = true) -> DMatrixHandle? {
     var silence: Int32 = 0
@@ -58,24 +58,39 @@ func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
     return nCol
 }
 
-func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float] {
+func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     var result: UnsafePointer<Float>?
     var len: UInt64 = 0
-    XGDMatrixGetFloatInfo(dTest, "label", &len, &result)
+    guard XGDMatrixGetFloatInfo(dTest, label, &len, &result) >= 0 else {
+        let errMsg = LastError()
+        print("Get dmatrix float info failed, err msg: \(errMsg)")
+        return nil
+    }
 
     let buf = UnsafeBufferPointer(start: result, count: Int(len))
     return [Float](buf)
 }
 
-func BoosterCreate(dmHandle: inout DMatrixHandle?, lenDm: UInt64) -> BoosterHandle? {
+func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
+    let lenDm: UInt64 = UInt64(dmHandles.count)
     var handle: BoosterHandle?
-    guard XGBoosterCreate(&dmHandle, lenDm, &handle) >= 0 else {
+    guard XGBoosterCreate(&dmHandles, lenDm, &handle) >= 0 else {
         let errMsg = LastError()
         print("create booster failed, err msg: \(errMsg)")
         return nil
     }
     return handle
 }
+
+// func BoosterCreate(dmHandle: inout DMatrixHandle?, lenDm: UInt64) -> BoosterHandle? {
+//     var handle: BoosterHandle?
+//     guard XGBoosterCreate(&dmHandle, lenDm, &handle) >= 0 else {
+//         let errMsg = LastError()
+//         print("create booster failed, err msg: \(errMsg)")
+//         return nil
+//     }
+//     return handle
+// }
 
 func BoosterFree(_ handle: BoosterHandle) {
     guard XGBoosterFree(handle) >= 0 else {
@@ -104,6 +119,7 @@ func BoosterUpdateOneIter(handle: BoosterHandle, nIter: Int, dmHandle: DMatrixHa
 
 func BoosterEvalOneIter(handle: BoosterHandle, nIter: Int, dmHandle: inout [DMatrixHandle?],
                         evalNames: [String]) -> String {
+    // TODO: solve dangling pointer
     var names: [UnsafePointer<Int8>?] = evalNames.map { UnsafePointer<Int8>($0) }
     // var dms:
     var result: UnsafePointer<Int8>?
