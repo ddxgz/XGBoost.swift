@@ -47,6 +47,9 @@ final class XGBoostSwiftTests: XCTestCase {
     try bst.save(fname: modelfile)
     let saved = FileManager().fileExists(atPath: modelfile)
     XCTAssertTrue(saved)
+
+    let bstLoaded = XGBoost(data: train, numRound: 1, param: param,
+                            evalMetric: ["auc"], modelFile: modelfile)
   }
 
   // func testBasic() throws {}

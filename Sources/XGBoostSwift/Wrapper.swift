@@ -1,7 +1,10 @@
 import Cxgb
 
-enum CApiError: Error {
+// TODO: check xgb lib loaded
+
+enum XGBoostError: Error {
     case modelSaveError(errMsg: String)
+    case modelLoadError(errMsg: String)
 }
 
 func LastError() -> String {
@@ -169,7 +172,14 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
 func BoosterSaveModel(handle: BoosterHandle, fname: String) throws {
     guard XGBoosterSaveModel(handle, fname) >= 0 else {
         let errMsg = LastError()
-        throw CApiError.modelSaveError(errMsg: errMsg)
+        throw XGBoostError.modelSaveError(errMsg: errMsg)
+    }
+}
+
+func BoosterLoadModel(handle: BoosterHandle, fname: String) throws {
+    guard XGBoosterLoadModel(handle, fname) >= 0 else {
+        let errMsg = LastError()
+        throw XGBoostError.modelLoadError(errMsg: errMsg)
     }
 }
 
