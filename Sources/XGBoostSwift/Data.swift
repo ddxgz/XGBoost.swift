@@ -23,10 +23,10 @@ public class DMatrix {
 
     public var shape: [UInt64] { [nRow, nCol] }
 
-    var labels: [Float]? { DMatrixGetFloatInfo(handle: handle!, label: "label") }
+    public var labels: [Float]? { DMatrixGetFloatInfo(handle: handle!, label: "label") }
 
-    public init(filename: String, silent: Bool = true) {
-        handle = DMatrixFromFile(name: filename, silent: silent)
+    public init(fname: String, silent: Bool = true) {
+        handle = DMatrixFromFile(name: fname, silent: silent)
     }
 
     deinit {

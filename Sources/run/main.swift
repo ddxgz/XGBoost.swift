@@ -1,5 +1,6 @@
 import Cxgb
 import Foundation
+import XGBoostSwift
 
 print("Hello, world!")
 

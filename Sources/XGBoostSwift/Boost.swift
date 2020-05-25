@@ -16,6 +16,14 @@ public class XGBooster {
         }
     }
 
+    public func save(fname: String) throws {
+        guard handle != nil else {
+            print("booster not initialized!")
+            return
+        }
+        try BoosterSaveModel(handle: handle!, fname: fname)
+    }
+
     public func predict(data: DMatrix, outputMargin: Bool = false, nTreeLimit: UInt = 0) -> [Float] {
         guard handle != nil else {
             print("booster not initialized!")
@@ -36,9 +44,6 @@ public class XGBooster {
         }
         return result!
     }
-
-    // func save {}
-    // func load {}
 }
 
 public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],

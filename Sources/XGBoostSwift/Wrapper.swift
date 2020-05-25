@@ -1,9 +1,18 @@
 import Cxgb
 
+enum CApiError: Error {
+    case modelSaveError(errMsg: String)
+}
+
 func LastError() -> String {
     let err = XGBGetLastError()
     let errMsg = String(cString: err!)
     return errMsg
+}
+
+func LogErrMsg(msg: String) {
+    let errMsg = LastError()
+    print("\(msg): \(errMsg)")
 }
 
 // func PrintIfError(_ err: Int) {
@@ -154,6 +163,14 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     // TODO: deal potential issue when outLen is bigger than Int
     let buf = UnsafeBufferPointer(start: result, count: Int(outLen))
     return [Float](buf)
+}
+
+/// throw error?
+func BoosterSaveModel(handle: BoosterHandle, fname: String) throws {
+    guard XGBoosterSaveModel(handle, fname) >= 0 else {
+        let errMsg = LastError()
+        throw CApiError.modelSaveError(errMsg: errMsg)
+    }
 }
 
 func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {
