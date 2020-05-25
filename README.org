@@ -22,7 +22,7 @@ let bst = XGBoost(data: train, numRound: 10)
 bst.predict(data: test)
 #+end_src
 
-** TODO
+** TODOs
 - [ ] Proper memory management
 - [ ] Better error handling
 - [ ] Support more data representation models

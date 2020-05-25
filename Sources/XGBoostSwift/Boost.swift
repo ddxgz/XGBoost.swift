@@ -1,4 +1,5 @@
 import Cxgb
+import Foundation
 
 public typealias Param = [String: String]
 
@@ -47,6 +48,22 @@ public class XGBooster {
             return [Float]()
         }
         return result!
+    }
+
+    public func saveConfig(fname: String) {
+        guard handle != nil else {
+            print("booster not initialized!")
+            return
+        }
+
+        let conf = BoosterSaveJsonConfig(handle: self.handle!)
+        guard conf != nil else {
+            print("Get json config failed!")
+            return
+        }
+        let data: Data? = conf!.data(using: .utf8)
+        let ok = FileManager().createFile(atPath: fname, contents: data)
+        if !ok { print("save json config failed!") }
     }
 }
 
