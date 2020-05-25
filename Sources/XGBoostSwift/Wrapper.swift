@@ -3,7 +3,7 @@ import Cxgb
 func LastError() -> String {
     let err = XGBGetLastError()
     let errMsg = String(cString: err!)
-    return String(errMsg)
+    return errMsg
 }
 
 // func PrintIfError(_ err: Int) {
@@ -61,7 +61,7 @@ func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
 func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     var result: UnsafePointer<Float>?
     var len: UInt64 = 0
-    guard XGDMatrixGetFloatInfo(dTest, label, &len, &result) >= 0 else {
+    guard XGDMatrixGetFloatInfo(handle, label, &len, &result) >= 0 else {
         let errMsg = LastError()
         print("Get dmatrix float info failed, err msg: \(errMsg)")
         return nil
@@ -154,4 +154,16 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     // TODO: deal potential issue when outLen is bigger than Int
     let buf = UnsafeBufferPointer(start: result, count: Int(outLen))
     return [Float](buf)
+}
+
+func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {
+    var len: UInt64 = 0
+    var str: UnsafePointer<Int8>?
+    guard XGBoosterSaveJsonConfig(handle, &len, &str) >= 0 else {
+        let errMsg = LastError()
+        print("save booster config as json string failed, err msg: \(errMsg)")
+        return nil
+    }
+    let jsonStr = String(cString: str!)
+    return jsonStr
 }

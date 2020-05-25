@@ -1,11 +1,11 @@
 import Cxgb
 
-typealias Param = [String: String]
+public typealias Param = [String: String]
 
-class XGBooster {
+public class XGBooster {
     internal var handle: BoosterHandle?
 
-    init(handle: BoosterHandle) {
+    public init(handle: BoosterHandle) {
         self.handle = handle
     }
 
@@ -16,7 +16,7 @@ class XGBooster {
         }
     }
 
-    func predict(data: DMatrix, outputMargin: Bool = false, nTreeLimit: UInt = 0) -> [Float] {
+    public func predict(data: DMatrix, outputMargin: Bool = false, nTreeLimit: UInt = 0) -> [Float] {
         guard handle != nil else {
             print("booster not initialized!")
             return [Float]()
@@ -41,8 +41,8 @@ class XGBooster {
     // func load {}
 }
 
-func XGBoost(data: DMatrix, param: Param = [:], numRound: Int,
-             evalMetric: [String] = []) -> XGBooster {
+public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
+                    evalMetric: [String] = []) -> XGBooster {
     if data.dmHandle == nil { exit(1) }
 
     var dms = [data.dmHandle]

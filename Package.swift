@@ -4,7 +4,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "XGBoost.swift",
+    name: "XGBoostSwift",
+    // platforms: [
+    //     .macOS(.v10_15),
+    // ],
+    // products: [
+    //     .library(
+    //         name: "XGBoostSwift",
+    //         type: .dynamic,
+    //         targets: ["XGBoostSwift"]
+    //     ),
+    // ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
@@ -16,12 +26,16 @@ let package = Package(
         /// Using XGBoost 1.1.0
         .systemLibrary(name: "Cxgb", pkgConfig: "xgboost", providers: [.brew(["xgboost"])]),
         .target(
-            name: "XGBoost.swift",
+            name: "XGBoostSwift",
             dependencies: ["Cxgb"]
         ),
+        // .target(
+        //     name: "run",
+        //     dependencies: ["XGBoostSwift"]
+        // ),
         .testTarget(
-            name: "XGBoost.swiftTests",
-            dependencies: ["XGBoost.swift"]
+            name: "XGBoostSwiftTests",
+            dependencies: ["XGBoostSwift"]
         ),
     ]
 )
