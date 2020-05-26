@@ -1,9 +1,7 @@
 import Cxgb
-import Logging
-
-var logger = Logger(label: "swift.XGBoost")
 
 public class DMatrix {
+    // should guard handle to be non nil?
     private var handle: DMatrixHandle?
 
     var dmHandle: DMatrixHandle? { handle }
@@ -32,10 +30,23 @@ public class DMatrix {
         handle = DMatrixFromFile(name: fname, silent: silent)
     }
 
+    internal init(handle: DMatrixHandle?) {
+        self.handle = handle
+    }
+
     deinit {
         if handle != nil {
-            logger.debug("deinit DMatrix")
+            debugLog("deinit DMatrix")
             DMatrixFree(handle!)
         }
+    }
+
+    public func slice(rows idxSet: [Int32]) -> DMatrix? {
+        guard handle != nil else {
+            errLog("dmatrix not initialized")
+            return nil
+        }
+        let handle = DMatrixSliceDMatrix(self.handle!, idxSet: idxSet)
+        return DMatrix(handle: handle)
     }
 }
