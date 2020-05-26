@@ -13,7 +13,7 @@ func LastError() -> String {
     return errMsg
 }
 
-func LogErrMsg(msg: String) {
+func LogErrMsg(_ msg: String) {
     let errMsg = LastError()
     print("\(msg): \(errMsg)")
 }
@@ -83,6 +83,19 @@ func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     return [Float](buf)
 }
 
+func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int32]) -> DMatrixHandle? {
+    let len: UInt64 = UInt64(idxSet.count)
+    // var idxs: [UnsafeMutablePointer<Int32>] = idxSet.map {
+    // UnsafeBufferPointer<Int32>($0) }
+    var idxs: [Int32] = idxSet
+    var newHandle: DMatrixHandle?
+    guard XGDMatrixSliceDMatrix(handle, &idxs, len, &newHandle) >= 0 else {
+        LogErrMsg("Error when slice dmatrix")
+        return nil
+    }
+    return newHandle
+}
+
 func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
     let lenDm: UInt64 = UInt64(dmHandles.count)
     var handle: BoosterHandle?
@@ -120,7 +133,7 @@ func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
     }
 }
 
-func BoosterUpdateOneIter(handle: BoosterHandle, nIter: Int, dmHandle: DMatrixHandle) {
+func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandle: DMatrixHandle) {
     let iter: Int32 = Int32(nIter)
     guard XGBoosterUpdateOneIter(handle, iter, dmHandle) >= 0 else {
         let errMsg = LastError()
