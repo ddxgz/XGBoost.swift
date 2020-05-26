@@ -86,6 +86,10 @@ final class XGBoostSwiftTests: XCTestCase {
       "objective": "binary:logistic",
       "max_depth": "9",
     ]
-    // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric: ["auc"], shuffle: true)
+    // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
+    // ["auc"], shuffle: true)
+    let cvResults = CV(data: train, nFold: 5, numRound: 10)
+    XCTAssertFalse(cvResults.isEmpty)
+    XCTAssertEqual(cvResults.first!.value.count, 10)
   }
 }

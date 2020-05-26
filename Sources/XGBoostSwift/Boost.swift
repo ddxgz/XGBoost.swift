@@ -185,20 +185,81 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
     return cvpacks
 }
 
-// func aggCV(_ results: [String]) -> [String] {}
+typealias CVIterResult = [(String, Float, Float)]
+
+extension Array where Element: FloatingPoint {
+    func sum() -> Element {
+        return self.reduce(0, +)
+    }
+
+    func mean() -> Element {
+        return self.sum() / Element(self.count)
+    }
+
+    func std() -> Element {
+        let mean = self.mean()
+        let v = self.reduce(0) { $0 + ($1 - mean) * ($1 - mean) }
+        let vari = v / (Element(self.count) - 1)
+        return vari.squareRoot()
+    }
+}
+
+func aggCV(_ results: [String?]) -> CVIterResult {
+    var cvMap = [String: [Float]]()
+
+    for (i, line) in results.enumerated() {
+        if line == nil {
+            errLog("Eval result of CV fold \(i) is empty")
+            continue
+        }
+        let part = line!.split(separator: "\t")
+        for (metricIdx, it) in part[1...].enumerated() {
+            let kv = it.split(separator: ":")
+            let k = kv[0]
+            let v = kv[1]
+            let idxKey = "\(metricIdx)\t\(k)"
+
+            var values = cvMap[idxKey, default: [Float]()]
+            values.append(Float(v)!)
+            cvMap[idxKey] = values
+        }
+    }
+    var results = CVIterResult()
+    for (idxKey, v) in cvMap {
+        // let mean = v.reduce(0,+) / Float(v.count)
+        let k = String(idxKey.split(separator: "\t")[1])
+        results.append((k, v.mean(), v.std()))
+    }
+    return results
+}
+
+public typealias CVResult = [String: [Float]]
 
 public func CV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
                param: Param = [:],
                evalMetric: [String] = [],
-               modelFile: String? = nil) {
+               modelFile: String? = nil) -> CVResult {
     // handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
                             evalMetric: evalMetric, shuffle: true)
+
+    var results = CVResult()
     for i in 0 ..< numRound {
         for fold in cvFolds {
             fold.update(i)
         }
 
-        // let res = aggCV(cvFolds.map { $0.eval(i) })
+        let res = aggCV(cvFolds.map { $0.eval(i) })
+        for (k, mean, std) in res {
+            var means = results[k + "-mean"] ?? [Float]()
+            means.append(mean)
+            results[k + "-mean"] = means
+
+            var stds = results[k + "-std"] ?? [Float]()
+            stds.append(std)
+            results[k + "-std"] = stds
+        }
     }
+
+    return results
 }
