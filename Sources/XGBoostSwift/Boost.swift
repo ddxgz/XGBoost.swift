@@ -10,32 +10,50 @@ public class XGBooster {
         self.handle = handle
     }
 
+    internal init(dms: inout [DMatrixHandle?]) {
+        self.handle = BoosterCreate(dmHandles: &dms)
+    }
+
     // internal init(fname: String) throws {
     //     let handle = BoosterCreate(dmHandles: &dms)
     // }
 
     deinit {
         if handle != nil {
-            logger.error("deinit XGBooster")
+            debugLog("deinit XGBooster")
             BoosterFree(handle!)
         }
     }
 
     public func save(fname: String) throws {
         guard handle != nil else {
-            logger.error("booster not initialized!")
+            errLog("booster not initialized!")
             return
         }
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
 
-    public func predict(data: DMatrix, outputMargin: Bool = false, nTreeLimit: UInt = 0) -> [Float] {
+    public func update(data: DMatrix, currentIter: Int) {
         guard handle != nil else {
-            logger.error("booster not initialized!")
+            errLog("booster not initialized!")
+            return
+        }
+        guard data.dmHandle != nil else {
+            errLog("data dmatrix not initialized!")
+            return
+        }
+        BoosterUpdateOneIter(handle: self.handle!, currentIter: currentIter,
+                             dmHandle: data.dmHandle!)
+    }
+
+    public func predict(data: DMatrix, outputMargin: Bool = false,
+                        nTreeLimit: UInt = 0) -> [Float] {
+        guard handle != nil else {
+            errLog("booster not initialized!")
             return [Float]()
         }
         guard data.dmHandle != nil else {
-            logger.error("DMatrix not initialized!")
+            errLog("DMatrix not initialized!")
             return [Float]()
         }
         var option = 0
@@ -44,7 +62,7 @@ public class XGBooster {
                                     optionMask: option,
                                     nTreeLimit: nTreeLimit, training: false)
         guard result != nil else {
-            logger.error("no result predicted")
+            errLog("no result predicted")
             return [Float]()
         }
         return result!
@@ -52,18 +70,18 @@ public class XGBooster {
 
     public func saveConfig(fname: String) {
         guard handle != nil else {
-            logger.error("booster not initialized!")
+            errLog("booster not initialized!")
             return
         }
 
         let conf = BoosterSaveJsonConfig(handle: self.handle!)
         guard conf != nil else {
-            logger.error("Get json config failed!")
+            errLog("Get json config failed!")
             return
         }
         let data: Data? = conf!.data(using: .utf8)
         let ok = FileManager().createFile(atPath: fname, contents: data)
-        if !ok { logger.error("save json config failed!") }
+        if !ok { errLog("save json config failed!") }
     }
 }
 
@@ -80,12 +98,12 @@ public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     if modelFile != nil {
         do {
             try BoosterLoadModel(handle: booster!, fname: modelFile!)
-            logger.debug("modle loeaded from file")
+            debugLog("modle loeaded from file")
         } catch XGBoostError.modelLoadError {
-            logger.error("Error when loading model from file!")
+            errLog("Error when loading model from file!")
             exit(1)
         } catch {
-            logger.error("Unknown error when loading model from file!")
+            errLog("Unknown error when loading model from file!")
             exit(1)
         }
     }
@@ -93,17 +111,76 @@ public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     let bst = XGBooster(handle: booster!)
 
     for (k, v) in param {
-        logger.debug("Set param: \(k): \(v)")
+        debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: booster!, key: k, value: v)
     }
     for v in evalMetric {
-        logger.debug("Set param eval_metric: \(v)")
+        debugLog("Set param eval_metric: \(v)")
         BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
     }
 
     for i in 0 ..< numRound {
-        logger.debug("Round: \(i)")
-        BoosterUpdateOneIter(handle: booster!, nIter: numRound, dmHandle: data.dmHandle!)
+        debugLog("Round: \(i)")
+        // TODO: fix nIter as current iter
+        BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
     }
     return bst
 }
+
+// struct CVPack {
+//     var booster: XGBooster
+//     let train: DMatrix
+//     let test: DMatrix
+
+//     init(train: DMatrix, test: DMatrix) {
+//         self.train = train
+//         self.test = test
+
+//         var dms = [self.train.dmHandle, self.test.dmHandle]
+//         // let handle = BoosterCreate(dmHandles: &dms)!
+//         self.booster = XGBooster(dms: &dms)
+//     }
+
+//     internal func update(_ round: Int) {
+//         // BoosterUpdateOneIter(handle: self.booster, nIter: round, dmHandle:
+//         // self.train)
+//         self.booster.update(data: train, currentIter: round)
+//     }
+// }
+
+// func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
+//                evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
+//     var cvpacks = [CVPack]()
+//     var idxSet = [Int32](0 ..< Int32(data.nRow))
+
+//     if shuffle {
+//         idxSet = [Int32](idxSet.shuffled())
+//     }
+
+//     let foldSize = Int(data.nRow) / nFold
+//     for i in 0 ..< nFold {
+//         let testIdx = Array(idxSet[Int(i) * foldSize ..< (i + 1) * foldSize])
+//         let trainIdx = Array(Set(idxSet).subtracting(testIdx))
+//         let trainFold = data.slice(rows: trainIdx)
+//         let testFold = data.slice(rows: testIdx)
+//         cvpacks.append(CVPack(train: trainFold!, test: testFold!))
+//     }
+
+//     return cvpacks
+// }
+
+// public func CV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
+//                param: Param = [:],
+//                evalMetric: [String] = [],
+//                modelFile: String? = nil) {
+//     // handle metrics
+//     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
+//                             evalMetric: evalMetric, shuffle: true)
+//     for i in 0 ..< numRound {
+//         for fold in cvFolds {
+//             fold.update(i)
+//         }
+
+//         let res = aggcv()
+//     }
+// }
