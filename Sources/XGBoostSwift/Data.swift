@@ -1,4 +1,7 @@
 import Cxgb
+import Logging
+
+var logger = Logger(label: "swift.XGBoost")
 
 public class DMatrix {
     private var handle: DMatrixHandle?
@@ -31,7 +34,7 @@ public class DMatrix {
 
     deinit {
         if handle != nil {
-            print("deinit DMatrix")
+            logger.debug("deinit DMatrix")
             DMatrixFree(handle!)
         }
     }

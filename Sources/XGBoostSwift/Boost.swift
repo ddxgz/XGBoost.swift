@@ -16,14 +16,14 @@ public class XGBooster {
 
     deinit {
         if handle != nil {
-            print("deinit XGBooster")
+            logger.error("deinit XGBooster")
             BoosterFree(handle!)
         }
     }
 
     public func save(fname: String) throws {
         guard handle != nil else {
-            print("booster not initialized!")
+            logger.error("booster not initialized!")
             return
         }
         try BoosterSaveModel(handle: handle!, fname: fname)
@@ -31,11 +31,11 @@ public class XGBooster {
 
     public func predict(data: DMatrix, outputMargin: Bool = false, nTreeLimit: UInt = 0) -> [Float] {
         guard handle != nil else {
-            print("booster not initialized!")
+            logger.error("booster not initialized!")
             return [Float]()
         }
         guard data.dmHandle != nil else {
-            print("DMatrix not initialized!")
+            logger.error("DMatrix not initialized!")
             return [Float]()
         }
         var option = 0
@@ -44,7 +44,7 @@ public class XGBooster {
                                     optionMask: option,
                                     nTreeLimit: nTreeLimit, training: false)
         guard result != nil else {
-            print("no result predicted")
+            logger.error("no result predicted")
             return [Float]()
         }
         return result!
@@ -52,18 +52,18 @@ public class XGBooster {
 
     public func saveConfig(fname: String) {
         guard handle != nil else {
-            print("booster not initialized!")
+            logger.error("booster not initialized!")
             return
         }
 
         let conf = BoosterSaveJsonConfig(handle: self.handle!)
         guard conf != nil else {
-            print("Get json config failed!")
+            logger.error("Get json config failed!")
             return
         }
         let data: Data? = conf!.data(using: .utf8)
         let ok = FileManager().createFile(atPath: fname, contents: data)
-        if !ok { print("save json config failed!") }
+        if !ok { logger.error("save json config failed!") }
     }
 }
 
@@ -80,12 +80,12 @@ public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     if modelFile != nil {
         do {
             try BoosterLoadModel(handle: booster!, fname: modelFile!)
-            print("modle loeaded from file")
+            logger.debug("modle loeaded from file")
         } catch XGBoostError.modelLoadError {
-            print("Error when loading model from file!")
+            logger.error("Error when loading model from file!")
             exit(1)
         } catch {
-            print("Unknown error when loading model from file!")
+            logger.error("Unknown error when loading model from file!")
             exit(1)
         }
     }
@@ -93,16 +93,16 @@ public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     let bst = XGBooster(handle: booster!)
 
     for (k, v) in param {
-        print(k, v)
+        logger.debug("Set param: \(k): \(v)")
         BoosterSetParam(handle: booster!, key: k, value: v)
     }
     for v in evalMetric {
-        print(v)
+        logger.debug("Set param eval_metric: \(v)")
         BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
     }
 
     for i in 0 ..< numRound {
-        print("Round: \(i)")
+        logger.debug("Round: \(i)")
         BoosterUpdateOneIter(handle: booster!, nIter: numRound, dmHandle: data.dmHandle!)
     }
     return bst
