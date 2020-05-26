@@ -235,10 +235,10 @@ func aggCV(_ results: [String?]) -> CVIterResult {
 
 public typealias CVResult = [String: [Float]]
 
-public func CV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
-               param: Param = [:],
-               evalMetric: [String] = [],
-               modelFile: String? = nil) -> CVResult {
+public func XGBoostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
+                  param: Param = [:],
+                  evalMetric: [String] = [],
+                  modelFile: String? = nil) -> CVResult {
     // handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
                             evalMetric: evalMetric, shuffle: true)

@@ -88,7 +88,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ]
     // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
     // ["auc"], shuffle: true)
-    let cvResults = CV(data: train, nFold: 5, numRound: 10)
+    let cvResults = XGBoostCV(data: train, nFold: 5, numRound: 10, param: param)
     XCTAssertFalse(cvResults.isEmpty)
     XCTAssertEqual(cvResults.first!.value.count, 10)
   }

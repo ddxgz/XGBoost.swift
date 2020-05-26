@@ -19,7 +19,9 @@ let train = DMatrix(filename: "data/agaricus.txt.train")
 let test = DMatrix(filename: "data/agaricus.txt.test")
 
 let bst = XGBoost(data: train, numRound: 10)
-bst.predict(data: test)
+let pred = bst.predict(data: test)
+
+let cvResult = XGBoostCV(data: train, numRound: 10)
 #+end_src
 
 ** TODOs
