@@ -46,6 +46,17 @@ public class XGBooster {
                              dmHandle: data.dmHandle!)
     }
 
+    public func evalSet(dmHandle: [DMatrix],
+                        evalNames: [String], currentIter: Int) -> String? {
+        guard handle != nil else {
+            errLog("booster not initialized!")
+            return nil
+        }
+        var dms = dmHandle.map { $0.dmHandle }
+        return BoosterEvalOneIter(handle: handle!, currentIter: currentIter,
+                                  dmHandle: &dms, evalNames: evalNames)
+    }
+
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: UInt = 0) -> [Float] {
         guard handle != nil else {
@@ -127,60 +138,67 @@ public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     return bst
 }
 
-// struct CVPack {
-//     var booster: XGBooster
-//     let train: DMatrix
-//     let test: DMatrix
+internal struct CVPack {
+    var booster: XGBooster
+    let train: DMatrix
+    let test: DMatrix
 
-//     init(train: DMatrix, test: DMatrix) {
-//         self.train = train
-//         self.test = test
+    init(train: DMatrix, test: DMatrix) {
+        self.train = train
+        self.test = test
 
-//         var dms = [self.train.dmHandle, self.test.dmHandle]
-//         // let handle = BoosterCreate(dmHandles: &dms)!
-//         self.booster = XGBooster(dms: &dms)
-//     }
+        var dms = [self.train.dmHandle, self.test.dmHandle]
+        // let handle = BoosterCreate(dmHandles: &dms)!
+        self.booster = XGBooster(dms: &dms)
+    }
 
-//     internal func update(_ round: Int) {
-//         // BoosterUpdateOneIter(handle: self.booster, nIter: round, dmHandle:
-//         // self.train)
-//         self.booster.update(data: train, currentIter: round)
-//     }
-// }
+    internal func update(_ round: Int) {
+        // BoosterUpdateOneIter(handle: self.booster, nIter: round, dmHandle:
+        // self.train)
+        self.booster.update(data: train, currentIter: round)
+    }
 
-// func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
-//                evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
-//     var cvpacks = [CVPack]()
-//     var idxSet = [Int32](0 ..< Int32(data.nRow))
+    internal func eval(_ round: Int) -> String? {
+        return self.booster.evalSet(dmHandle: [train, test],
+                                    evalNames: ["train", "test"], currentIter: round)
+    }
+}
 
-//     if shuffle {
-//         idxSet = [Int32](idxSet.shuffled())
-//     }
+internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
+                        evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
+    var cvpacks = [CVPack]()
+    var idxSet = [Int32](0 ..< Int32(data.nRow))
 
-//     let foldSize = Int(data.nRow) / nFold
-//     for i in 0 ..< nFold {
-//         let testIdx = Array(idxSet[Int(i) * foldSize ..< (i + 1) * foldSize])
-//         let trainIdx = Array(Set(idxSet).subtracting(testIdx))
-//         let trainFold = data.slice(rows: trainIdx)
-//         let testFold = data.slice(rows: testIdx)
-//         cvpacks.append(CVPack(train: trainFold!, test: testFold!))
-//     }
+    if shuffle {
+        idxSet = [Int32](idxSet.shuffled())
+    }
 
-//     return cvpacks
-// }
+    let foldSize = Int(data.nRow) / nFold
+    for i in 0 ..< nFold {
+        let testIdx = Array(idxSet[Int(i) * foldSize ..< (i + 1) * foldSize])
+        let trainIdx = Array(Set(idxSet).subtracting(testIdx))
+        let trainFold = data.slice(rows: trainIdx)
+        let testFold = data.slice(rows: testIdx)
+        cvpacks.append(CVPack(train: trainFold!, test: testFold!))
+    }
 
-// public func CV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
-//                param: Param = [:],
-//                evalMetric: [String] = [],
-//                modelFile: String? = nil) {
-//     // handle metrics
-//     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
-//                             evalMetric: evalMetric, shuffle: true)
-//     for i in 0 ..< numRound {
-//         for fold in cvFolds {
-//             fold.update(i)
-//         }
+    return cvpacks
+}
 
-//         let res = aggcv()
-//     }
-// }
+// func aggCV(_ results: [String]) -> [String] {}
+
+public func CV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
+               param: Param = [:],
+               evalMetric: [String] = [],
+               modelFile: String? = nil) {
+    // handle metrics
+    let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
+                            evalMetric: evalMetric, shuffle: true)
+    for i in 0 ..< numRound {
+        for fold in cvFolds {
+            fold.update(i)
+        }
+
+        // let res = aggCV(cvFolds.map { $0.eval(i) })
+    }
+}

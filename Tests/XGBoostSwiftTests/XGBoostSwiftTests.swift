@@ -14,6 +14,7 @@ final class XGBoostSwiftTests: XCTestCase {
   static var allTests = [
     ("testDMatrix", testDMatrix),
     ("testXGBooster", testXGBooster),
+    ("testCV", testCV),
   ]
 
   func testDMatrix() throws {
@@ -26,6 +27,10 @@ final class XGBoostSwiftTests: XCTestCase {
     let labels = train.labels
     XCTAssertNotNil(labels)
     XCTAssertEqual(train.shape[0], UInt64(labels!.count))
+
+    let trainSliced = train.slice(rows: [0, 3])!
+    XCTAssertEqual(trainSliced.shape[0], UInt64(2))
+    XCTAssertEqual(trainSliced.shape[1], train.shape[1])
   }
 
   func testXGBooster() throws {
@@ -34,7 +39,7 @@ final class XGBoostSwiftTests: XCTestCase {
 
     let param = [
       "objective": "binary:logistic",
-      "max_depth": "90",
+      "max_depth": "2",
     ]
     let bst = XGBoost(data: train, numRound: 1, param: param, evalMetric: ["auc"])
 
@@ -57,7 +62,30 @@ final class XGBoostSwiftTests: XCTestCase {
     bst.saveConfig(fname: configfile)
     let confSaved = FileManager().fileExists(atPath: configfile)
     XCTAssertTrue(confSaved)
+
+    var lastEval: String = ""
+    for i in 1 ... 5 {
+      bst.update(data: train, currentIter: i)
+      let evalResult = bst.evalSet(dmHandle: [train, test],
+                                   evalNames: ["train", "test"], currentIter: i)
+
+      let newEval = String(evalResult![evalResult!.index(evalResult!.startIndex, offsetBy: 4)...])
+      XCTAssertNotEqual(lastEval, newEval)
+      lastEval = newEval
+    }
+    let result2 = bst.predict(data: test)
+    XCTAssertEqual(UInt64(result2.count), test.nRow)
+    XCTAssertFalse(result2.elementsEqual(result))
+
+    // for i in 0 ..< 5
   }
 
-  // func testBasic() throws {}
+  func testCV() throws {
+    let train = DMatrix(fname: "data/agaricus.txt.train")
+    let param = [
+      "objective": "binary:logistic",
+      "max_depth": "9",
+    ]
+    // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric: ["auc"], shuffle: true)
+  }
 }

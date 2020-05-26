@@ -142,10 +142,31 @@ func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandl
     }
 }
 
-func BoosterEvalOneIter(handle: BoosterHandle, nIter: Int, dmHandle: inout [DMatrixHandle?],
+extension String {
+    func makeCString() -> UnsafePointer<Int8>? {
+        // + 1 for the null-termination byte
+        let cnt = self.utf8.count + 1
+        let cstr = UnsafeMutablePointer<Int8>.allocate(capacity: cnt)
+        self.withCString { baseAddr in
+            cstr.initialize(from: baseAddr, count: cnt)
+        }
+        // return UnsafePointer<Int8>(cstr)
+        return UnsafePointer(cstr)
+    }
+}
+
+func BoosterEvalOneIter(handle: BoosterHandle, currentIter nIter: Int,
+                        dmHandle: inout [DMatrixHandle?],
                         evalNames: [String]) -> String {
     // TODO: solve dangling pointer
-    var names: [UnsafePointer<Int8>?] = evalNames.map { UnsafePointer<Int8>($0) }
+    // var names: [UnsafePointer<Int8>?] = evalNames.map { UnsafePointer<Int8>($0) }
+    // var names: [UnsafePointer<Int8>?] = evalNames.map { $0}
+    // var names = evalNames.map { UnsafeBufferPointer<Int8>(start: &$0, count:
+    // 1) }
+    // var names = UnsafeMutablePointer<Int8>.allocate(capacity: evalNames.count)
+    // names.initialize(from: &evalNames, count: evalNames.count)
+    var names = evalNames.map { $0.makeCString() }
+
     // var dms:
     var result: UnsafePointer<Int8>?
 
