@@ -26,6 +26,12 @@ func LogErrMsg(_ msg: String) {
 //     }
 // }
 
+public func XGBoostVersion() -> (major: Int, minor: Int, patch: Int) {
+    var major: Int32 = 0, minor: Int32 = 0, patch: Int32 = 0
+    XGBoostVersion(&major, &minor, &patch)
+    return (Int(major), Int(minor), Int(patch))
+}
+
 func DMatrixFromFile(name fname: String, silent: Bool = true) -> DMatrixHandle? {
     var silence: Int32 = 0
     if silent {

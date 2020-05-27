@@ -15,6 +15,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ("testDMatrix", testDMatrix),
     ("testXGBooster", testXGBooster),
     ("testCV", testCV),
+    ("testBasic", testBasic),
   ]
 
   func testDMatrix() throws {
@@ -91,5 +92,10 @@ final class XGBoostSwiftTests: XCTestCase {
     let cvResults = XGBoostCV(data: train, nFold: 5, numRound: 10, param: param)
     XCTAssertFalse(cvResults.isEmpty)
     XCTAssertEqual(cvResults.first!.value.count, 10)
+  }
+
+  func testBasic() throws {
+    let ver = XGBoostVersion()
+    XCTAssertNotEqual(ver.major + ver.minor + ver.patch, 0)
   }
 }
