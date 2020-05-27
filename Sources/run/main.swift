@@ -183,7 +183,7 @@ let param = [
     "max_depth": "90",
     "verbosity": "3",
 ]
-let bst = XGBoost(data: train, numRound: 10, param: param, evalMetric: ["auc"])
+let bst = xgboost(data: train, numRound: 10, param: param, evalMetric: ["auc"])
 print(bst)
 print(bst.predict(data: test)[0 ..< 5])
 

@@ -42,7 +42,7 @@ final class XGBoostSwiftTests: XCTestCase {
       "objective": "binary:logistic",
       "max_depth": "2",
     ]
-    let bst = XGBoost(data: train, numRound: 1, param: param, evalMetric: ["auc"])
+    let bst = xgboost(data: train, numRound: 1, param: param, evalMetric: ["auc"])
 
     XCTAssertTrue(bst is XGBooster)
 
@@ -54,7 +54,7 @@ final class XGBoostSwiftTests: XCTestCase {
     let saved = FileManager().fileExists(atPath: modelfile)
     XCTAssertTrue(saved)
 
-    let bstLoaded = XGBoost(data: train, numRound: 0, param: param,
+    let bstLoaded = xgboost(data: train, numRound: 0, param: param,
                             evalMetric: ["auc"], modelFile: modelfile)
     let resultLoaded = bstLoaded.predict(data: test)
     XCTAssertTrue(resultLoaded.elementsEqual(result))
@@ -64,7 +64,7 @@ final class XGBoostSwiftTests: XCTestCase {
     let savedJson = FileManager().fileExists(atPath: modelfileJson)
     XCTAssertTrue(savedJson)
 
-    let bstJsonLoaded = XGBoost(data: train, numRound: 0, param: param,
+    let bstJsonLoaded = xgboost(data: train, numRound: 0, param: param,
                                 evalMetric: ["auc"], modelFile: modelfileJson)
     let resultJsonLoaded = bstJsonLoaded.predict(data: test)
     XCTAssertTrue(resultJsonLoaded.elementsEqual(result))
@@ -99,7 +99,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ]
     // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
     // ["auc"], shuffle: true)
-    let cvResults = XGBoostCV(data: train, nFold: 5, numRound: 10, param: param)
+    let cvResults = xgboostCV(data: train, nFold: 5, numRound: 10, param: param)
     XCTAssertFalse(cvResults.isEmpty)
     XCTAssertEqual(cvResults.first!.value.count, 10)
   }

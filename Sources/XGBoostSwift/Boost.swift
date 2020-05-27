@@ -97,7 +97,7 @@ public class XGBooster {
 }
 
 // TODO: better way other than exit() when error
-public func XGBoost(data: DMatrix, numRound: Int = 10, param: Param = [:],
+public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
                     evalMetric: [String] = [], modelFile: String? = nil) -> XGBooster {
     if data.dmHandle == nil { exit(1) }
 
@@ -235,10 +235,10 @@ func aggCV(_ results: [String?]) -> CvIterResult {
 
 public typealias CVResult = [String: [Float]]
 
-public func XGBoostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
-                  param: Param = [:],
-                  evalMetric: [String] = [],
-                  modelFile: String? = nil) -> CVResult {
+public func xgboostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
+                      param: Param = [:],
+                      evalMetric: [String] = [],
+                      modelFile: String? = nil) -> CVResult {
     // handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
                             evalMetric: evalMetric, shuffle: true)
