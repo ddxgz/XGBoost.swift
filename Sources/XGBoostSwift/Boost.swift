@@ -185,7 +185,7 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
     return cvpacks
 }
 
-typealias CVIterResult = [(String, Float, Float)]
+typealias CvIterResult = [(String, Float, Float)]
 
 extension Array where Element: FloatingPoint {
     func sum() -> Element {
@@ -204,7 +204,7 @@ extension Array where Element: FloatingPoint {
     }
 }
 
-func aggCV(_ results: [String?]) -> CVIterResult {
+func aggCV(_ results: [String?]) -> CvIterResult {
     var cvMap = [String: [Float]]()
 
     for (i, line) in results.enumerated() {
@@ -224,7 +224,7 @@ func aggCV(_ results: [String?]) -> CVIterResult {
             cvMap[idxKey] = values
         }
     }
-    var results = CVIterResult()
+    var results = CvIterResult()
     for (idxKey, v) in cvMap {
         // let mean = v.reduce(0,+) / Float(v.count)
         let k = String(idxKey.split(separator: "\t")[1])
