@@ -59,6 +59,16 @@ final class XGBoostSwiftTests: XCTestCase {
     let resultLoaded = bstLoaded.predict(data: test)
     XCTAssertTrue(resultLoaded.elementsEqual(result))
 
+    let modelfileJson = "Tests/tmp/bst.json"
+    try bst.save(fname: modelfileJson)
+    let savedJson = FileManager().fileExists(atPath: modelfileJson)
+    XCTAssertTrue(savedJson)
+
+    let bstJsonLoaded = XGBoost(data: train, numRound: 0, param: param,
+                                evalMetric: ["auc"], modelFile: modelfileJson)
+    let resultJsonLoaded = bstJsonLoaded.predict(data: test)
+    XCTAssertTrue(resultJsonLoaded.elementsEqual(result))
+
     let configfile = "Tests/tmp/config.json"
     bst.saveConfig(fname: configfile)
     let confSaved = FileManager().fileExists(atPath: configfile)

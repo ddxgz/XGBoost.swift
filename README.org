@@ -22,6 +22,19 @@ let bst = XGBoost(data: train, numRound: 10)
 let pred = bst.predict(data: test)
 
 let cvResult = XGBoostCV(data: train, numRound: 10)
+
+// save and load model as binary
+let modelBin = "bst.bin"
+bst.save(fname: modelBin)
+let bstLoaded = XGBoost(data: train, numRound: 0, modelFile: modelBin)
+
+// save and load model as json
+let modelJson = "bst.json"
+bst.save(fname: modelJson) 
+let bstJsonLoaded = XGBoost(data: train, numRound: 0, modelFile: modelJson)
+
+// save model config
+bst.saveConfig(fname: "config.json")
 #+end_src
 
 ** TODOs
