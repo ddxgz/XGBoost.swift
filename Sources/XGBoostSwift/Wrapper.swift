@@ -38,7 +38,6 @@ func DMatrixFromFile(name fname: String, silent: Bool = true) -> DMatrixHandle? 
         silence = 1
     }
 
-    // var dm = DMatrix()
     var handle: DMatrixHandle?
     guard XGDMatrixCreateFromFile(fname, silence, &handle) >= 0 else {
         let errMsg = LastError()
@@ -79,6 +78,7 @@ func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
 func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     var result: UnsafePointer<Float>?
     var len: UInt64 = 0
+
     guard XGDMatrixGetFloatInfo(handle, label, &len, &result) >= 0 else {
         let errMsg = LastError()
         print("Get dmatrix float info failed, err msg: \(errMsg)")
@@ -91,10 +91,9 @@ func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
 
 func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int32]) -> DMatrixHandle? {
     let len: UInt64 = UInt64(idxSet.count)
-    // var idxs: [UnsafeMutablePointer<Int32>] = idxSet.map {
-    // UnsafeBufferPointer<Int32>($0) }
     var idxs: [Int32] = idxSet
     var newHandle: DMatrixHandle?
+
     guard XGDMatrixSliceDMatrix(handle, &idxs, len, &newHandle) >= 0 else {
         LogErrMsg("Error when slice dmatrix")
         return nil
@@ -105,6 +104,7 @@ func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int32]) -> DMatrixHan
 func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
     let lenDm: UInt64 = UInt64(dmHandles.count)
     var handle: BoosterHandle?
+
     guard XGBoosterCreate(&dmHandles, lenDm, &handle) >= 0 else {
         let errMsg = LastError()
         print("create booster failed, err msg: \(errMsg)")
@@ -156,7 +156,6 @@ extension String {
         self.withCString { baseAddr in
             cstr.initialize(from: baseAddr, count: cnt)
         }
-        // return UnsafePointer<Int8>(cstr)
         return UnsafePointer(cstr)
     }
 }
@@ -199,7 +198,7 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     return [Float](buf)
 }
 
-/// throw error?
+// TODO: throw error?
 func BoosterSaveModel(handle: BoosterHandle, fname: String) throws {
     guard XGBoosterSaveModel(handle, fname) >= 0 else {
         let errMsg = LastError()
@@ -217,6 +216,7 @@ func BoosterLoadModel(handle: BoosterHandle, fname: String) throws {
 func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {
     var len: UInt64 = 0
     var str: UnsafePointer<Int8>?
+
     guard XGBoosterSaveJsonConfig(handle, &len, &str) >= 0 else {
         let errMsg = LastError()
         print("save booster config as json string failed, err msg: \(errMsg)")

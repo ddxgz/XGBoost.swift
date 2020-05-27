@@ -41,6 +41,7 @@ public class DMatrix {
         }
     }
 
+    /// Use rows input is an array of row index to be selected
     public func slice(rows idxSet: [Int32]) -> DMatrix? {
         guard handle != nil else {
             errLog("dmatrix not initialized")

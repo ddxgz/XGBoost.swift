@@ -25,6 +25,8 @@ public class XGBooster {
         }
     }
 
+    /// Use .json as filename suffix to save model to json.
+    /// Refer to [XGBoost doc](https://xgboost.readthedocs.io/en/latest/tutorials/saving_model.html)
     public func save(fname: String) throws {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -97,6 +99,7 @@ public class XGBooster {
 }
 
 // TODO: better way other than exit() when error
+/// If the modelFile param is provided, it will load the model from that file.
 public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
                     evalMetric: [String] = [], modelFile: String? = nil) -> XGBooster {
     if data.dmHandle == nil { exit(1) }
@@ -226,20 +229,20 @@ func aggCV(_ results: [String?]) -> CvIterResult {
     }
     var results = CvIterResult()
     for (idxKey, v) in cvMap {
-        // let mean = v.reduce(0,+) / Float(v.count)
         let k = String(idxKey.split(separator: "\t")[1])
         results.append((k, v.mean(), v.std()))
     }
     return results
 }
 
+/// Each k, v pair is a measure's mean or std of each round
 public typealias CVResult = [String: [Float]]
 
 public func xgboostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
                       param: Param = [:],
                       evalMetric: [String] = [],
                       modelFile: String? = nil) -> CVResult {
-    // handle metrics
+    // TODO: handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
                             evalMetric: evalMetric, shuffle: true)
 
