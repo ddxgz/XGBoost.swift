@@ -103,7 +103,6 @@ public class XGBooster {
     }
 }
 
-// TODO: better way other than exit() when error
 /** Train a booster with given parameters.
   - Parameters:
     - data: DMatrix

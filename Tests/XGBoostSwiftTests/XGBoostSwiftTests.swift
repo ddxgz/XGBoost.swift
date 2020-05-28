@@ -32,6 +32,15 @@ final class XGBoostSwiftTests: XCTestCase {
     let trainSliced = train.slice(rows: [0, 3])!
     XCTAssertEqual(trainSliced.shape[0], UInt64(2))
     XCTAssertEqual(trainSliced.shape[1], train.shape[1])
+
+    let range = 0 ..< 100
+    let mat = try DMatrix(array: range.map { _ in Float.random(in: 0 ..< 1) },
+                          shape: (11, 10))
+    XCTAssertTrue(mat.initialized)
+
+    let matWithNa = try DMatrix(array: range.map { _ in Float.random(in: 0 ..< 1) },
+                                shape: (21, 30))
+    XCTAssertTrue(matWithNa.initialized)
   }
 
   func testXGBooster() throws {

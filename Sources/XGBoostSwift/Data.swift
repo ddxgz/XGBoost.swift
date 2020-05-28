@@ -6,6 +6,8 @@ public class DMatrix {
 
     var dmHandle: DMatrixHandle? { handle }
 
+    public var initialized: Bool { handle != nil }
+
     public var nRow: UInt64 {
         if handle != nil {
             let n = DMatrixNumRow(handle!)
@@ -31,6 +33,14 @@ public class DMatrix {
         try handle = DMatrixFromFile(name: fname, silent: silent)
     }
 
+    public init(array: [Float], shape: (row: Int, col: Int),
+                NaValue: Float = -.infinity) throws {
+        var values = array
+        try handle = DMatrixFromMatrix(values: &values, nRow: UInt64(shape.row),
+                                       nCol: UInt64(shape.col),
+                                       missingVal: NaValue, nThread: 0)
+    }
+
     internal init(handle: DMatrixHandle?) {
         self.handle = handle
     }
@@ -42,6 +52,7 @@ public class DMatrix {
         }
     }
 
+    // TODO: accept differnt types of rows
     /// Use rows input is an array of row index to be selected
     public func slice(rows idxSet: [Int32]) -> DMatrix? {
         guard handle != nil else {

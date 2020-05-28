@@ -44,6 +44,16 @@ func DMatrixFromFile(name fname: String, silent: Bool = true) throws -> DMatrixH
     return handle
 }
 
+func DMatrixFromMatrix(values: inout [Float], nRow: UInt64, nCol: UInt64,
+                       missingVal: Float, nThread: Int32) throws -> DMatrixHandle? {
+    var handle: DMatrixHandle?
+    try check(call: { XGDMatrixCreateFromMat_omp(&values, nRow, nCol, missingVal,
+                                                 &handle, nThread) },
+              extraMsg: "Error when call XGDMatrixFromMat_omp")
+
+    return handle
+}
+
 func DMatrixFree(_ handle: DMatrixHandle) {
     guard XGDMatrixFree(handle) >= 0 else {
         let errMsg = lastError()
