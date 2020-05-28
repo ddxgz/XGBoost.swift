@@ -13,7 +13,7 @@ final class XGBoostSwiftTests: XCTestCase {
 
   static var allTests = [
     ("testDMatrix", testDMatrix),
-    ("testXGBooster", testXGBooster),
+    ("testBooster", testBooster),
     ("testCV", testCV),
     ("testBasic", testBasic),
   ]
@@ -53,7 +53,7 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertTrue(matWithNa.initialized)
   }
 
-  func testXGBooster() throws {
+  func testBooster() throws {
     let train = try DMatrix(fname: "data/agaricus.txt.train")
     let test = try DMatrix(fname: "data/agaricus.txt.test")
 
@@ -63,7 +63,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ]
     let bst = try xgboost(data: train, numRound: 1, param: param, evalMetric: ["auc"])
 
-    XCTAssertTrue(bst is XGBooster)
+    XCTAssertTrue(bst is Booster)
 
     let result = bst.predict(data: test)
     XCTAssertEqual(UInt64(result.count), test.nRow)
@@ -108,6 +108,13 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertFalse(result2.elementsEqual(result))
 
     // for i in 0 ..< 5
+
+    bst.setAttr(key: "key", value: "value")
+    let attrs = bst.attributes()
+    XCTAssertEqual(attrs.count, 1)
+    bst.setAttr(key: "key", value: nil)
+    let attrs2 = bst.attributes()
+    XCTAssertEqual(attrs2.count, 0)
   }
 
   func testCV() throws {
@@ -124,7 +131,7 @@ final class XGBoostSwiftTests: XCTestCase {
   }
 
   func testBasic() throws {
-    let ver = XGBoostVersion()
+    let ver = xgboostVersion()
     XCTAssertNotEqual(ver.major + ver.minor + ver.patch, 0)
   }
 }

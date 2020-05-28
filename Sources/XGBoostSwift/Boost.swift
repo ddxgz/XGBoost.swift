@@ -4,7 +4,7 @@ import Foundation
 public typealias Param = [String: String]
 
 /// A Booster of XGBoost, the model of XGBoost.
-public class XGBooster {
+public class Booster {
     internal var handle: BoosterHandle?
 
     internal init(handle: BoosterHandle) {
@@ -21,7 +21,7 @@ public class XGBooster {
 
     deinit {
         if handle != nil {
-            debugLog("deinit XGBooster")
+            debugLog("deinit Booster")
             BoosterFree(handle!)
         }
     }
@@ -43,6 +43,45 @@ public class XGBooster {
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
 
+    /// Get attribute by key
+    public func attr(key: String) -> String? {
+        guard handle != nil else {
+            errLog("booster not initialized!")
+            return nil
+        }
+        return BoosterGetAttr(handle: handle!, key: key)
+    }
+
+    /// Get all the attributes
+    public func attributes() -> [String: String] {
+        var attributes = [String: String]()
+        guard handle != nil else {
+            errLog("booster not initialized!")
+            return attributes
+        }
+
+        let attrNames = BoosterGetAttrNames(handle: handle!)
+        guard attrNames != nil else {
+            return attributes
+        }
+
+        for name in attrNames! {
+            let att = attr(key: name)
+            attributes[name] = att
+        }
+        return attributes
+    }
+
+    /// Set attribute, pass `value` as nil to delete an attribute.
+    public func setAttr(key: String, value: String?) {
+        guard handle != nil else {
+            errLog("booster not initialized!")
+            return
+        }
+        BoosterSetAttr(handle: handle!, key: key, value: value)
+    }
+
+    /// Update for 1 iteration
     public func update(data: DMatrix, currentIter: Int) {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -56,6 +95,8 @@ public class XGBooster {
                              dmHandle: data.dmHandle!)
     }
 
+    // func boost(dTrain: DMatrix, grad:[Float],hess:[Float]){}
+
     public func evalSet(dmHandle: [DMatrix],
                         evalNames: [String], currentIter: Int) -> String? {
         guard handle != nil else {
@@ -67,8 +108,17 @@ public class XGBooster {
                                   dmHandle: &dms, evalNames: evalNames)
     }
 
+    /** Predict labels on the data.
+     - Parameters:
+        - data: DMatrix - The data to predict on
+        - outputMargin: bool - Whether to output the untransformed margin value
+        - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
+          trees (default value)
+     - Returns: [Float]
+
+     **/
     public func predict(data: DMatrix, outputMargin: Bool = false,
-                        nTreeLimit: UInt = 0) -> [Float] {
+                        nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
             errLog("booster not initialized!")
             return [Float]()
@@ -114,10 +164,11 @@ public class XGBooster {
     - modelFile: String - If the modelFile param is provided, it will load the
       model from that file.
 
-  - Returns: XGBooster
+  - Returns: Booster
+
  **/
 public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
-                    evalMetric: [String] = [], modelFile: String? = nil) throws -> XGBooster {
+                    evalMetric: [String] = [], modelFile: String? = nil) throws -> Booster {
     if data.dmHandle == nil {
         throw XGBoostError.unknownError(
             errMsg: "DMatrix handle is nil, XGBoost error: \(lastError())")
@@ -142,7 +193,7 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
         }
     }
 
-    let bst = XGBooster(handle: booster!)
+    let bst = Booster(handle: booster!)
 
     for (k, v) in param {
         debugLog("Set param: \(k): \(v)")
@@ -162,7 +213,7 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
 }
 
 internal struct CVPack {
-    var booster: XGBooster
+    var booster: Booster
     let train: DMatrix
     let test: DMatrix
 
@@ -172,7 +223,7 @@ internal struct CVPack {
 
         var dms = [self.train.dmHandle, self.test.dmHandle]
         // let handle = BoosterCreate(dmHandles: &dms)!
-        self.booster = XGBooster(dms: &dms)
+        self.booster = Booster(dms: &dms)
     }
 
     internal func update(_ round: Int) {
@@ -211,23 +262,6 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
 }
 
 typealias CvIterResult = [(String, Float, Float)]
-
-extension Array where Element: FloatingPoint {
-    func sum() -> Element {
-        return self.reduce(0, +)
-    }
-
-    func mean() -> Element {
-        return self.sum() / Element(self.count)
-    }
-
-    func std() -> Element {
-        let mean = self.mean()
-        let v = self.reduce(0) { $0 + ($1 - mean) * ($1 - mean) }
-        let vari = v / (Element(self.count) - 1)
-        return vari.squareRoot()
-    }
-}
 
 func aggCV(_ results: [String?]) -> CvIterResult {
     var cvMap = [String: [Float]]()

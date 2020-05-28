@@ -2,6 +2,18 @@ import Cxgb
 
 // TODO: check xgb lib loaded
 
+extension String {
+    func makeCString() -> UnsafePointer<Int8>? {
+        // + 1 for the null-termination byte
+        let cnt = self.utf8.count + 1
+        let cstr = UnsafeMutablePointer<Int8>.allocate(capacity: cnt)
+        self.withCString { baseAddr in
+            cstr.initialize(from: baseAddr, count: cnt)
+        }
+        return UnsafePointer(cstr)
+    }
+}
+
 enum XGBoostError: Error {
     case callError(errMsg: String)
     case unknownError(errMsg: String)
@@ -25,7 +37,7 @@ func check(call: () -> Int32, extraMsg: String = "") throws {
     }
 }
 
-public func XGBoostVersion() -> (major: Int, minor: Int, patch: Int) {
+public func xgboostVersion() -> (major: Int, minor: Int, patch: Int) {
     var major: Int32 = 0, minor: Int32 = 0, patch: Int32 = 0
     XGBoostVersion(&major, &minor, &patch)
     return (Int(major), Int(minor), Int(patch))
@@ -157,24 +169,54 @@ func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
     }
 }
 
+func BoosterSetAttr(handle: BoosterHandle, key: String, value: String?) {
+    guard XGBoosterSetAttr(handle, key, value) >= 0 else {
+        let errMsg = lastError()
+        print("set booster attr, err msg: \(errMsg)")
+        return
+    }
+}
+
+func BoosterGetAttr(handle: BoosterHandle, key: String) -> String? {
+    var out: UnsafePointer<Int8>?
+    var success: Int32 = -1
+
+    guard XGBoosterGetAttr(handle, key, &out, &success) >= 0 else {
+        return nil
+    }
+
+    guard success >= 0 else { return nil }
+
+    return String(cString: out!)
+}
+
+func BoosterGetAttrNames(handle: BoosterHandle) -> [String]? {
+    var len: UInt64 = 0
+    // var out: [String?]
+    // var out = [UnsafeMutablePointer<UnsafePointer<Int8>?>?]()
+    var out = UnsafeMutablePointer<UnsafeMutablePointer<UnsafePointer<Int8>?>?>.allocate(capacity: 1)
+
+    guard XGBoosterGetAttrNames(handle, &len, out) >= 0 else {
+        return nil
+    }
+
+    guard len > 0 else { return nil }
+
+    var attrs = [String]()
+    // for attr in out {
+    for i in 0 ..< len {
+        let a = String(cString: out.pointee![Int(i)]!)
+        attrs.append(a)
+    }
+    return attrs
+}
+
 func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandle: DMatrixHandle) {
     let iter: Int32 = Int32(nIter)
     guard XGBoosterUpdateOneIter(handle, iter, dmHandle) >= 0 else {
         let errMsg = lastError()
         print("create booster failed, err msg: \(errMsg)")
         return
-    }
-}
-
-extension String {
-    func makeCString() -> UnsafePointer<Int8>? {
-        // + 1 for the null-termination byte
-        let cnt = self.utf8.count + 1
-        let cstr = UnsafeMutablePointer<Int8>.allocate(capacity: cnt)
-        self.withCString { baseAddr in
-            cstr.initialize(from: baseAddr, count: cnt)
-        }
-        return UnsafePointer(cstr)
     }
 }
 
@@ -194,7 +236,7 @@ func BoosterEvalOneIter(handle: BoosterHandle, currentIter nIter: Int,
 }
 
 func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
-                    optionMask: Int, nTreeLimit: UInt, training: Bool) -> [Float]? {
+                    optionMask: Int, nTreeLimit: Int, training: Bool) -> [Float]? {
     let optioin: Int32 = Int32(optionMask)
     let treeLim: UInt32 = UInt32(nTreeLimit)
     var isTraining: Int32 = 0
@@ -216,7 +258,6 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     return [Float](buf)
 }
 
-// TODO: throw error?
 func BoosterSaveModel(handle: BoosterHandle, fname: String) throws {
     guard XGBoosterSaveModel(handle, fname) >= 0 else {
         let errMsg = lastError()
