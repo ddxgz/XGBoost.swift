@@ -1,0 +1,8 @@
+.build/
+.vscode/
+.git/
+.DS_Store
+.gitignore
+README.md
+env.*
+credentials/

@@ -8,6 +8,9 @@ let package = Package(
     // platforms: [
     //     .macOS(.v10_15),
     // ],
+    products: [
+        .library(name: "XGBoostSwift", targets: ["XGBoostSwift"]),
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/apple/swift-log.git", from: "1.2.0"),
