@@ -259,10 +259,10 @@ func aggCV(_ results: [String?]) -> CvIterResult {
 /// Each k, v pair is a measure's mean or std of each round
 public typealias CVResult = [String: [Float]]
 
+/// Cross-validation with given parameters
 public func xgboostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
                       param: Param = [:],
-                      evalMetric: [String] = [],
-                      modelFile: String? = nil) -> CVResult {
+                      evalMetric: [String] = []) -> CVResult {
     // TODO: handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
                             evalMetric: evalMetric, shuffle: true)
