@@ -4,71 +4,94 @@
     <title>DMatrix Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <script src="../js/jquery.min.js" defer></script>
     <script src="../js/jazzy.js" defer></script>
     
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
+
     <a name="//apple_ref/swift/Class/DMatrix" class="dashAnchor"></a>
+
     <a title="DMatrix Class Reference"></a>
-    <header>
-      <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (18% documented)</p>
-        <p class="header-right"><a href="https://github.com/ddxgz/XGBoost.swift"><img src="../img/gh.png"/>View on GitHub</a></p>
-      </div>
-    </header>
-    <div class="content-wrapper">
-      <p id="breadcrumbs">
-        <a href="../index.html"> Reference</a>
-        <img id="carat" src="../img/carat.png" />
-        DMatrix Class Reference
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          Documentation - XGBoost.swift
+        </a>
+         (72% documented)
       </p>
-    </div>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/ddxgz/XGBoost.swift">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html"> Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DMatrix Class Reference
+    </p>
+
     <div class="content-wrapper">
-      <nav class="sidebar">
+      <nav class="navigation">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a href="../Classes.html">Classes</a>
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Classes/DMatrix.html">DMatrix</a>
+                <a class="nav-group-task-link" href="../Classes/DMatrix.html">DMatrix</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/XGBooster.html">XGBooster</a>
+                <a class="nav-group-task-link" href="../Classes/XGBooster.html">XGBooster</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Functions.html">Functions</a>
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Functions.html#/s:12XGBoostSwift0A7VersionSi5major_Si5minorSi5patchtyF">XGBoostVersion()</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift0A7VersionSi5major_Si5minorSi5patchtyF">XGBoostVersion()</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Functions.html#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA9XGBoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:numRound:param:evalMetric:modelFile:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA9XGBoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:numRound:param:evalMetric:modelFile:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Functions.html#/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetric9modelFileSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGSSSgtF">xgboostCV(data:nFold:numRound:param:evalMetric:modelFile:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetricSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGtF">xgboostCV(data:nFold:numRound:param:evalMetric:)</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Typealiases.html">Type Aliases</a>
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:12XGBoostSwift5Parama">Param</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12XGBoostSwift5Parama">Param</a>
               </li>
             </ul>
           </li>
         </ul>
       </nav>
       <article class="main-content">
-        <section>
-          <section class="section">
+
+        <section class="section">
+          <div class="section-content top-matter">
             <h1>DMatrix</h1>
               <div class="declaration">
                 <div class="language">
@@ -76,12 +99,16 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>DMatrix is a wrap of the internal data structure DMatrix that used by
+XGBoost. You can construct from a file or [Float].</p>
 
-          </section>
-          <section class="section task-group-section">
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -95,7 +122,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>If the DMatrix is initialized, by simply checking if the DMatrixHandle
+is non-nil.</p>
 
                       </div>
                       <div class="declaration">
@@ -122,7 +150,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The number of rows in the DMatrix</p>
 
                       </div>
                       <div class="declaration">
@@ -149,7 +177,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The number of cols in the DMatrix</p>
 
                       </div>
                       <div class="declaration">
@@ -176,7 +204,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The shape of the DMatrix, [nRow, nCol]</p>
 
                       </div>
                       <div class="declaration">
@@ -203,7 +231,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The labels of the DMatrix</p>
 
                       </div>
                       <div class="declaration">
@@ -230,7 +258,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Construct DMatrix from file</p>
 
                       </div>
                       <div class="declaration">
@@ -257,7 +285,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Construct DMatrix from array of Float</p>
 
                       </div>
                       <div class="declaration">
@@ -285,7 +313,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Save the DMatrix to file</p>
 
                       </div>
                       <div class="declaration">
@@ -312,7 +340,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Use rows input is an array of row index to be selected</p>
+                        <p>Slice the DMatrix by using an array of row indexes, return a DMatrix of 
+the selected rows.</p>
 
                       </div>
                       <div class="declaration">
@@ -339,7 +368,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Slice the DMatrix by using a range of row indexes, return a DMatrix of 
+the selected rows.</p>
 
                       </div>
                       <div class="declaration">
@@ -355,14 +385,15 @@
                 </li>
               </ul>
             </div>
-          </section>
+          </div>
         </section>
-        <section id="footer">
-          <p>&copy; 2020 <a class="link" href="https://pcx.linkedinfo.co" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-28)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
-        </section>
+
       </article>
     </div>
+    <section class="footer">
+      <p>&copy; 2020 <a class="link" href="https://pcx.linkedinfo.co" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-28)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
   </body>
 </div>
 </html>

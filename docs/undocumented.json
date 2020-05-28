@@ -9,113 +9,29 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 6,
-      "symbol": "XGBooster",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 45,
+      "line": 46,
       "symbol": "XGBooster.update(data:currentIter:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 58,
+      "line": 59,
       "symbol": "XGBooster.evalSet(dmHandle:evalNames:currentIter:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 69,
+      "line": 70,
       "symbol": "XGBooster.predict(data:outputMargin:nTreeLimit:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 92,
+      "line": 93,
       "symbol": "XGBooster.saveConfig(fname:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 262,
-      "symbol": "xgboostCV(data:nFold:numRound:param:evalMetric:modelFile:)",
-      "symbol_kind": "source.lang.swift.decl.function.free",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 3,
-      "symbol": "DMatrix",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 9,
-      "symbol": "DMatrix.initialized",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 11,
-      "symbol": "DMatrix.nRow",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 19,
-      "symbol": "DMatrix.nCol",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 27,
-      "symbol": "DMatrix.shape",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 29,
-      "symbol": "DMatrix.labels",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 38,
-      "symbol": "DMatrix.init(fname:silent:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 43,
-      "symbol": "DMatrix.init(array:shape:NaValue:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 62,
-      "symbol": "DMatrix.save(fname:silent:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
-      "line": 78,
-      "symbol": "DMatrix.slice(rows:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },

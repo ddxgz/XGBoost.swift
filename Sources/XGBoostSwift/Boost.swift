@@ -3,6 +3,7 @@ import Foundation
 
 public typealias Param = [String: String]
 
+/// A Booster of XGBoost, the model of XGBoost.
 public class XGBooster {
     internal var handle: BoosterHandle?
 
