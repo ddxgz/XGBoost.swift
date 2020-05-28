@@ -9,36 +9,22 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 46,
-      "symbol": "XGBooster.update(data:currentIter:)",
+      "line": 100,
+      "symbol": "Booster.evalSet(dmHandle:evalNames:currentIter:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 59,
-      "symbol": "XGBooster.evalSet(dmHandle:evalNames:currentIter:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 70,
-      "symbol": "XGBooster.predict(data:outputMargin:nTreeLimit:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 93,
-      "symbol": "XGBooster.saveConfig(fname:)",
+      "line": 144,
+      "symbol": "Booster.saveConfig(fname:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Wrapper.swift",
-      "line": 28,
-      "symbol": "XGBoostVersion()",
+      "line": 40,
+      "symbol": "xgboostVersion()",
       "symbol_kind": "source.lang.swift.decl.function.free",
       "warning": "undocumented"
     }

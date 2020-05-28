@@ -25,6 +25,15 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(train.shape[0], 6513)
     XCTAssertEqual(train.shape[1], 126)
 
+    // let csv = "data/train.csv?format=csv"
+    let csv = "data/train.csv"
+    let trainCSV = try DMatrix(fname: csv, format: "csv")
+    XCTAssertEqual(trainCSV.shape[0], 892)
+    XCTAssertEqual(trainCSV.shape[1], 12)
+
+    XCTAssertEqual(train.shape[0], 6513)
+    XCTAssertEqual(train.shape[1], 126)
+
     let labels = train.labels
     XCTAssertNotNil(labels)
     XCTAssertEqual(train.shape[0], UInt64(labels!.count))

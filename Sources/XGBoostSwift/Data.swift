@@ -44,9 +44,12 @@ public class DMatrix {
     }
 
     /// Construct DMatrix from file
-    public init(fname: String, silent: Bool = true) throws {
-        // handle = DMatrixFromFile(name: fname, silent: silent)
-        try handle = DMatrixFromFile(name: fname, silent: silent)
+    public init(fname: String, format: String = "libsvm", silent: Bool = true) throws {
+        var name = fname
+        if format.lowercased() == "csv" {
+            name += "?format=csv"
+        }
+        try handle = DMatrixFromFile(name: name, silent: silent)
     }
 
     /// Construct DMatrix from array of Float
@@ -76,7 +79,7 @@ public class DMatrix {
     }
 
     // TODO: accept differnt types of rows
-    /// Slice the DMatrix by using an array of row indexes, return a DMatrix of 
+    /// Slice the DMatrix by using an array of row indexes, return a DMatrix of
     /// the selected rows.
     public func slice(rows idxSet: [Int]) -> DMatrix? {
         guard handle != nil else {
@@ -87,7 +90,7 @@ public class DMatrix {
         return DMatrix(handle: handle)
     }
 
-    /// Slice the DMatrix by using a range of row indexes, return a DMatrix of 
+    /// Slice the DMatrix by using a range of row indexes, return a DMatrix of
     /// the selected rows.
     public func slice(rows idxSet: Range<Int>) -> DMatrix? {
         return slice(rows: Array(idxSet))

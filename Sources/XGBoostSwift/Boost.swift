@@ -108,15 +108,16 @@ public class Booster {
                                   dmHandle: &dms, evalNames: evalNames)
     }
 
-    /** Predict labels on the data.
-     - Parameters:
-        - data: DMatrix - The data to predict on
-        - outputMargin: bool - Whether to output the untransformed margin value
-        - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
-          trees (default value)
-     - Returns: [Float]
+    /**
+     Predict labels on the data.
+      - Parameters:
+         - data: DMatrix - The data to predict on
+         - outputMargin: bool - Whether to output the untransformed margin value
+         - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
+           trees (default value)
+      - Returns: [Float]
 
-     **/
+      **/
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -154,19 +155,20 @@ public class Booster {
     }
 }
 
-/** Train a booster with given parameters.
-  - Parameters:
-    - data: DMatrix
-    - numRound: Int - Number of boosting iterations.
-    - param: Dictionary - Booster parameters. If intend to use multiple
-     `eval_metric`, they should be provided as the `evalMetric`.
-    - evalMetric: [String] - to pass the `eval_metric` parameter to booster.
-    - modelFile: String - If the modelFile param is provided, it will load the
-      model from that file.
+/**
+ Train a booster with given parameters.
+   - Parameters:
+     - data: DMatrix
+     - numRound: Int - Number of boosting iterations.
+     - param: Dictionary - Booster parameters. If intend to use multiple
+      `eval_metric`, they should be provided as the `evalMetric`.
+     - evalMetric: [String] - to pass the `eval_metric` parameter to booster.
+     - modelFile: String - If the modelFile param is provided, it will load the
+       model from that file.
 
-  - Returns: Booster
+   - Returns: Booster
 
- **/
+  **/
 public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
                     evalMetric: [String] = [], modelFile: String? = nil) throws -> Booster {
     if data.dmHandle == nil {

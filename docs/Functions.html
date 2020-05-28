@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           Documentation - XGBoost.swift
         </a>
-         (72% documented)
+         (84% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -54,10 +54,10 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DMatrix.html">DMatrix</a>
+                <a class="nav-group-task-link" href="Classes/Booster.html">Booster</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/XGBooster.html">XGBooster</a>
+                <a class="nav-group-task-link" href="Classes/DMatrix.html">DMatrix</a>
               </li>
             </ul>
           </li>
@@ -65,13 +65,13 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift0A7VersionSi5major_Si5minorSi5patchtyF">XGBoostVersion()</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA9XGBoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:numRound:param:evalMetric:modelFile:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:numRound:param:evalMetric:modelFile:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetricSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGtF">xgboostCV(data:nFold:numRound:param:evalMetric:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF">xgboostVersion()</a>
               </li>
             </ul>
           </li>
@@ -105,9 +105,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA9XGBoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF"></a>
+                    <a name="/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF"></a>
                     <a name="//apple_ref/swift/Function/xgboost(data:numRound:param:evalMetric:modelFile:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA9XGBoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:<wbr>numRound:<wbr>param:<wbr>evalMetric:<wbr>modelFile:<wbr>)</a>
+                    <a class="token" href="#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:<wbr>numRound:<wbr>param:<wbr>evalMetric:<wbr>modelFile:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -117,13 +117,15 @@
                       <div class="abstract">
                         <p>Train a booster with given parameters.</p>
 
+<p>*</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">param</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span>
-                    <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Classes/XGBooster.html">XGBooster</a></span></code></pre>
+                    <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Classes/Booster.html">Booster</a></span></code></pre>
 
                         </div>
                       </div>
@@ -198,8 +200,7 @@ model from that file.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>XGBooster
-*</p>
+                        <p>Booster</p>
                       </div>
                     </section>
                   </div>
@@ -236,9 +237,9 @@ model from that file.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift0A7VersionSi5major_Si5minorSi5patchtyF"></a>
-                    <a name="//apple_ref/swift/Function/XGBoostVersion()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift0A7VersionSi5major_Si5minorSi5patchtyF">XGBoostVersion()</a>
+                    <a name="/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF"></a>
+                    <a name="//apple_ref/swift/Function/xgboostVersion()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF">xgboostVersion()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -253,7 +254,7 @@ model from that file.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">XGBoostVersion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">major</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">minor</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">patch</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboostVersion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">major</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">minor</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">patch</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

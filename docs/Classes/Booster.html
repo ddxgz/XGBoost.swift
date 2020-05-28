@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DMatrix Class Reference</title>
+    <title>Booster Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Class/DMatrix" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/Booster" class="dashAnchor"></a>
 
-    <a title="DMatrix Class Reference"></a>
+    <a title="Booster Class Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html"> Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DMatrix Class Reference
+      Booster Class Reference
     </p>
 
     <div class="content-wrapper">
@@ -92,15 +92,14 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>DMatrix</h1>
+            <h1>Booster</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DMatrix</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Booster</span></code></pre>
 
                 </div>
               </div>
-            <p>DMatrix is a wrap of the internal data structure DMatrix that used by
-XGBoost. You can construct from a file or [Float].</p>
+            <p>A Booster of XGBoost, the model of XGBoost.</p>
 
           </div>
         </section>
@@ -112,9 +111,9 @@ XGBoost. You can construct from a file or [Float].</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC11initializedSbvp"></a>
-                    <a name="//apple_ref/swift/Property/initialized" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC11initializedSbvp">initialized</a>
+                    <a name="/s:12XGBoostSwift7BoosterC4save5fnameySS_tKF"></a>
+                    <a name="//apple_ref/swift/Method/save(fname:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC4save5fnameySS_tKF">save(fname:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -122,15 +121,15 @@ XGBoost. You can construct from a file or [Float].</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>If the DMatrix is initialized, by simply checking if the DMatrixHandle
-is non-nil.</p>
+                        <p>Use .json as filename suffix to save model to json.
+Refer to <a href="https://xgboost.readthedocs.io/en/latest/tutorials/saving_model.html">XGBoost doc</a></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">initialized</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">save</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -140,9 +139,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC4nRows6UInt64Vvp"></a>
-                    <a name="//apple_ref/swift/Property/nRow" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC4nRows6UInt64Vvp">nRow</a>
+                    <a name="/s:12XGBoostSwift7BoosterC4attr3keySSSgSS_tF"></a>
+                    <a name="//apple_ref/swift/Method/attr(key:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC4attr3keySSSgSS_tF">attr(key:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -150,14 +149,14 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The number of rows in the DMatrix</p>
+                        <p>Get attribute by key</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">nRow</span><span class="p">:</span> <span class="kt">UInt64</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">attr</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -167,9 +166,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC4nCols6UInt64Vvp"></a>
-                    <a name="//apple_ref/swift/Property/nCol" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC4nCols6UInt64Vvp">nCol</a>
+                    <a name="/s:12XGBoostSwift7BoosterC10attributesSDyS2SGyF"></a>
+                    <a name="//apple_ref/swift/Method/attributes()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC10attributesSDyS2SGyF">attributes()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -177,14 +176,14 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The number of cols in the DMatrix</p>
+                        <p>Get all the attributes</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">nCol</span><span class="p">:</span> <span class="kt">UInt64</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">attributes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -194,9 +193,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC5shapeSays6UInt64VGvp"></a>
-                    <a name="//apple_ref/swift/Property/shape" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC5shapeSays6UInt64VGvp">shape</a>
+                    <a name="/s:12XGBoostSwift7BoosterC7setAttr3key5valueySS_SSSgtF"></a>
+                    <a name="//apple_ref/swift/Method/setAttr(key:value:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC7setAttr3key5valueySS_SSSgtF">setAttr(key:<wbr>value:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -204,14 +203,14 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The shape of the DMatrix, [nRow, nCol]</p>
+                        <p>Set attribute, pass <code>value</code> as nil to delete an attribute.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">shape</span><span class="p">:</span> <span class="p">[</span><span class="kt">UInt64</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setAttr</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -221,9 +220,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC6labelsSaySfGSgvp"></a>
-                    <a name="//apple_ref/swift/Property/labels" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC6labelsSaySfGSgvp">labels</a>
+                    <a name="/s:12XGBoostSwift7BoosterC6update4data11currentIteryAA7DMatrixC_SitF"></a>
+                    <a name="//apple_ref/swift/Method/update(data:currentIter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC6update4data11currentIteryAA7DMatrixC_SitF">update(data:<wbr>currentIter:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -231,14 +230,14 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The labels of the DMatrix</p>
+                        <p>Update for 1 iteration</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">labels</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">currentIter</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -248,9 +247,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC5fname6format6silentACSS_SSSbtKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(fname:format:silent:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC5fname6format6silentACSS_SSSbtKcfc">init(fname:<wbr>format:<wbr>silent:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7BoosterC7evalSet8dmHandle0D5Names11currentIterSSSgSayAA7DMatrixCG_SaySSGSitF"></a>
+                    <a name="//apple_ref/swift/Method/evalSet(dmHandle:evalNames:currentIter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC7evalSet8dmHandle0D5Names11currentIterSSSgSayAA7DMatrixCG_SaySSGSitF">evalSet(dmHandle:<wbr>evalNames:<wbr>currentIter:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -258,14 +257,15 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Construct DMatrix from file</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"libsvm"</span><span class="p">,</span> <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">evalSet</span><span class="p">(</span><span class="nv">dmHandle</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">],</span>
+                    <span class="nv">evalNames</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="nv">currentIter</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -275,9 +275,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC5array5shape7NaValueACSaySfG_Si3row_Si3coltSftKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(array:shape:NaValue:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC5array5shape7NaValueACSaySfG_Si3row_Si3coltSftKcfc">init(array:<wbr>shape:<wbr>NaValue:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimitSaySfGAA7DMatrixC_SbSitF"></a>
+                    <a name="//apple_ref/swift/Method/predict(data:outputMargin:nTreeLimit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimitSaySfGAA7DMatrixC_SbSitF">predict(data:<wbr>outputMargin:<wbr>nTreeLimit:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -285,17 +285,67 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Construct DMatrix from array of Float</p>
+                        <p>Predict labels on the data.</p>
+
+<p>*</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">],</span> <span class="nv">shape</span><span class="p">:</span> <span class="p">(</span><span class="nv">row</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">col</span><span class="p">:</span> <span class="kt">Int</span><span class="p">),</span>
-            <span class="kt">NaValue</span><span class="p">:</span> <span class="kt">Float</span> <span class="o">=</span> <span class="o">-.</span><span class="n">infinity</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">predict</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">outputMargin</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nv">nTreeLimit</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>DMatrix - The data to predict on</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>outputMargin</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>bool - Whether to output the untransformed margin value</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nTreeLimit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Int - Limit the number of trees, set to 0 to use all the
+trees (default value)</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>[Float]</p>
                       </div>
                     </section>
                   </div>
@@ -303,9 +353,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC4save5fname6silentySS_SbtKF"></a>
-                    <a name="//apple_ref/swift/Method/save(fname:silent:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC4save5fname6silentySS_SbtKF">save(fname:<wbr>silent:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7BoosterC10saveConfig5fnameySS_tKF"></a>
+                    <a name="//apple_ref/swift/Method/saveConfig(fname:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC10saveConfig5fnameySS_tKF">saveConfig(fname:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -313,70 +363,14 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Save the DMatrix to file</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">save</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC5slice4rowsACSgSaySiG_tF"></a>
-                    <a name="//apple_ref/swift/Method/slice(rows:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC5slice4rowsACSgSaySiG_tF">slice(rows:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Slice the DMatrix by using an array of row indexes, return a DMatrix of
-the selected rows.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">slice</span><span class="p">(</span><span class="n">rows</span> <span class="nv">idxSet</span><span class="p">:</span> <span class="p">[</span><span class="kt">Int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">DMatrix</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC5slice4rowsACSgSnySiG_tF"></a>
-                    <a name="//apple_ref/swift/Method/slice(rows:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC5slice4rowsACSgSnySiG_tF">slice(rows:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Slice the DMatrix by using a range of row indexes, return a DMatrix of
-the selected rows.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">slice</span><span class="p">(</span><span class="n">rows</span> <span class="nv">idxSet</span><span class="p">:</span> <span class="kt">Range</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DMatrix</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">saveConfig</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
