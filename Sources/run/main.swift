@@ -21,7 +21,7 @@ var dTrain = DMatrixFromFile(name: "data/agaricus.txt.train")
 var dTest = DMatrixFromFile(name: "data/agaricus.txt.test")
 // print(trainMat)
 
-print(LastError())
+print(lastError())
 // DMatrixFree(&dTrain!)
 // let err = XGBGetLastError()
 // // let buf = UnsafeBufferPointer(start: err!, count: 2)

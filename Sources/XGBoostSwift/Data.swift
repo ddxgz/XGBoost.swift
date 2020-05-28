@@ -26,8 +26,9 @@ public class DMatrix {
 
     public var labels: [Float]? { DMatrixGetFloatInfo(handle: handle!, label: "label") }
 
-    public init(fname: String, silent: Bool = true) {
-        handle = DMatrixFromFile(name: fname, silent: silent)
+    public init(fname: String, silent: Bool = true) throws {
+        // handle = DMatrixFromFile(name: fname, silent: silent)
+        try handle = DMatrixFromFile(name: fname, silent: silent)
     }
 
     internal init(handle: DMatrixHandle?) {

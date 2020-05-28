@@ -3,28 +3,27 @@ import Cxgb
 // TODO: check xgb lib loaded
 
 enum XGBoostError: Error {
+    case callError(errMsg: String)
+    case unknownError(errMsg: String)
     case modelSaveError(errMsg: String)
     case modelLoadError(errMsg: String)
 }
 
-func LastError() -> String {
-    let err = XGBGetLastError()
-    let errMsg = String(cString: err!)
-    return errMsg
+func lastError() -> String {
+    return String(cString: XGBGetLastError())
 }
 
 func LogErrMsg(_ msg: String) {
-    let errMsg = LastError()
+    let errMsg = lastError()
     print("\(msg): \(errMsg)")
 }
 
-// func PrintIfError(_ err: Int) {
-//     if err >=0 {
-//         let errMsg = LastError()
-//         print("create xgdmatrix from file failed, err msg: \(errMsg)")
-//         return nil
-//     }
-// }
+func check(call: () -> Int32, extraMsg: String = "") throws {
+    if call() < 0 {
+        let errMsg = "\(extraMsg),    XGBoost error: \(lastError())"
+        throw XGBoostError.callError(errMsg: errMsg)
+    }
+}
 
 public func XGBoostVersion() -> (major: Int, minor: Int, patch: Int) {
     var major: Int32 = 0, minor: Int32 = 0, patch: Int32 = 0
@@ -32,24 +31,22 @@ public func XGBoostVersion() -> (major: Int, minor: Int, patch: Int) {
     return (Int(major), Int(minor), Int(patch))
 }
 
-func DMatrixFromFile(name fname: String, silent: Bool = true) -> DMatrixHandle? {
+func DMatrixFromFile(name fname: String, silent: Bool = true) throws -> DMatrixHandle? {
     var silence: Int32 = 0
     if silent {
         silence = 1
     }
 
     var handle: DMatrixHandle?
-    guard XGDMatrixCreateFromFile(fname, silence, &handle) >= 0 else {
-        let errMsg = LastError()
-        print("create xgdmatrix from file failed, err msg: \(errMsg)")
-        return nil
-    }
+    try check(call: { XGDMatrixCreateFromFile(fname, silence, &handle) },
+              extraMsg: "Error when call XGDMatrixFromFile")
+
     return handle
 }
 
 func DMatrixFree(_ handle: DMatrixHandle) {
     guard XGDMatrixFree(handle) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("free dmatrix failed, err msg: \(errMsg)")
         return
     }
@@ -58,7 +55,7 @@ func DMatrixFree(_ handle: DMatrixHandle) {
 func DMatrixNumRow(_ handle: DMatrixHandle) -> UInt64? {
     var nRow: UInt64 = 0
     guard XGDMatrixNumRow(handle, &nRow) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("Get number of rows failed, err msg: \(errMsg)")
         return nil
     }
@@ -68,7 +65,7 @@ func DMatrixNumRow(_ handle: DMatrixHandle) -> UInt64? {
 func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
     var nCol: UInt64 = 0
     guard XGDMatrixNumCol(handle, &nCol) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("Get number of cols failed, err msg: \(errMsg)")
         return nil
     }
@@ -80,7 +77,7 @@ func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     var len: UInt64 = 0
 
     guard XGDMatrixGetFloatInfo(handle, label, &len, &result) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("Get dmatrix float info failed, err msg: \(errMsg)")
         return nil
     }
@@ -106,7 +103,7 @@ func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
     var handle: BoosterHandle?
 
     guard XGBoosterCreate(&dmHandles, lenDm, &handle) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("create booster failed, err msg: \(errMsg)")
         return nil
     }
@@ -116,7 +113,7 @@ func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
 // func BoosterCreate(dmHandle: inout DMatrixHandle?, lenDm: UInt64) -> BoosterHandle? {
 //     var handle: BoosterHandle?
 //     guard XGBoosterCreate(&dmHandle, lenDm, &handle) >= 0 else {
-//         let errMsg = LastError()
+//         let errMsg = lastError()
 //         print("create booster failed, err msg: \(errMsg)")
 //         return nil
 //     }
@@ -125,7 +122,7 @@ func BoosterCreate(dmHandles: inout [DMatrixHandle?]) -> BoosterHandle? {
 
 func BoosterFree(_ handle: BoosterHandle) {
     guard XGBoosterFree(handle) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("free booster failed, err msg: \(errMsg)")
         return
     }
@@ -133,7 +130,7 @@ func BoosterFree(_ handle: BoosterHandle) {
 
 func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
     guard XGBoosterSetParam(handle, key, value) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("create booster failed, err msg: \(errMsg)")
         return
     }
@@ -142,7 +139,7 @@ func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
 func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandle: DMatrixHandle) {
     let iter: Int32 = Int32(nIter)
     guard XGBoosterUpdateOneIter(handle, iter, dmHandle) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("create booster failed, err msg: \(errMsg)")
         return
     }
@@ -168,7 +165,7 @@ func BoosterEvalOneIter(handle: BoosterHandle, currentIter nIter: Int,
 
     guard XGBoosterEvalOneIter(handle, Int32(nIter), &dmHandle, &names,
                                UInt64(evalNames.count), &result) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         return "booster eval one iter failed, err msg: \(errMsg)"
     }
 
@@ -189,7 +186,7 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     // defer { result?.deallocate() }
     guard XGBoosterPredict(handle, dmHandle, optioin, treeLim, isTraining,
                            &outLen, &result) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("create booster failed, err msg: \(errMsg)")
         return nil
     }
@@ -201,14 +198,14 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
 // TODO: throw error?
 func BoosterSaveModel(handle: BoosterHandle, fname: String) throws {
     guard XGBoosterSaveModel(handle, fname) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         throw XGBoostError.modelSaveError(errMsg: errMsg)
     }
 }
 
 func BoosterLoadModel(handle: BoosterHandle, fname: String) throws {
     guard XGBoosterLoadModel(handle, fname) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         throw XGBoostError.modelLoadError(errMsg: errMsg)
     }
 }
@@ -218,7 +215,7 @@ func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {
     var str: UnsafePointer<Int8>?
 
     guard XGBoosterSaveJsonConfig(handle, &len, &str) >= 0 else {
-        let errMsg = LastError()
+        let errMsg = lastError()
         print("save booster config as json string failed, err msg: \(errMsg)")
         return nil
     }

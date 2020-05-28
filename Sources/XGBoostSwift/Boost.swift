@@ -25,12 +25,19 @@ public class XGBooster {
         }
     }
 
+    private func _guardHandle() throws {
+        guard handle != nil else {
+            throw XGBoostError.unknownError(
+                errMsg: "Booster handle is nil, XGBoost error: \(lastError())")
+        }
+    }
+
     /// Use .json as filename suffix to save model to json.
     /// Refer to [XGBoost doc](https://xgboost.readthedocs.io/en/latest/tutorials/saving_model.html)
     public func save(fname: String) throws {
         guard handle != nil else {
-            errLog("booster not initialized!")
-            return
+            throw XGBoostError.unknownError(
+                errMsg: "Booster handle is nil, XGBoost error: \(lastError())")
         }
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
@@ -81,16 +88,14 @@ public class XGBooster {
         return result!
     }
 
-    public func saveConfig(fname: String) {
-        guard handle != nil else {
-            errLog("booster not initialized!")
-            return
-        }
+    // TODO: provide option to force create dir when it doesn't exist
+    public func saveConfig(fname: String) throws {
+        try _guardHandle()
 
         let conf = BoosterSaveJsonConfig(handle: self.handle!)
         guard conf != nil else {
-            errLog("Get json config failed!")
-            return
+            throw XGBoostError.unknownError(
+                errMsg: "Get json config failed,  XGBoost error: \(lastError())")
         }
         let data: Data? = conf!.data(using: .utf8)
         let ok = FileManager().createFile(atPath: fname, contents: data)
@@ -99,15 +104,32 @@ public class XGBooster {
 }
 
 // TODO: better way other than exit() when error
-/// If the modelFile param is provided, it will load the model from that file.
+/** Train a booster with given parameters.
+  - Parameters:
+    - data: DMatrix
+    - numRound: Int - Number of boosting iterations.
+    - param: Dictionary - Booster parameters. If intend to use multiple
+     `eval_metric`, they should be provided as the `evalMetric`.
+    - evalMetric: [String] - to pass the `eval_metric` parameter to booster.
+    - modelFile: String - If the modelFile param is provided, it will load the
+      model from that file.
+
+  - Returns: XGBooster
+ **/
 public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
-                    evalMetric: [String] = [], modelFile: String? = nil) -> XGBooster {
-    if data.dmHandle == nil { exit(1) }
+                    evalMetric: [String] = [], modelFile: String? = nil) throws -> XGBooster {
+    if data.dmHandle == nil {
+        throw XGBoostError.unknownError(
+            errMsg: "DMatrix handle is nil, XGBoost error: \(lastError())")
+    }
 
     var dms = [data.dmHandle]
     let booster = BoosterCreate(dmHandles: &dms)
 
-    if booster == nil { exit(1) }
+    if booster == nil {
+        throw XGBoostError.unknownError(
+            errMsg: "Booster handle is nil, XGBoost error: \(lastError())")
+    }
 
     if modelFile != nil {
         do {
@@ -115,10 +137,8 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
             debugLog("modle loeaded from file")
         } catch XGBoostError.modelLoadError {
             errLog("Error when loading model from file!")
-            exit(1)
         } catch {
             errLog("Unknown error when loading model from file!")
-            exit(1)
         }
     }
 

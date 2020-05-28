@@ -41,6 +41,7 @@ bst.saveConfig(fname: "config.json")
 #+end_src
 
 ** TODOs
-- [ ] Proper memory management
 - [ ] Better error handling
+- [ ] Callback API
 - [ ] Support more data representation models
+- [ ] Dask support
