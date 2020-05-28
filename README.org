@@ -15,7 +15,7 @@ Tested under MacOS 10.15 with =brew install xgboost=. The C header file and
 - [[https://clang.llvm.org/docs/Modules.html#module-map-language][Clang Module Map Language]]
 - [[https://people.freedesktop.org/~dbn/pkg-config-guide.html][Guide to pkg-config]]
 
-Ubuntu is tested by using [[Swift's docker image][https://swift.org/download/#docker]],
+Ubuntu is tested by using [[https://swift.org/download/#docker][Swift's docker image]],
     the latest version is Ubuntu18.04 for now.
 
 ** Usage
