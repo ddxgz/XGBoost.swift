@@ -189,10 +189,12 @@ internal struct CVPack {
 internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
                         evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
     var cvpacks = [CVPack]()
-    var idxSet = [Int32](0 ..< Int32(data.nRow))
+    // var idxSet = [Int32](0 ..< Int32(data.nRow))
+    var idxSet = [Int](0 ..< Int(data.nRow))
 
     if shuffle {
-        idxSet = [Int32](idxSet.shuffled())
+        // idxSet = [Int32](idxSet.shuffled())
+        idxSet = [Int](idxSet.shuffled())
     }
 
     let foldSize = Int(data.nRow) / nFold

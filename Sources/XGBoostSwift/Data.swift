@@ -28,6 +28,13 @@ public class DMatrix {
 
     public var labels: [Float]? { DMatrixGetFloatInfo(handle: handle!, label: "label") }
 
+    private func _guardHandle() throws {
+        guard handle != nil else {
+            throw XGBoostError.unknownError(
+                errMsg: "DMatrix handle is nil, XGBoost error: \(lastError())")
+        }
+    }
+
     public init(fname: String, silent: Bool = true) throws {
         // handle = DMatrixFromFile(name: fname, silent: silent)
         try handle = DMatrixFromFile(name: fname, silent: silent)
@@ -52,14 +59,23 @@ public class DMatrix {
         }
     }
 
+    public func save(fname: String, silent: Bool = true) throws {
+        try _guardHandle()
+        try DMatrixSaveBinary(handle: handle!, fname: fname, silent: silent)
+    }
+
     // TODO: accept differnt types of rows
     /// Use rows input is an array of row index to be selected
-    public func slice(rows idxSet: [Int32]) -> DMatrix? {
+    public func slice(rows idxSet: [Int]) -> DMatrix? {
         guard handle != nil else {
             errLog("dmatrix not initialized")
             return nil
         }
         let handle = DMatrixSliceDMatrix(self.handle!, idxSet: idxSet)
         return DMatrix(handle: handle)
+    }
+
+    public func slice(rows idxSet: Range<Int>) -> DMatrix? {
+        return slice(rows: Array(idxSet))
     }
 }

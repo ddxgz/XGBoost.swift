@@ -54,6 +54,17 @@ func DMatrixFromMatrix(values: inout [Float], nRow: UInt64, nCol: UInt64,
     return handle
 }
 
+func DMatrixSaveBinary(handle: DMatrixHandle, fname: String,
+                       silent: Bool = true) throws {
+    var silence: Int32 = 0
+    if silent {
+        silence = 1
+    }
+
+    try check(call: { XGDMatrixSaveBinary(handle, fname, silence) },
+              extraMsg: "Error when call XGDMatrixFromMat_omp")
+}
+
 func DMatrixFree(_ handle: DMatrixHandle) {
     guard XGDMatrixFree(handle) >= 0 else {
         let errMsg = lastError()
@@ -96,9 +107,9 @@ func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
     return [Float](buf)
 }
 
-func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int32]) -> DMatrixHandle? {
+func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int]) -> DMatrixHandle? {
     let len: UInt64 = UInt64(idxSet.count)
-    var idxs: [Int32] = idxSet
+    var idxs: [Int32] = idxSet.map { Int32($0) }
     var newHandle: DMatrixHandle?
 
     guard XGDMatrixSliceDMatrix(handle, &idxs, len, &newHandle) >= 0 else {

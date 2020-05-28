@@ -33,6 +33,16 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(trainSliced.shape[0], UInt64(2))
     XCTAssertEqual(trainSliced.shape[1], train.shape[1])
 
+    let trainRanged = train.slice(rows: 0 ..< 10)!
+    XCTAssertEqual(trainRanged.shape[0], UInt64(10))
+    XCTAssertEqual(trainRanged.shape[1], train.shape[1])
+
+    let dmFile = "Tests/tmp/dmFile.sliced"
+    try trainSliced.save(fname: dmFile)
+    let sliceLoaded = try DMatrix(fname: dmFile)
+    XCTAssertEqual(trainSliced.shape[0], sliceLoaded.shape[0])
+    XCTAssertEqual(trainSliced.shape[1], sliceLoaded.shape[1])
+
     let range = 0 ..< 100
     let mat = try DMatrix(array: range.map { _ in Float.random(in: 0 ..< 1) },
                           shape: (11, 10))
