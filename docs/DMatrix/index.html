@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XGBoostSwift - DMatrix</title>
+    <link rel="stylesheet" type="text/css" href="https://ddxgz.github.io/XGBoost.swift/docs/all.css" media="all" />
+</head>
+<body>
+    <header>
+        <a href="https://ddxgz.github.io/XGBoost.swift/docs">
+            <strong>
+                XGBoostSwift
+            </strong>
+            <span>Documentation</span>
+        </a>
+        <sup>Beta</sup>
+    </header>
+
+    <!--
+    <form class="search">
+        <input type="search" placeholder="Search" />
+    </form>
+    -->
+
+    <nav>
+        <div class="wrapper">
+            <h2>On This Page</h2>
+            <ol><li><a href="#initializers">Initializers</a><ul><li class="initializer"><a href="#dmatrix.init(fname:silent:)">init(fname:​silent:​)</a></li><li class="initializer"><a href="#dmatrix.init(array:shape:navalue:)">init(array:​shape:​NaValue:​)</a></li><li class="initializer"><a href="#dmatrix.init(handle:)">init(handle:​)</a></li></ul></li><li><a href="#properties">Properties</a><ul><li class="property"><a href="#dmatrix.handle">handle</a></li><li class="property"><a href="#dmatrix.dmhandle">dm​Handle</a></li><li class="property"><a href="#dmatrix.initialized">initialized</a></li><li class="property"><a href="#dmatrix.nrow">nRow</a></li><li class="property"><a href="#dmatrix.ncol">nCol</a></li><li class="property"><a href="#dmatrix.shape">shape</a></li><li class="property"><a href="#dmatrix.labels">labels</a></li></ul></li><li><a href="#methods">Methods</a><ul><li class="method"><a href="#dmatrix._guardhandle()">_guard​Handle()</a></li><li class="method"><a href="#dmatrix.save(fname:silent:)">save(fname:​silent:​)</a></li><li class="method"><a href="#dmatrix.slice(rows:)">slice(rows:​)</a></li><li class="method"><a href="#dmatrix.slice(rows:)">slice(rows:​)</a></li></ul></li></ol>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <h1>
+    <small>Class</small>
+    <code class="name">DMatrix</code>
+</h1>
+
+<html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="type">DMatrix</span></code></pre></body></html>
+
+    <section id="initializers">
+        <h2>Initializers</h2>
+
+        <div role="article" class="initializer" id="dmatrix.init(fname:silent:)">
+    <h3>
+        <code>init(fname:​silent:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">fname</span>: <span class="type">String</span>, <span class="variable">silent</span>: <span class="type">Bool</span> = <span class="keyword">true</span>) <span class="keyword">throws</span></code></pre></body></html>
+</div>
+<div role="article" class="initializer" id="dmatrix.init(array:shape:navalue:)">
+    <h3>
+        <code>init(array:​shape:​NaValue:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">init</span>(<span class="variable">array</span>: [<span class="type">Float</span>], <span class="variable">shape</span>: (<span class="variable">row</span>: <span class="type">Int</span>, <span class="variable">col</span>: <span class="type">Int</span>), <span class="variable">NaValue</span>: <span class="type">Float</span> = -.<span class="variable">infinity</span>) <span class="keyword">throws</span></code></pre></body></html>
+</div>
+<div role="article" class="initializer" id="dmatrix.init(handle:)">
+    <h3>
+        <code>init(handle:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">internal</span> <span class="keyword">init</span>(<span class="variable">handle</span>: <span class="type">DMatrixHandle</span>?)</code></pre></body></html>
+</div>
+    </section>
+    <section id="properties">
+        <h2>Properties</h2>
+
+        <div role="article" class="variable" id="dmatrix.handle">
+    <h3>
+        <code>handle</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">handle</span>: <span class="type">DMatrixHandle</span>?</code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.dmhandle">
+    <h3>
+        <code>dm​Handle</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">dmHandle</span>: <span class="type">DMatrixHandle</span>?</code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.initialized">
+    <h3>
+        <code>initialized</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">initialized</span>: <span class="type">Bool</span></code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.nrow">
+    <h3>
+        <code>nRow</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">nRow</span>: <span class="type">UInt64</span></code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.ncol">
+    <h3>
+        <code>nCol</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">nCol</span>: <span class="type">UInt64</span></code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.shape">
+    <h3>
+        <code>shape</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">shape</span>: [<span class="type">UInt64</span>]</code></pre></body></html>
+</div>
+<div role="article" class="variable" id="dmatrix.labels">
+    <h3>
+        <code>labels</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">var</span> <span class="variable">labels</span>: [<span class="type">Float</span>]?</code></pre></body></html>
+</div>
+    </section>
+    <section id="methods">
+        <h2>Methods</h2>
+
+        <div role="article" class="function" id="dmatrix._guardhandle()">
+    <h3>
+        <code>_guard​Handle()</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">private</span> <span class="keyword">func</span> <span class="function">_guardHandle</span>() <span class="keyword">throws</span></code></pre></body></html>
+</div>
+<div role="article" class="function" id="dmatrix.save(fname:silent:)">
+    <h3>
+        <code>save(fname:​silent:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">save</span>(<span class="variable">fname</span>: <span class="type">String</span>, <span class="variable">silent</span>: <span class="type">Bool</span> = <span class="keyword">true</span>) <span class="keyword">throws</span></code></pre></body></html>
+</div>
+<div role="article" class="function" id="dmatrix.slice(rows:)">
+    <h3>
+        <code>slice(rows:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">slice</span>(<span class="variable">rows</span> <span class="variable">idxSet</span>: [<span class="type">Int</span>]) -&gt; <a href="https://ddxgz.github.io/XGBoost.swift/docs/DMatrix"><span class="type">DMatrix</span></a>?</code></pre></body></html>
+<div class="summary" role="doc-abstract">
+    <p>Use rows input is an array of row index to be selected</p>
+
+</div>
+</div>
+<div role="article" class="function" id="dmatrix.slice(rows:)">
+    <h3>
+        <code>slice(rows:​)</code>
+    </h3>
+    <html><body><pre class="highlight"><code><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">slice</span>(<span class="variable">rows</span> <span class="variable">idxSet</span>: <span class="type">Range</span>&lt;<span class="type">Int</span>&gt;) -&gt; <a href="https://ddxgz.github.io/XGBoost.swift/docs/DMatrix"><span class="type">DMatrix</span></a>?</code></pre></body></html>
+</div>
+    </section>
+
+
+
+        </article>
+    </main>
+
+    <footer>
+        <p>
+    Generated on <time datetime="2020-05-28T15:38:09+0200">28 May 2020</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.3</span>.
+</p>
+    </footer>
+</body>
+</html>

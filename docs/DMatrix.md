@@ -70,10 +70,28 @@ var labels: [Float]?
 
 ## Methods
 
+### `_guardHandle()`
+
+``` swift
+private func _guardHandle() throws
+```
+
+### `save(fname:silent:)`
+
+``` swift
+public func save(fname: String, silent: Bool = true) throws
+```
+
 ### `slice(rows:)`
 
 Use rows input is an array of row index to be selected
 
 ``` swift
-public func slice(rows idxSet: [Int32]) -> DMatrix?
+public func slice(rows idxSet: [Int]) -> DMatrix?
+```
+
+### `slice(rows:)`
+
+``` swift
+public func slice(rows idxSet: Range<Int>) -> DMatrix?
 ```
