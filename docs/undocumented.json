@@ -9,14 +9,28 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 216,
+      "line": 33,
+      "symbol": "Booster.init(params:cache:modelFile:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
+      "line": 77,
+      "symbol": "Booster.loadModel(fromFile:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
+      "line": 251,
       "symbol": "Booster.saveConfig(fname:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 229,
+      "line": 264,
       "symbol": "Booster.loadConfig(fname:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

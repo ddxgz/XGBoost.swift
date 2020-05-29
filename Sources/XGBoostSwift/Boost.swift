@@ -8,17 +8,47 @@ public class Booster {
     // TODO: guard handle non-nil
     internal var handle: BoosterHandle?
 
+    /// If the Booster is initialized, by simply checking if the BoosterHandle
+    /// is non-nil.
+    public var initialized: Bool { handle != nil }
+
     internal init(handle: BoosterHandle) {
         self.handle = handle
     }
 
     internal init(dms: inout [DMatrixHandle?]) {
         self.handle = BoosterCreate(dmHandles: &dms)
+        // let handle = BoosterCreate(dmHandles: &dms)
+        // guard handle != nil else {
+        //     throw XGBoostError.unknownError(
+        //         errMsg: "Booster handle is nil when construction, XGBoost error: \(lastError())")
+        // }
+        // self.handle = handle
     }
 
     // internal init(fname: String) throws {
     //     let handle = BoosterCreate(dmHandles: &dms)
     // }
+
+    public init(params: Param = Param(), cache: [DMatrix],
+                modelFile: String? = nil) throws {
+        var dms = cache.map { $0.dmHandle }
+        let handle = BoosterCreate(dmHandles: &dms)
+        guard handle != nil else {
+            throw XGBoostError.unknownError(
+                errMsg: "Booster handle is nil when construction, XGBoost error: \(lastError())")
+        }
+        self.handle = handle
+        // try init(dms:dms)
+
+        if modelFile != nil {
+            try loadModel(fromFile: modelFile!)
+        }
+
+        if params.count > 0 {
+            setParam(params)
+        }
+    }
 
     deinit {
         if handle != nil {
@@ -36,12 +66,17 @@ public class Booster {
 
     /// Use .json as filename suffix to save model to json.
     /// Refer to [XGBoost doc](https://xgboost.readthedocs.io/en/latest/tutorials/saving_model.html)
-    public func save(fname: String) throws {
+    public func saveModel(toFile fname: String) throws {
         guard handle != nil else {
             throw XGBoostError.unknownError(
                 errMsg: "Booster handle is nil, XGBoost error: \(lastError())")
         }
         try BoosterSaveModel(handle: handle!, fname: fname)
+    }
+
+    public func loadModel(fromFile fname: String) throws {
+        // TODO: should create handle if nil?
+        try BoosterLoadModel(handle: handle!, fname: fname)
     }
 
     /// Get attribute by key
@@ -113,8 +148,8 @@ public class Booster {
       to make sure they are right.
 
        **/
-    public func setParam(_ param: [String: String]) {
-        for (k, v) in param {
+    public func setParam(_ params: [String: String]) {
+        for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
             BoosterSetParam(handle: handle!, key: k, value: v)
         }
@@ -252,7 +287,7 @@ public class Booster {
    - Returns: Booster
 
   **/
-public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
+public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
                     evalMetric: [String] = [], modelFile: String? = nil) throws -> Booster {
     if data.dmHandle == nil {
         throw XGBoostError.unknownError(
@@ -280,7 +315,7 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
 
     let bst = Booster(handle: booster!)
 
-    bst.setParam(param)
+    bst.setParam(params)
 
     for v in evalMetric {
         debugLog("Set param eval_metric: \(v)")
@@ -291,7 +326,8 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
     for i in 0 ..< numRound {
         debugLog("Round: \(i)")
         // TODO: fix nIter as current iter
-        BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
+        // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
+        bst.update(data: data, currentIter: i)
     }
     return bst
 }
@@ -380,12 +416,14 @@ func aggCV(_ results: [String?]) -> CvIterResult {
 /// Each k, v pair is a measure's mean or std of each round
 public typealias CVResult = [String: [Float]]
 
+// TODO: support seed, early_stopping_rounds
 /// Cross-validation with given parameters
-public func xgboostCV(data: DMatrix, nFold: Int = 5, numRound: Int = 10,
-                      param: Param = [:],
+public func xgboostCV(params: Param = [:], data: DMatrix,
+                      numRound: Int = 10,
+                      nFold: Int = 5,
                       evalMetric: [String] = []) -> CVResult {
     // TODO: handle metrics
-    let cvFolds = makeNFold(data: data, nFold: nFold, param: param,
+    let cvFolds = makeNFold(data: data, nFold: nFold, param: params,
                             evalMetric: evalMetric, shuffle: true)
 
     var results = CVResult()

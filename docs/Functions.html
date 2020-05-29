@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           Documentation - XGBoost.swift
         </a>
-         (79% documented)
+         (75% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -65,10 +65,10 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:numRound:param:evalMetric:modelFile:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF">xgboost(params:data:numRound:evalMetric:modelFile:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetricSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGtF">xgboostCV(data:nFold:numRound:param:evalMetric:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF">xgboostCV(params:data:numRound:nFold:evalMetric:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF">xgboostVersion()</a>
@@ -105,9 +105,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF"></a>
-                    <a name="//apple_ref/swift/Function/xgboost(data:numRound:param:evalMetric:modelFile:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7xgboost4data8numRound5param10evalMetric9modelFileAA7BoosterCAA7DMatrixC_SiSDyS2SGSaySSGSSSgtKF">xgboost(data:<wbr>numRound:<wbr>param:<wbr>evalMetric:<wbr>modelFile:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF"></a>
+                    <a name="//apple_ref/swift/Function/xgboost(params:data:numRound:evalMetric:modelFile:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF">xgboost(params:<wbr>data:<wbr>numRound:<wbr>evalMetric:<wbr>modelFile:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -124,7 +124,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">param</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span> <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
                     <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Classes/Booster.html">Booster</a></span></code></pre>
 
                         </div>
@@ -208,9 +208,9 @@ model from that file.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetricSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGtF"></a>
-                    <a name="//apple_ref/swift/Function/xgboostCV(data:nFold:numRound:param:evalMetric:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift9xgboostCV4data5nFold8numRound5param10evalMetricSDySSSaySfGGAA7DMatrixC_S2iSDyS2SGSaySSGtF">xgboostCV(data:<wbr>nFold:<wbr>numRound:<wbr>param:<wbr>evalMetric:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF"></a>
+                    <a name="//apple_ref/swift/Function/xgboostCV(params:data:numRound:nFold:evalMetric:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF">xgboostCV(params:<wbr>data:<wbr>numRound:<wbr>nFold:<wbr>evalMetric:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -225,8 +225,9 @@ model from that file.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">nFold</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                      <span class="nv">param</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span> <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span>
+                      <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                      <span class="nv">nFold</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
                       <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a></span></code></pre>
 
                         </div>
@@ -269,7 +270,7 @@ model from that file.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://pcx.linkedinfo.co" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-29)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-29)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -33,7 +33,7 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(trainCSV.shape[1], 12)
 
     let csv2 = "data/train.csv?format=csv"
-    let trainCSV2 = try DMatrix(fname: csv, format: "csv")
+    let trainCSV2 = try DMatrix(fname: csv2, format: "csv")
     XCTAssertEqual(trainCSV2.shape[0], 892)
     XCTAssertEqual(trainCSV2.shape[1], 12)
 
@@ -101,7 +101,7 @@ final class XGBoostSwiftTests: XCTestCase {
       "objective": "binary:logistic",
       "max_depth": "2",
     ]
-    let bst = try xgboost(data: train, numRound: 1, param: param, evalMetric: ["auc"])
+    let bst = try xgboost(params: param, data: train, numRound: 1, evalMetric: ["auc"])
 
     XCTAssertTrue(bst is Booster)
 
@@ -109,24 +109,29 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(UInt64(result.count), test.nRow)
 
     let modelfile = "Tests/tmp/bst.model"
-    try bst.save(fname: modelfile)
+    try bst.saveModel(toFile: modelfile)
     let saved = FileManager().fileExists(atPath: modelfile)
     XCTAssertTrue(saved)
 
-    let bstLoaded = try xgboost(data: train, numRound: 0, param: param,
+    let bstLoaded = try xgboost(params: param, data: train, numRound: 0,
                                 evalMetric: ["auc"], modelFile: modelfile)
     let resultLoaded = bstLoaded.predict(data: test)
     XCTAssertTrue(resultLoaded.elementsEqual(result))
 
     let modelfileJson = "Tests/tmp/bst.json"
-    try bst.save(fname: modelfileJson)
+    try bst.saveModel(toFile: modelfileJson)
     let savedJson = FileManager().fileExists(atPath: modelfileJson)
     XCTAssertTrue(savedJson)
 
-    let bstJsonLoaded = try xgboost(data: train, numRound: 0, param: param,
+    let bstJsonLoaded = try xgboost(params: param, data: train, numRound: 0,
                                     evalMetric: ["auc"], modelFile: modelfileJson)
     let resultJsonLoaded = bstJsonLoaded.predict(data: test)
     XCTAssertTrue(resultJsonLoaded.elementsEqual(result))
+
+    let bstJsonLoaded2 = try Booster(params: param, cache: [train],
+                                     modelFile: modelfileJson)
+    let resultJsonLoaded2 = bstJsonLoaded2.predict(data: test)
+    XCTAssertTrue(resultJsonLoaded2.elementsEqual(result))
 
     let configfile = "Tests/tmp/config.json"
     try bst.saveConfig(fname: configfile)
@@ -157,6 +162,12 @@ final class XGBoostSwiftTests: XCTestCase {
     bst.setAttr(key: "key", value: nil)
     let attrs2 = bst.attributes()
     XCTAssertEqual(attrs2.count, 0)
+
+    // Construct from DMatrix cache
+    let bst2 = try Booster(params: param, cache: [train, test])
+    XCTAssertTrue(bst2.initialized)
+    let bst3 = try Booster(cache: [train, test])
+    XCTAssertTrue(bst3.initialized)
   }
 
   func testCV() throws {
@@ -167,7 +178,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ]
     // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
     // ["auc"], shuffle: true)
-    let cvResults = xgboostCV(data: train, nFold: 5, numRound: 10, param: param)
+    let cvResults = xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
     XCTAssertFalse(cvResults.isEmpty)
     XCTAssertEqual(cvResults.first!.value.count, 10)
   }
@@ -181,10 +192,10 @@ final class XGBoostSwiftTests: XCTestCase {
     let train = try DMatrix(fname: "data/agaricus.txt.train")
 
     let param = [
-      "objive": "bina:logistic",
+      "objective": "binary:logistic",
       "max_depth": "2",
     ]
-    let bst = try xgboost(data: train, numRound: 1, param: param,
+    let bst = try xgboost(params: param, data: train, numRound: 1,
                           evalMetric: ["auc", "error"])
 
     bst.setParam(key: "alpha", value: "0.1")

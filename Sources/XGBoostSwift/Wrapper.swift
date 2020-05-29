@@ -243,9 +243,8 @@ func BoosterGetAttr(handle: BoosterHandle, key: String) -> String? {
 
 func BoosterGetAttrNames(handle: BoosterHandle) -> [String]? {
     var len: UInt64 = 0
-    // var out: [String?]
     // var out = [UnsafeMutablePointer<UnsafePointer<Int8>?>?]()
-    var out = UnsafeMutablePointer<UnsafeMutablePointer<UnsafePointer<Int8>?>?>.allocate(capacity: 1)
+    let out = UnsafeMutablePointer<UnsafeMutablePointer<UnsafePointer<Int8>?>?>.allocate(capacity: 1)
 
     guard XGBoosterGetAttrNames(handle, &len, out) >= 0 else {
         return nil
