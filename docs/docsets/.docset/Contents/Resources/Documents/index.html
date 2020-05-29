@@ -105,7 +105,10 @@
 <h2 id='installation-and-dependency-library' class='heading'>Installation and dependency library</h2>
 <h3 id='macos' class='heading'>MacOS</h3>
 
-<p>Develop and tested under MacOS 10.15 with <code>brew install xgboost</code>. The C header file and
+<p>You can follow <a href="https://xgboost.readthedocs.io/en/latest/build.html">XGBoost
+document</a> for installation
+or build library. 
+Develop and tested under MacOS 10.15 with <code>brew install xgboost</code>. The C header file and
  library are located through <code>pkg-config</code>, it should work directly. Otherwise,
  place an pkg-config file as <code>/usr/local/lib/pkgconfig/xgboost.pc</code> with content:</p>
 <pre class="highlight plaintext"><code>prefix=/usr/local/Cellar/xgboost/1.1.0
@@ -133,16 +136,15 @@ pkg-config</a></li>
 
 <p>Ubuntu is tested by using <a href="https://swift.org/download/#docker">Swift&rsquo;s docker
 image</a>, the latest version is
-Ubuntu18.04 for now.</p>
-
-<p>Please follow <a href="https://xgboost.readthedocs.io/en/latest/build.html">XGBoost
+Ubuntu18.04 for now.
+Please follow <a href="https://xgboost.readthedocs.io/en/latest/build.html">XGBoost
 document</a> for installation
 or build library. Or you can check the Dockerfile <code>Dockerfile_test_ubuntu</code> that
 used for testing.</p>
 <h3 id='swift-package-manager' class='heading'>Swift package manager</h3>
 
 <p>It evovles fastly, please constantly check the version.</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/ddxgz/XGBoost.swift.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.5.0"</span><span class="p">),</span>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/ddxgz/XGBoost.swift.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.5.0"</span><span class="p">)</span>
 </code></pre>
 <h2 id='usage' class='heading'>Usage</h2>
 
