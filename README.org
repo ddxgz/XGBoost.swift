@@ -13,7 +13,7 @@ Develop and tested under MacOS 10.15 with =brew install xgboost=. The C header f
  an pkg-config file as `/usr/local/lib/pkgconfig/xgboost.pc` with content:
  
 
-```
+#+begin_src 
 prefix=/usr/local/Cellar/xgboost/1.1.0
 exec_prefix=${prefix}/bin
 libdir=${prefix}/lib
@@ -24,7 +24,7 @@ Description: XGBoost
 Version: 1.1.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -lxgboost
-```
+#+end_src
  
  Please read through the following links for more configuration detail.
 
