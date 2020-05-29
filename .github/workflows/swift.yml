@@ -18,7 +18,7 @@ jobs:
         brew install libomp
         brew install xgboost
     - name: Build
-      run: swift build -v
+      run: swift build -Xlinker -L/usr/local/lib/ -v
     - name: Run tests
       run: swift test -v
 

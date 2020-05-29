@@ -13,6 +13,9 @@ The current interface is wrapping around the C API of XGBoost version
 Installation and dependency library
 ------------
 ### MacOS
+You can follow [XGBoost
+document](https://xgboost.readthedocs.io/en/latest/build.html) for installation
+or build library. 
 Develop and tested under MacOS 10.15 with `brew install xgboost`. The C header file and
  library are located through `pkg-config`, it should work directly. Otherwise,
  place an pkg-config file as `/usr/local/lib/pkgconfig/xgboost.pc` with content:
@@ -44,7 +47,6 @@ Libs: -L${libdir} -lxgboost
 Ubuntu is tested by using [Swift's docker
 image](https://swift.org/download/#docker), the latest version is
 Ubuntu18.04 for now.
-
 Please follow [XGBoost
 document](https://xgboost.readthedocs.io/en/latest/build.html) for installation
 or build library. Or you can check the Dockerfile `Dockerfile_test_ubuntu` that
@@ -56,7 +58,7 @@ It evovles fastly, please constantly check the version.
 
 
 ```swift
-.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0"),
+.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0")
 ```
 
 Usage
