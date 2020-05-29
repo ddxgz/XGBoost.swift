@@ -31,12 +31,38 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(trainCSV.shape[0], 892)
     XCTAssertEqual(trainCSV.shape[1], 12)
 
-    XCTAssertEqual(train.shape[0], 6513)
-    XCTAssertEqual(train.shape[1], 126)
+    let csv2 = "data/train.csv?format=csv"
+    let trainCSV2 = try DMatrix(fname: csv, format: "csv")
+    XCTAssertEqual(trainCSV2.shape[0], 892)
+    XCTAssertEqual(trainCSV2.shape[1], 12)
 
-    let labels = train.labels
+    let labels = train.label
     XCTAssertNotNil(labels)
-    XCTAssertEqual(train.shape[0], UInt64(labels!.count))
+    XCTAssertEqual(train.shape[0], UInt64(labels.count))
+
+    let weights = train.weight
+    XCTAssertEqual(weights.count, 0)
+    let weightSet = [Float]([1, 3, 4])
+    train.weight = weightSet
+    let weightGet = train.weight
+    XCTAssertTrue(weightSet.elementsEqual(weightGet))
+
+    let base_margins = train.base_margin
+    XCTAssertEqual(base_margins.count, 0)
+    let base_marginSet = [Float](repeating: 1, count: Int(train.nRow))
+    train.base_margin = base_marginSet
+    let base_marginGet = train.base_margin
+    XCTAssertTrue(base_marginSet.elementsEqual(base_marginGet))
+
+    // let field1Info = [Float]([0, 1, 2, 3])
+    // train.setFloatInfo(field: "weight", data: field1Info)
+    // let field1 = train.getFloatInfo(field: "base_margin")
+    // print(field1)
+    // XCTAssertNotNil(field1)
+    // XCTAssertTrue(field1Info.elementsEqual(field1!))
+    // train.setFloatInfo(field: "field1", data: nil)
+    // let field1Nil = train.getFloatInfo(field: "field1")
+    // XCTAssertNotNil(field1Nil)
 
     let trainSliced = train.slice(rows: [0, 3])!
     XCTAssertEqual(trainSliced.shape[0], UInt64(2))
@@ -45,6 +71,10 @@ final class XGBoostSwiftTests: XCTestCase {
     let trainRanged = train.slice(rows: 0 ..< 10)!
     XCTAssertEqual(trainRanged.shape[0], UInt64(10))
     XCTAssertEqual(trainRanged.shape[1], train.shape[1])
+
+    let trainSlicedGroup = train.slice(rows: [0, 3], allowGroups: true)!
+    XCTAssertEqual(trainSlicedGroup.shape[0], UInt64(2))
+    XCTAssertEqual(trainSlicedGroup.shape[1], train.shape[1])
 
     let dmFile = "Tests/tmp/dmFile.sliced"
     try trainSliced.save(fname: dmFile)

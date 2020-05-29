@@ -105,18 +105,49 @@ func DMatrixNumCol(_ handle: DMatrixHandle) -> UInt64? {
     return nCol
 }
 
-func DMatrixGetFloatInfo(handle: DMatrixHandle, label: String) -> [Float]? {
+func DMatrixGetFloatInfo(handle: DMatrixHandle, field: String) -> [Float] {
     var result: UnsafePointer<Float>?
     var len: UInt64 = 0
 
-    guard XGDMatrixGetFloatInfo(handle, label, &len, &result) >= 0 else {
+    guard XGDMatrixGetFloatInfo(handle, field, &len, &result) >= 0 else {
         let errMsg = lastError()
         print("Get dmatrix float info failed, err msg: \(errMsg)")
-        return nil
+        return [Float]()
     }
 
     let buf = UnsafeBufferPointer(start: result, count: Int(len))
     return [Float](buf)
+}
+
+func DMatrixSetFloatInfo(handle: DMatrixHandle, field: String, data: [Float]) {
+    guard XGDMatrixSetFloatInfo(handle, field, data, UInt64(data.count)) >= 0 else {
+        let errMsg = lastError()
+        print("Set dmatrix float info failed, err msg: \(errMsg)")
+        return
+    }
+}
+
+func DMatrixGetUIntInfo(handle: DMatrixHandle, field: String) -> [UInt] {
+    var result: UnsafePointer<UInt32>?
+    var len: UInt64 = 0
+
+    guard XGDMatrixGetUIntInfo(handle, field, &len, &result) >= 0 else {
+        let errMsg = lastError()
+        print("Get dmatrix uint info failed, err msg: \(errMsg)")
+        return [UInt]()
+    }
+
+    let buf = UnsafeBufferPointer(start: result, count: Int(len))
+    return [UInt32](buf).map { UInt($0) }
+}
+
+func DMatrixSetUIntInfo(handle: DMatrixHandle, field: String, data: [UInt]) {
+    guard XGDMatrixSetUIntInfo(handle, field, data.map { UInt32($0) },
+                               UInt64(data.count)) >= 0 else {
+        let errMsg = lastError()
+        print("Set dmatrix uint info failed, err msg: \(errMsg)")
+        return
+    }
 }
 
 func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int]) -> DMatrixHandle? {
@@ -126,6 +157,23 @@ func DMatrixSliceDMatrix(_ handle: DMatrixHandle, idxSet: [Int]) -> DMatrixHandl
 
     guard XGDMatrixSliceDMatrix(handle, &idxs, len, &newHandle) >= 0 else {
         LogErrMsg("Error when slice dmatrix")
+        return nil
+    }
+    return newHandle
+}
+
+func DMatrixSliceDMatrixEx(_ handle: DMatrixHandle, idxSet: [Int], allowGroups: Bool) -> DMatrixHandle? {
+    let len: UInt64 = UInt64(idxSet.count)
+    var idxs: [Int32] = idxSet.map { Int32($0) }
+    var newHandle: DMatrixHandle?
+
+    var allowGrp: Int32 = 0
+    if allowGroups {
+        allowGrp = 1
+    }
+
+    guard XGDMatrixSliceDMatrixEx(handle, &idxs, len, &newHandle, allowGrp) >= 0 else {
+        LogErrMsg("Error when slice dmatrix ex")
         return nil
     }
     return newHandle

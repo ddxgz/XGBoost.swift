@@ -1,9 +1,11 @@
 import Cxgb
 
 /// DMatrix is a wrap of the internal data structure DMatrix that used by
-/// XGBoost. You can construct from a file or [Float].
+/// XGBoost. You can construct from a file (libsvm (default) or csv) or [Float].
+/// To load csv file, specify uri parameter 'path_to_csv?format=csv' or set the
+/// `format` param to 'csv'.
 public class DMatrix {
-    // should guard handle to be non nil?
+    // TODO: should guard handle to be non nil?
     private var handle: DMatrixHandle?
 
     var dmHandle: DMatrixHandle? { handle }
@@ -34,7 +36,41 @@ public class DMatrix {
     public var shape: [UInt64] { [nRow, nCol] }
 
     /// The labels of the DMatrix
-    public var labels: [Float]? { DMatrixGetFloatInfo(handle: handle!, label: "label") }
+    public var label: [Float] {
+        get {
+            DMatrixGetFloatInfo(handle: handle!, field: "label")
+        }
+        set { DMatrixSetFloatInfo(handle: handle!, field: "label", data: newValue)
+        }
+    }
+
+    public var weight: [Float] {
+        get {
+            getFloatInfo(field: "weight")
+        }
+        set {
+            setFloatInfo(field: "weight", data: newValue)
+        }
+    }
+
+    /// Not used base_margin for conforming to Swift naming convention
+    public var baseMargin: [Float] {
+        get {
+            getFloatInfo(field: "base_margin")
+        }
+        set {
+            setFloatInfo(field: "base_margin", data: newValue)
+        }
+    }
+
+    public var base_margin: [Float] {
+        get { baseMargin }
+        set { baseMargin = newValue }
+    }
+
+    public func setGroup(_ newValue: [UInt]) {
+        setUIntInfo(field: "group", data: newValue)
+    }
 
     private func _guardHandle() throws {
         guard handle != nil else {
@@ -46,7 +82,7 @@ public class DMatrix {
     /// Construct DMatrix from file
     public init(fname: String, format: String = "libsvm", silent: Bool = true) throws {
         var name = fname
-        if format.lowercased() == "csv" {
+        if format.lowercased() == "csv", !fname.contains("format=csv") {
             name += "?format=csv"
         }
         try handle = DMatrixFromFile(name: name, silent: silent)
@@ -81,18 +117,35 @@ public class DMatrix {
     // TODO: accept differnt types of rows
     /// Slice the DMatrix by using an array of row indexes, return a DMatrix of
     /// the selected rows.
-    public func slice(rows idxSet: [Int]) -> DMatrix? {
+    public func slice(rows idxSet: [Int], allowGroups: Bool = false) -> DMatrix? {
         guard handle != nil else {
             errLog("dmatrix not initialized")
             return nil
         }
-        let handle = DMatrixSliceDMatrix(self.handle!, idxSet: idxSet)
+        let handle = DMatrixSliceDMatrixEx(self.handle!, idxSet: idxSet,
+                                           allowGroups: allowGroups)
         return DMatrix(handle: handle)
     }
 
     /// Slice the DMatrix by using a range of row indexes, return a DMatrix of
     /// the selected rows.
-    public func slice(rows idxSet: Range<Int>) -> DMatrix? {
-        return slice(rows: Array(idxSet))
+    public func slice(rows idxSet: Range<Int>, allowGroups: Bool = false) -> DMatrix? {
+        return slice(rows: Array(idxSet), allowGroups: allowGroups)
+    }
+
+    func setFloatInfo(field: String, data: [Float]) {
+        DMatrixSetFloatInfo(handle: handle!, field: field, data: data)
+    }
+
+    func getFloatInfo(field: String) -> [Float] {
+        return DMatrixGetFloatInfo(handle: handle!, field: field)
+    }
+
+    func setUIntInfo(field: String, data: [UInt]) {
+        DMatrixSetUIntInfo(handle: handle!, field: field, data: data)
+    }
+
+    func getUIntInfo(field: String) -> [UInt] {
+        return DMatrixGetUIntInfo(handle: handle!, field: field)
     }
 }

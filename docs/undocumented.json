@@ -22,6 +22,27 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
+      "line": 47,
+      "symbol": "DMatrix.weight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
+      "line": 66,
+      "symbol": "DMatrix.base_margin",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Data.swift",
+      "line": 71,
+      "symbol": "DMatrix.setGroup(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Wrapper.swift",
       "line": 40,
       "symbol": "xgboostVersion()",
