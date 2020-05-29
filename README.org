@@ -41,13 +41,15 @@ Ubuntu is tested by using [[https://swift.org/download/#docker][Swift's docker i
 
 *** Swift package manager
 It evovles fastly, please constantly check the version.
-```rust
+
+#+begin_src rust
 .package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0"),
-```
+#+end_src
 
 ** Usage
 *Still in early development, use with caution.* 
 See more examples in [[https://ddxgz.github.io/XGBoost.swift/][docs]].
+
 #+begin_src rust
 let train = try DMatrix(filename: "data/agaricus.txt.train")
 let test = try DMatrix(filename: "data/agaricus.txt.test")
@@ -59,16 +61,16 @@ let cvResult = xgboostCV(data: train, numRound: 10)
 
 // save and load model as binary
 let modelBin = "bst.bin"
-try bst.save(fname: modelBin)
+try bst.saveModel(toFile: modelBin)
 let bstLoaded = try xgboost(data: train, numRound: 0, modelFile: modelBin)
 
 // save and load model as json
 let modelJson = "bst.json"
-bst.save(fname: modelJson) 
+bst.saveModel(toFile: modelJson) 
 let bstJsonLoaded = try xgboost(data: train, numRound: 0, modelFile: modelJson)
 
 // save model config
-try bst.saveConfig(fname: "config.json")
+try bst.saveConfig(toFile: "config.json")
 #+end_src
 
 

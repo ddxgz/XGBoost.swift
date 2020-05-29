@@ -53,7 +53,9 @@ used for testing.
 
 ### Swift package manager
 It evovles fastly, please constantly check the version.
-```rust
+
+
+```swift
 .package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0"),
 ```
 
@@ -74,35 +76,35 @@ let cvResult = xgboostCV(data: train, numRound: 10)
 
 // save and load model as binary
 let modelBin = "bst.bin"
-try bst.save(fname: modelBin)
+try bst.saveModel(toFile: modelBin)
 let bstLoaded = try xgboost(data: train, numRound: 0, modelFile: modelBin)
 
 // save and load model as json
 let modelJson = "bst.json"
-bst.save(fname: modelJson) 
+bst.saveModel(toFile: modelJson) 
 let bstJsonLoaded = try xgboost(data: train, numRound: 0, modelFile: modelJson)
 
 // save model config
-try bst.saveConfig(fname: "config.json")
+try bst.saveConfig(toFile: "config.json")
 ```
 
 ### DMatrix
 ```swift
 // Default LibSVM text format file
 let datafile = "data/agaricus.txt.train"
-let train = try DMatrix(fname: datafile)
+let train = try DMatrix(fromFile: datafile)
 
 // Load DMatrix from csv file by set `format` parameter
 let csv = "data/train.csv"
-let trainCSV = try DMatrix(fname: csv, format: "csv")
+let trainCSV = try DMatrix(fromFile: csv, format: "csv")
 
 // or by providing format URI 
 let csv2 = "data/train.csv?format=csv"
-let trainCSV2 = try DMatrix(fname: csv2, format: "csv")
+let trainCSV2 = try DMatrix(fromFile: csv2, format: "csv")
 
 // Construct from array of Floats, by setting shape, missing values will be filled
 // in automatically or by setting `missing`.
-let matWithNa = try DMatrix(array: [Float]([0, 1, 2, 3]), shape: (10, 10))
+let matWithNa = try DMatrix(fromArray: [Float]([0, 1, 2, 3]), shape: (10, 10))
 
 // Data slicing by array of indexes
 let trainSliced = train.slice(rows: [0, 3])!
@@ -131,8 +133,8 @@ let base_margins = train.base_margin
 
 ### Boosting
 ```swift
-let train = try DMatrix(fname: "data/agaricus.txt.train")
-let test = try DMatrix(fname: "data/agaricus.txt.test")
+let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
 let param = [
     "objective": "binary:logistic",
@@ -158,8 +160,9 @@ let bstJsonLoaded2 = try Booster(params: param, cache: [train],
 
 // Save config to json file
 let configfile = "Tests/tmp/config.json"
-try bst.saveConfig(fname: configfile)
+try bst.saveConfig(toFile: configfile)
 
 // Cross Validation
 let cvResults = xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
 ```
+

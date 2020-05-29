@@ -248,7 +248,7 @@ public class Booster {
     }
 
     // TODO: provide option to force create dir when it doesn't exist
-    public func saveConfig(fname: String) throws {
+    public func saveConfig(toFile fname: String) throws {
         try _guardHandle()
 
         let conf = BoosterSaveJsonConfig(handle: self.handle!)
@@ -261,7 +261,7 @@ public class Booster {
         if !ok { errLog("save json config failed!") }
     }
 
-    public func loadConfig(fname: String) throws {
+    public func loadConfig(fromFile fname: String) throws {
         try _guardHandle()
 
         // let ok = FileManager().createFile(atPath: fname, contents: data)

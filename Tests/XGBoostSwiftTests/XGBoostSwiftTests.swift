@@ -21,7 +21,7 @@ final class XGBoostSwiftTests: XCTestCase {
 
   func testDMatrix() throws {
     let datafile = "data/agaricus.txt.train"
-    let train = try DMatrix(fname: datafile)
+    let train = try DMatrix(fromFile: datafile)
 
     XCTAssertEqual(train.shape[0], 6513)
     XCTAssertEqual(train.shape[1], 126)
@@ -29,12 +29,12 @@ final class XGBoostSwiftTests: XCTestCase {
     // Load DMatrix from csv file
     // let csv = "data/train.csv?format=csv"
     let csv = "data/train.csv"
-    let trainCSV = try DMatrix(fname: csv, format: "csv")
+    let trainCSV = try DMatrix(fromFile: csv, format: "csv")
     XCTAssertEqual(trainCSV.shape[0], 892)
     XCTAssertEqual(trainCSV.shape[1], 12)
 
     let csv2 = "data/train.csv?format=csv"
-    let trainCSV2 = try DMatrix(fname: csv2, format: "csv")
+    let trainCSV2 = try DMatrix(fromFile: csv2, format: "csv")
     XCTAssertEqual(trainCSV2.shape[0], 892)
     XCTAssertEqual(trainCSV2.shape[1], 12)
 
@@ -80,23 +80,23 @@ final class XGBoostSwiftTests: XCTestCase {
 
     let dmFile = "Tests/tmp/dmFile.sliced"
     try trainSliced.saveBinary(toFile: dmFile)
-    let sliceLoaded = try DMatrix(fname: dmFile)
+    let sliceLoaded = try DMatrix(fromFile: dmFile)
     XCTAssertEqual(trainSliced.shape[0], sliceLoaded.shape[0])
     XCTAssertEqual(trainSliced.shape[1], sliceLoaded.shape[1])
 
     let range = 0 ..< 100
-    let mat = try DMatrix(array: range.map { _ in Float.random(in: 0 ..< 1) },
+    let mat = try DMatrix(fromArray: range.map { _ in Float.random(in: 0 ..< 1) },
                           shape: (11, 10))
     XCTAssertTrue(mat.initialized)
 
-    let matWithNa = try DMatrix(array: range.map { _ in Float.random(in: 0 ..< 1) },
+    let matWithNa = try DMatrix(fromArray: range.map { _ in Float.random(in: 0 ..< 1) },
                                 shape: (21, 30))
     XCTAssertTrue(matWithNa.initialized)
   }
 
   func testBooster() throws {
-    let train = try DMatrix(fname: "data/agaricus.txt.train")
-    let test = try DMatrix(fname: "data/agaricus.txt.test")
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+    let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
     let param = [
       "objective": "binary:logistic",
@@ -135,7 +135,7 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertTrue(resultJsonLoaded2.elementsEqual(result))
 
     let configfile = "Tests/tmp/config.json"
-    try bst.saveConfig(fname: configfile)
+    try bst.saveConfig(toFile: configfile)
     let confSaved = FileManager().fileExists(atPath: configfile)
     XCTAssertTrue(confSaved)
 
@@ -172,7 +172,7 @@ final class XGBoostSwiftTests: XCTestCase {
   }
 
   func testCV() throws {
-    let train = try DMatrix(fname: "data/agaricus.txt.train")
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
     let param = [
       "objective": "binary:logistic",
       "max_depth": "9",
@@ -190,7 +190,7 @@ final class XGBoostSwiftTests: XCTestCase {
   }
 
   func testBoosterSetParam() throws {
-    let train = try DMatrix(fname: "data/agaricus.txt.train")
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 
     let param = [
       "objective": "binary:logistic",
@@ -204,10 +204,10 @@ final class XGBoostSwiftTests: XCTestCase {
 
     // TODO: read json config file to check if it has the set params
     let configfile = "Tests/tmp/config.json"
-    try bst.saveConfig(fname: configfile)
+    try bst.saveConfig(toFile: configfile)
     let confSaved = FileManager().fileExists(atPath: configfile)
     XCTAssertTrue(confSaved)
 
-    try bst.loadConfig(fname: configfile)
+    try bst.loadConfig(fromFile: configfile)
   }
 }

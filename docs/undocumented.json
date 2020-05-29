@@ -24,14 +24,14 @@
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
       "line": 251,
-      "symbol": "Booster.saveConfig(fname:)",
+      "symbol": "Booster.saveConfig(toFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
       "line": 264,
-      "symbol": "Booster.loadConfig(fname:)",
+      "symbol": "Booster.loadConfig(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
