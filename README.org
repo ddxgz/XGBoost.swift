@@ -6,20 +6,46 @@ The current interface is wrapping around the C API of XGBoost version 1.1.0,
 
 *Note*: this is not an official XGBoost project.
 
-** Installation
-Tested under MacOS 10.15 with =brew install xgboost=. The C header file and
- library are located through =pkg-config=. Read through the following links 
- for configuration detail.
+** Installation and dependency library
+*** MacOS
+Develop and tested under MacOS 10.15 with =brew install xgboost=. The C header file and
+ library are located through =pkg-config=, it should work directly. Otherwise, place 
+ an pkg-config file as `/usr/local/lib/pkgconfig/xgboost.pc` with content:
+ ```
+prefix=/usr/local/Cellar/xgboost/1.1.0
+exec_prefix=${prefix}/bin
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: xgboost
+Description: XGBoost
+Version: 1.1.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lxgboost
+```
+ 
+ Please read through the following links for more configuration detail.
 
 - [[https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md#requiring-system-libraries][swift-package-manager]] 
 - [[https://clang.llvm.org/docs/Modules.html#module-map-language][Clang Module Map Language]]
 - [[https://people.freedesktop.org/~dbn/pkg-config-guide.html][Guide to pkg-config]]
 
+*** Ubuntu
 Ubuntu is tested by using [[https://swift.org/download/#docker][Swift's docker image]],
-    the latest version is Ubuntu18.04 for now.
+    the latest version is Ubuntu18.04 for now. Please follow 
+    [[https://xgboost.readthedocs.io/en/latest/build.html][XGBoost document]] for 
+    installation or build library. Or you can check the Dockerfile 
+    `Dockerfile_test_ubuntu` that used for testing.
+
+*** Swift package manager
+It evovles fastly, please constantly check the version.
+```rust
+.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0"),
+```
 
 ** Usage
-*Still in early development, use with caution.*
+*Still in early development, use with caution.* 
+See more examples in [[https://ddxgz.github.io/XGBoost.swift/][docs]].
 #+begin_src rust
 let train = try DMatrix(filename: "data/agaricus.txt.train")
 let test = try DMatrix(filename: "data/agaricus.txt.test")

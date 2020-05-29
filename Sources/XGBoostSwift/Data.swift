@@ -89,7 +89,9 @@ public class DMatrix {
     }
 
     // TODO: add label, weight, base_margin, etc.
-    /// Construct DMatrix from array of Float
+    /// Construct DMatrix from array of Float, by setting shape, missing values
+    /// will be filled in automatically or by setting `missing` (Float.infinity
+    /// as default).
     public init(array: [Float], shape: (row: Int, col: Int),
                 missing NaValue: Float = -.infinity) throws {
         var values = array
@@ -110,7 +112,7 @@ public class DMatrix {
     }
 
     /// Save the DMatrix to file
-    public func save(fname: String, silent: Bool = true) throws {
+    public func saveBinary(toFile fname: String, silent: Bool = true) throws {
         try _guardHandle()
         try DMatrixSaveBinary(handle: handle!, fname: fname, silent: silent)
     }

@@ -102,11 +102,25 @@
 <a href="https://ddxgz.github.io/XGBoost.swift/">docs</a>.</p>
 
 <p><strong>Note</strong>: this is not an official XGBoost project.</p>
-<h2 id='installation' class='heading'>Installation</h2>
+<h2 id='installation-and-dependency-library' class='heading'>Installation and dependency library</h2>
+<h3 id='macos' class='heading'>MacOS</h3>
 
-<p>Tested under MacOS 10.15 with <code>brew install xgboost</code>. The C header file
-and library are located through <code>pkg-config</code>. Read through the following
-links for configuration detail.</p>
+<p>Develop and tested under MacOS 10.15 with <code>brew install xgboost</code>. The C header file and
+ library are located through <code>pkg-config</code>, it should work directly. Otherwise,
+ place an pkg-config file as <code>/usr/local/lib/pkgconfig/xgboost.pc</code> with content:</p>
+<pre class="highlight plaintext"><code>prefix=/usr/local/Cellar/xgboost/1.1.0
+exec_prefix=${prefix}/bin
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: xgboost
+Description: XGBoost
+Version: 1.1.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lxgboost
+</code></pre>
+
+<p>Please read through the following links for more configuration detail.</p>
 
 <ul>
 <li><a href="https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md#requiring-system-libraries">swift-package-manager</a></li>
@@ -115,11 +129,24 @@ Language</a></li>
 <li><a href="https://people.freedesktop.org/%7Edbn/pkg-config-guide.html">Guide to
 pkg-config</a></li>
 </ul>
+<h3 id='ubuntu' class='heading'>Ubuntu</h3>
 
 <p>Ubuntu is tested by using <a href="https://swift.org/download/#docker">Swift&rsquo;s docker
 image</a>, the latest version is
 Ubuntu18.04 for now.</p>
+
+<p>Please follow <a href="https://xgboost.readthedocs.io/en/latest/build.html">XGBoost
+document</a> for installation
+or build library. Or you can check the Dockerfile <code>Dockerfile_test_ubuntu</code> that
+used for testing.</p>
+<h3 id='swift-package-manager' class='heading'>Swift package manager</h3>
+
+<p>It evovles fastly, please constantly check the version.</p>
+<pre class="highlight rust"><code><span class="nf">.package</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="s">"https://github.com/ddxgz/XGBoost.swift.git"</span><span class="p">,</span> <span class="n">from</span><span class="p">:</span> <span class="s">"0.5.0"</span><span class="p">),</span>
+</code></pre>
 <h2 id='usage' class='heading'>Usage</h2>
+
+<p>You may find more cases in the test file in code repo.</p>
 
 <p><strong>Still in early development, use with caution.</strong></p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">train</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">filename</span><span class="p">:</span> <span class="s">"data/agaricus.txt.train"</span><span class="p">)</span>
@@ -142,6 +169,80 @@ Ubuntu18.04 for now.</p>
 
 <span class="c1">// save model config</span>
 <span class="k">try</span> <span class="n">bst</span><span class="o">.</span><span class="nf">saveConfig</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="s">"config.json"</span><span class="p">)</span>
+</code></pre>
+<h3 id='dmatrix' class='heading'>DMatrix</h3>
+<pre class="highlight swift"><code><span class="c1">// Default LibSVM text format file</span>
+<span class="k">let</span> <span class="nv">datafile</span> <span class="o">=</span> <span class="s">"data/agaricus.txt.train"</span>
+<span class="k">let</span> <span class="nv">train</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="n">datafile</span><span class="p">)</span>
+
+<span class="c1">// Load DMatrix from csv file by set `format` parameter</span>
+<span class="k">let</span> <span class="nv">csv</span> <span class="o">=</span> <span class="s">"data/train.csv"</span>
+<span class="k">let</span> <span class="nv">trainCSV</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="n">csv</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="s">"csv"</span><span class="p">)</span>
+
+<span class="c1">// or by providing format URI </span>
+<span class="k">let</span> <span class="nv">csv2</span> <span class="o">=</span> <span class="s">"data/train.csv?format=csv"</span>
+<span class="k">let</span> <span class="nv">trainCSV2</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="n">csv2</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="s">"csv"</span><span class="p">)</span>
+
+<span class="c1">// Construct from array of Floats, by setting shape, missing values will be filled</span>
+<span class="c1">// in automatically or by setting `missing`.</span>
+<span class="k">let</span> <span class="nv">matWithNa</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="nv">shape</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1">// Data slicing by array of indexes</span>
+<span class="k">let</span> <span class="nv">trainSliced</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="nf">slice</span><span class="p">(</span><span class="nv">rows</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">!</span>
+
+<span class="c1">// by range</span>
+<span class="k">let</span> <span class="nv">trainRanged</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="nf">slice</span><span class="p">(</span><span class="nv">rows</span><span class="p">:</span> <span class="mi">0</span> <span class="o">..&lt;</span> <span class="mi">10</span><span class="p">)</span><span class="o">!</span>
+
+<span class="c1">// allow groups</span>
+<span class="k">let</span> <span class="nv">trainSlicedGroup</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="nf">slice</span><span class="p">(</span><span class="nv">rows</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="nv">allowGroups</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span><span class="o">!</span>
+
+<span class="c1">// Save DMatrix to binary file</span>
+<span class="k">let</span> <span class="nv">dmFile</span> <span class="o">=</span> <span class="s">"Tests/tmp/dmfile.sliced"</span>
+<span class="k">try</span> <span class="n">trainSliced</span><span class="o">.</span><span class="nf">saveBinary</span><span class="p">(</span><span class="nv">toFile</span><span class="p">:</span> <span class="n">dmFile</span><span class="p">)</span>
+
+<span class="c1">// Get DMatrix labels</span>
+<span class="k">let</span> <span class="nv">labels</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">label</span>
+
+<span class="c1">// Get weights</span>
+<span class="k">let</span> <span class="nv">weights</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">weight</span>
+<span class="c1">// Set weights</span>
+<span class="k">let</span> <span class="nv">weightSet</span> <span class="o">=</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+<span class="c1">// Get base_margins</span>
+<span class="k">let</span> <span class="nv">base_margins</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">base_margin</span>
+</code></pre>
+<h3 id='boosting' class='heading'>Boosting</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">train</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="s">"data/agaricus.txt.train"</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">test</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DMatrix</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="s">"data/agaricus.txt.test"</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="nv">param</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">"objective"</span><span class="p">:</span> <span class="s">"binary:logistic"</span><span class="p">,</span>
+    <span class="s">"max_depth"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="c1">// Construct booster while boosting</span>
+<span class="k">let</span> <span class="nv">bst</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="s">"auc"</span><span class="p">])</span>
+
+<span class="c1">// Set parameters by passing dictionary or key-value pair</span>
+<span class="n">bst</span><span class="o">.</span><span class="nf">setParam</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+<span class="n">bst</span><span class="o">.</span><span class="nf">setParam</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="s">"alpha"</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="s">"0.1"</span><span class="p">)</span>
+<span class="n">bst</span><span class="o">.</span><span class="nf">setEvalMetric</span><span class="p">([</span><span class="s">"logloss"</span><span class="p">,</span> <span class="s">"rmse"</span><span class="p">])</span>
+
+<span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">bst</span><span class="o">.</span><span class="nf">predict</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">test</span><span class="p">)</span>
+
+<span class="c1">// Save model to file</span>
+<span class="k">let</span> <span class="nv">modelfile</span> <span class="o">=</span> <span class="s">"Tests/tmp/bst.model"</span>
+<span class="k">try</span> <span class="n">bst</span><span class="o">.</span><span class="nf">saveModel</span><span class="p">(</span><span class="nv">toFile</span><span class="p">:</span> <span class="n">modelfile</span><span class="p">)</span>
+
+<span class="c1">// Construct booster from file</span>
+<span class="k">let</span> <span class="nv">bstJsonLoaded2</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">Booster</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span> <span class="nv">cache</span><span class="p">:</span> <span class="p">[</span><span class="n">train</span><span class="p">],</span>
+                                    <span class="nv">modelFile</span><span class="p">:</span> <span class="n">modelfileJson</span><span class="p">)</span>
+
+<span class="c1">// Save config to json file</span>
+<span class="k">let</span> <span class="nv">configfile</span> <span class="o">=</span> <span class="s">"Tests/tmp/config.json"</span>
+<span class="k">try</span> <span class="n">bst</span><span class="o">.</span><span class="nf">saveConfig</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="n">configfile</span><span class="p">)</span>
+
+<span class="c1">// Cross Validation</span>
+<span class="k">let</span> <span class="nv">cvResults</span> <span class="o">=</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">nFold</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre>
 
           </div>

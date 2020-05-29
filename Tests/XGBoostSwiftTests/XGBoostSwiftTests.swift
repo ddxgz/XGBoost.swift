@@ -26,6 +26,7 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(train.shape[0], 6513)
     XCTAssertEqual(train.shape[1], 126)
 
+    // Load DMatrix from csv file
     // let csv = "data/train.csv?format=csv"
     let csv = "data/train.csv"
     let trainCSV = try DMatrix(fname: csv, format: "csv")
@@ -78,7 +79,7 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertEqual(trainSlicedGroup.shape[1], train.shape[1])
 
     let dmFile = "Tests/tmp/dmFile.sliced"
-    try trainSliced.save(fname: dmFile)
+    try trainSliced.saveBinary(toFile: dmFile)
     let sliceLoaded = try DMatrix(fname: dmFile)
     XCTAssertEqual(trainSliced.shape[0], sliceLoaded.shape[0])
     XCTAssertEqual(trainSliced.shape[1], sliceLoaded.shape[1])

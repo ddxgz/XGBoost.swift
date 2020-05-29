@@ -16,7 +16,7 @@ jobs:
       run: |
         brew install pkg-config
         brew install libomp
-        brwe install xgboost
+        brew install xgboost
     - name: Build
       run: swift build -v
     - name: Run tests

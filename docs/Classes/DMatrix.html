@@ -395,7 +395,9 @@ is non-nil.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Construct DMatrix from array of Float</p>
+                        <p>Construct DMatrix from array of Float, by setting shape, missing values
+will be filled in automatically or by setting <code>missing</code> (Float.infinity
+as default).</p>
 
                       </div>
                       <div class="declaration">
@@ -413,9 +415,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC4save5fname6silentySS_SbtKF"></a>
-                    <a name="//apple_ref/swift/Method/save(fname:silent:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC4save5fname6silentySS_SbtKF">save(fname:<wbr>silent:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7DMatrixC10saveBinary6toFile6silentySS_SbtKF"></a>
+                    <a name="//apple_ref/swift/Method/saveBinary(toFile:silent:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC10saveBinary6toFile6silentySS_SbtKF">saveBinary(toFile:<wbr>silent:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -430,7 +432,7 @@ is non-nil.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">save</span><span class="p">(</span><span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">saveBinary</span><span class="p">(</span><span class="n">toFile</span> <span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
