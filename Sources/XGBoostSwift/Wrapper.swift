@@ -19,6 +19,7 @@ enum XGBoostError: Error {
     case unknownError(errMsg: String)
     case modelSaveError(errMsg: String)
     case modelLoadError(errMsg: String)
+    case setParamError(errMsg: String)
 }
 
 func lastError() -> String {
@@ -209,10 +210,12 @@ func BoosterFree(_ handle: BoosterHandle) {
     }
 }
 
+// TODO: throws when set param not ok
 func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
     guard XGBoosterSetParam(handle, key, value) >= 0 else {
         let errMsg = lastError()
-        print("create booster failed, err msg: \(errMsg)")
+        print("set booster param failed, err msg: \(errMsg)")
+        // throw XGBoostError.setParamError(errMsg: lastError())
         return
     }
 }
@@ -263,7 +266,7 @@ func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandl
     let iter: Int32 = Int32(nIter)
     guard XGBoosterUpdateOneIter(handle, iter, dmHandle) >= 0 else {
         let errMsg = lastError()
-        print("create booster failed, err msg: \(errMsg)")
+        print("booster update one iter failed, err msg: \(errMsg)")
         return
     }
 }
@@ -298,7 +301,7 @@ func BoosterPredict(handle: BoosterHandle, dmHandle: DMatrixHandle,
     guard XGBoosterPredict(handle, dmHandle, optioin, treeLim, isTraining,
                            &outLen, &result) >= 0 else {
         let errMsg = lastError()
-        print("create booster failed, err msg: \(errMsg)")
+        print("booster predict failed, err msg: \(errMsg)")
         return nil
     }
     // TODO: deal potential issue when outLen is bigger than Int
@@ -331,4 +334,12 @@ func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {
     }
     let jsonStr = String(cString: str!)
     return jsonStr
+}
+
+func BoosterLoadJsonConfig(handle: BoosterHandle, json: inout String) {
+    guard XGBoosterLoadJsonConfig(handle, json) >= 0 else {
+        let errMsg = lastError()
+        print("load booster config from json string failed, err msg: \(errMsg)")
+        return
+    }
 }

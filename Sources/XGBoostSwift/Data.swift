@@ -88,9 +88,10 @@ public class DMatrix {
         try handle = DMatrixFromFile(name: name, silent: silent)
     }
 
+    // TODO: add label, weight, base_margin, etc.
     /// Construct DMatrix from array of Float
     public init(array: [Float], shape: (row: Int, col: Int),
-                NaValue: Float = -.infinity) throws {
+                missing NaValue: Float = -.infinity) throws {
         var values = array
         try handle = DMatrixFromMatrix(values: &values, nRow: UInt64(shape.row),
                                        nCol: UInt64(shape.col),

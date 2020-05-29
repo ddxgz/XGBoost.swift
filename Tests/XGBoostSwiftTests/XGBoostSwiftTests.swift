@@ -14,6 +14,7 @@ final class XGBoostSwiftTests: XCTestCase {
   static var allTests = [
     ("testDMatrix", testDMatrix),
     ("testBooster", testBooster),
+    ("testBoosterSetParam", testBoosterSetParam),
     ("testCV", testCV),
     ("testBasic", testBasic),
   ]
@@ -135,8 +136,10 @@ final class XGBoostSwiftTests: XCTestCase {
     var lastEval: String = ""
     for i in 1 ... 5 {
       bst.update(data: train, currentIter: i)
-      let evalResult = bst.evalSet(dmHandle: [train, test],
-                                   evalNames: ["train", "test"], currentIter: i)
+      // let evalResult = bst.evalSet(dmHandle: [train, test],
+      //                              evalNames: ["train", "test"], currentIter: i)
+      let evalResult = bst.eval(set: [(train, "train"), (test, "test")],
+                                currentIter: i)
 
       let newEval = String(evalResult![evalResult!.index(evalResult!.startIndex, offsetBy: 4)...])
       XCTAssertNotEqual(lastEval, newEval)
@@ -172,5 +175,27 @@ final class XGBoostSwiftTests: XCTestCase {
   func testBasic() throws {
     let ver = xgboostVersion()
     XCTAssertNotEqual(ver.major + ver.minor + ver.patch, 0)
+  }
+
+  func testBoosterSetParam() throws {
+    let train = try DMatrix(fname: "data/agaricus.txt.train")
+
+    let param = [
+      "objive": "bina:logistic",
+      "max_depth": "2",
+    ]
+    let bst = try xgboost(data: train, numRound: 1, param: param,
+                          evalMetric: ["auc", "error"])
+
+    bst.setParam(key: "alpha", value: "0.1")
+    bst.setEvalMetric(["logloss", "rmse"])
+
+    // TODO: read json config file to check if it has the set params
+    let configfile = "Tests/tmp/config.json"
+    try bst.saveConfig(fname: configfile)
+    let confSaved = FileManager().fileExists(atPath: configfile)
+    XCTAssertTrue(confSaved)
+
+    try bst.loadConfig(fname: configfile)
   }
 }

@@ -9,15 +9,15 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 100,
-      "symbol": "Booster.evalSet(dmHandle:evalNames:currentIter:)",
+      "line": 216,
+      "symbol": "Booster.saveConfig(fname:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 144,
-      "symbol": "Booster.saveConfig(fname:)",
+      "line": 229,
+      "symbol": "Booster.loadConfig(fname:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -44,7 +44,7 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Wrapper.swift",
-      "line": 40,
+      "line": 41,
       "symbol": "xgboostVersion()",
       "symbol_kind": "source.lang.swift.decl.function.free",
       "warning": "undocumented"
