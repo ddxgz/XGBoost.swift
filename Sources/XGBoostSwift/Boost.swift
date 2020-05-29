@@ -5,6 +5,7 @@ public typealias Param = [String: String]
 
 /// A Booster of XGBoost, the model of XGBoost.
 public class Booster {
+    // TODO: guard handle non-nil
     internal var handle: BoosterHandle?
 
     internal init(handle: BoosterHandle) {
@@ -81,6 +82,52 @@ public class Booster {
         BoosterSetAttr(handle: handle!, key: key, value: value)
     }
 
+    // TODO: accept eval_metric param input pass as a string of multiple values
+
+    /**
+     Set Parameters by key and value
+
+      To set multiple `eval_metric`, use `setEvalMetrics`, or you can call
+      setParam multiple times with different parameters.
+
+      **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
+      throw error during training or evaluating. Check
+      [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
+      to make sure they are right.
+
+       **/
+    public func setParam(key k: String, value v: String) {
+        debugLog("Set param: \(k): \(v)")
+        BoosterSetParam(handle: handle!, key: k, value: v)
+    }
+
+    /**
+     Set Parameters by dictionary
+
+      To set multiple `eval_metric`, use `setEvalMetrics`, or you can call
+      setParam multiple times with different parameters.
+
+      **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
+      throw error during training or evaluating. Check
+      [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
+      to make sure they are right.
+
+       **/
+    public func setParam(_ param: [String: String]) {
+        for (k, v) in param {
+            debugLog("Set param: \(k): \(v)")
+            BoosterSetParam(handle: handle!, key: k, value: v)
+        }
+    }
+
+    /// Set eval_metric
+    public func setEvalMetric(_ metrics: [String]) {
+        for v in metrics {
+            debugLog("Set param eval_metric: \(v)")
+            setParam(key: "eval_metric", value: v)
+        }
+    }
+
     /// Update for 1 iteration
     public func update(data: DMatrix, currentIter: Int) {
         guard handle != nil else {
@@ -95,17 +142,42 @@ public class Booster {
                              dmHandle: data.dmHandle!)
     }
 
-    // func boost(dTrain: DMatrix, grad:[Float],hess:[Float]){}
+    // TODO: func boost(dTrain: DMatrix, grad:[Float],hess:[Float]){}
 
-    public func evalSet(dmHandle: [DMatrix],
-                        evalNames: [String], currentIter: Int) -> String? {
+    /**
+     Evaluate a set of data
+      - Parameters:
+          - set: list of tuples (DMatrix, name of the eval data)
+          - currentIter: current iteration
+      - Returns: Evaluation result if successful
+
+     ```swift
+     booster.eval(set: [(train, "train"),
+                        (test, "test")], currentIter: 1)
+     ```
+      **/
+    public func eval(set: [(DMatrix, String)], currentIter: Int) -> String? {
         guard handle != nil else {
             errLog("booster not initialized!")
             return nil
         }
-        var dms = dmHandle.map { $0.dmHandle }
+        var dms = set.map { $0.0.dmHandle }
+        let evalNames = set.map { $0.1 }
         return BoosterEvalOneIter(handle: handle!, currentIter: currentIter,
                                   dmHandle: &dms, evalNames: evalNames)
+    }
+
+    /**
+     Evaluate data
+      - Parameters:
+          - data: DMatrix to be evaluate on
+          - set: name of the eval data
+          - currentIter: current iteration
+      - Returns: Evaluation result if successful
+
+      **/
+    public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
+        return eval(set: [(data, name)], currentIter: currentIter)
     }
 
     /**
@@ -153,6 +225,17 @@ public class Booster {
         let ok = FileManager().createFile(atPath: fname, contents: data)
         if !ok { errLog("save json config failed!") }
     }
+
+    public func loadConfig(fname: String) throws {
+        try _guardHandle()
+
+        // let ok = FileManager().createFile(atPath: fname, contents: data)
+
+        // let data: Data? = Data(contentsOf: URL(fname))
+        var data = try String(contentsOfFile: fname)
+
+        BoosterLoadJsonConfig(handle: self.handle!, json: &data)
+    }
 }
 
 /**
@@ -197,13 +280,12 @@ public func xgboost(data: DMatrix, numRound: Int = 10, param: Param = [:],
 
     let bst = Booster(handle: booster!)
 
-    for (k, v) in param {
-        debugLog("Set param: \(k): \(v)")
-        BoosterSetParam(handle: booster!, key: k, value: v)
-    }
+    bst.setParam(param)
+
     for v in evalMetric {
         debugLog("Set param eval_metric: \(v)")
-        BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
+        // BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
+        bst.setParam(key: "eval_metric", value: v)
     }
 
     for i in 0 ..< numRound {
@@ -235,8 +317,10 @@ internal struct CVPack {
     }
 
     internal func eval(_ round: Int) -> String? {
-        return self.booster.evalSet(dmHandle: [train, test],
-                                    evalNames: ["train", "test"], currentIter: round)
+        // return self.booster.evalSet(dmHandle: [train, test],
+        //                             evalNames: ["train", "test"], currentIter: round)
+        return self.booster.eval(set: [(train, "train"), (test, "test")],
+                                 currentIter: round)
     }
 }
 
