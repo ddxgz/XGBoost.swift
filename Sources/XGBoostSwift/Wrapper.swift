@@ -44,6 +44,11 @@ public func xgboostVersion() -> (major: Int, minor: Int, patch: Int) {
     return (Int(major), Int(minor), Int(patch))
 }
 
+// TODO: investigate what could be provided by this
+public func xgbRegisterLogCallback(_ fn: (@convention(c) (UnsafePointer<Int8>?) -> Void)?) {
+    XGBRegisterLogCallback(fn)
+}
+
 func DMatrixFromFile(name fname: String, silent: Bool = true) throws -> DMatrixHandle? {
     var silence: Int32 = 0
     if silent {

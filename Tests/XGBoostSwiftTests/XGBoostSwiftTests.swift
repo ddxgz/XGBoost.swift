@@ -187,6 +187,17 @@ final class XGBoostSwiftTests: XCTestCase {
   func testBasic() throws {
     let ver = xgboostVersion()
     XCTAssertNotEqual(ver.major + ver.minor + ver.patch, 0)
+
+    xgbRegisterLogCallback { print("xgb log callback: \(String(cString: $0!))") }
+
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+
+    let param = [
+      "objective": "binary:logistic",
+      "max_depth": "2",
+      "verbosity": "3",
+    ]
+    let bst = try xgboost(params: param, data: train, numRound: 5)
   }
 
   func testBoosterSetParam() throws {
