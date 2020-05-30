@@ -1,6 +1,9 @@
 XGBoost.swift
 =============
 
+![Build](https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg)
+![Build](https://github.com/ddxgz/XGBoost.swift/workflows/ubuntu/badge.svg)
+
 A new coming Swift interface for
 [XGBoost](https://github.com/dmlc/xgboost).
 
@@ -10,13 +13,22 @@ The current interface is wrapping around the C API of XGBoost version
 
 **Note**: this is not an official XGBoost project.
 
+- [Installation and dependency library](#installation-and-dependency-library)
+  - [macOS](#macos)
+  - [Ubuntu](#ubuntu)
+  - [Swift package manager](#swift-package-manager)
+- [Usage](#usage)
+  - [DMatrix](#dmatrix)
+  - [Boosting](#boosting)
+  - [Callback](#callback)
+
 Installation and dependency library
 ------------
-### MacOS
+### macOS
 You can follow [XGBoost
 document](https://xgboost.readthedocs.io/en/latest/build.html) for installation
 or build library. 
-Develop and tested under MacOS 10.15 with `brew install xgboost`. The C header file and
+Develop and tested under macOS 10.15 with `brew install xgboost`. The C header file and
  library are located through `pkg-config`, it should work directly. Otherwise,
  place an pkg-config file as `/usr/local/lib/pkgconfig/xgboost.pc` with content:
  ```

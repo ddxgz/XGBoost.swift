@@ -1,4 +1,4 @@
-name: Swift
+name: macOS
 
 on:
   push:
@@ -22,13 +22,3 @@ jobs:
       run: swift build -v
     - name: Run tests
       run: swift test -v
-
-  test-ubuntu: 
-    runs-on: ubuntu-18.04
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build image
-      run: docker build -f Dockerfile_test_ubuntu -t xgbswift-test .
-    - name: Run tests
-      run: docker run xgbswift-test
