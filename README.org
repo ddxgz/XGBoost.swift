@@ -1,7 +1,6 @@
 * XGBoost.swift
 
-[[https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg]]
-
+[[https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg]] 
 [[https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg]]
 
 
