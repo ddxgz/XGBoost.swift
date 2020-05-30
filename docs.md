@@ -1,8 +1,8 @@
 XGBoost.swift
 =============
 
-![Build](https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg)
-![Build](https://github.com/ddxgz/XGBoost.swift/workflows/ubuntu/badge.svg)
+![macOS](https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg)
+![Ubuntu](https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg)
 
 A new coming Swift interface for
 [XGBoost](https://github.com/dmlc/xgboost).

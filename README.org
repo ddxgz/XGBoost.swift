@@ -1,7 +1,8 @@
 * XGBoost.swift
 
 [[https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg]]
-[[https://github.com/ddxgz/XGBoost.swift/workflows/ubuntu/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/ubuntu/badge.svg]]
+
+[[https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg][https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg]]
 
 
 A new coming Swift interface for [[https://github.com/dmlc/xgboost][XGBoost]].
