@@ -168,3 +168,15 @@ try bst.saveConfig(toFile: configfile)
 let cvResults = xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
 ```
 
+### Callback
+The `SimplePrintEvalution` is a builtin simple example of callback.
+You can also define a custom callback that conforms to `XGBCallback` protocol, see
+more in the document of protocol.
+```swift
+let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+let test = try DMatrix(fromFile: "data/agaricus.txt.test")
+
+let callbacks = [SimplePrintEvalution(period: 5)]
+let bst = try xgboost(data: train, numRound: 10, evalSet: [(train, "train"), (test, "test")],
+                        callbacks: callbacks)
+```

@@ -9,29 +9,43 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 33,
-      "symbol": "Booster.init(params:cache:modelFile:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 77,
+      "line": 88,
       "symbol": "Booster.loadModel(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 251,
+      "line": 264,
       "symbol": "Booster.saveConfig(toFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 264,
+      "line": 277,
       "symbol": "Booster.loadConfig(fromFile:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
+      "line": 47,
+      "symbol": "SimplePrintEvalution.period",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
+      "line": 50,
+      "symbol": "SimplePrintEvalution.printPrefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
+      "line": 52,
+      "symbol": "SimplePrintEvalution.init(period:printPrefix:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },

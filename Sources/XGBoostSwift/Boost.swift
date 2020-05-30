@@ -30,6 +30,17 @@ public class Booster {
     //     let handle = BoosterCreate(dmHandles: &dms)
     // }
 
+    /**
+     Constructor of Booster
+      - Parameters:
+        - param: Dictionary - Booster parameters. If intend to use multiple
+         `eval_metric`, they should be provided as the `evalMetric`.
+        - cache: [DMatrix]
+        - modelFile: String? - If the modelFile param is provided, it will load the
+          model from that file.
+
+       - Returns: Booster
+     */
     public init(params: Param = Param(), cache: [DMatrix],
                 modelFile: String? = nil) throws {
         var dms = cache.map { $0.dmHandle }
@@ -130,7 +141,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-       **/
+       */
     public func setParam(key k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -147,7 +158,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-       **/
+      */
     public func setParam(_ params: [String: String]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -191,7 +202,7 @@ public class Booster {
      booster.eval(set: [(train, "train"),
                         (test, "test")], currentIter: 1)
      ```
-      **/
+     */
     public func eval(set: [(DMatrix, String)], currentIter: Int) -> String? {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -212,7 +223,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-      **/
+      */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return eval(set: [(data, name)], currentIter: currentIter)
     }
@@ -226,7 +237,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-      **/
+      */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -290,7 +301,7 @@ public class Booster {
 
    - Returns: Booster
 
-  **/
+ */
 public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
                     evalMetric: [String] = [],
                     evalSet: [(DMatrix, String)]? = nil, modelFile: String? = nil,
@@ -338,10 +349,14 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
         if callbacks != nil {
             for callback in callbacks! {
                 if callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(currentIter: i,
-                                                       beginIter: 0,
-                                                       endIter: numRound,
-                                                       evalResult: nil))
+                    callback.callback(env: CallbackEnv(
+                        model: bst,
+                        cvPacks: nil,
+                        currentIter: i,
+                        beginIter: 0,
+                        endIter: numRound,
+                        evalResult: nil
+                    ))
                 }
             }
         }
@@ -360,7 +375,9 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
         if callbacks != nil {
             for callback in callbacks! {
                 if !callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(currentIter: i,
+                    callback.callback(env: CallbackEnv(model: bst,
+                                                       cvPacks: nil,
+                                                       currentIter: i,
                                                        beginIter: 0,
                                                        endIter: numRound,
                                                        evalResult: evalResult))
@@ -371,7 +388,7 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
     return bst
 }
 
-internal struct CVPack {
+internal class CVPack {
     var booster: Booster
     let train: DMatrix
     let test: DMatrix
@@ -460,13 +477,28 @@ public typealias CVResult = [String: [Float]]
 public func xgboostCV(params: Param = [:], data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
-                      evalMetric: [String] = []) -> CVResult {
+                      evalMetric: [String] = [],
+                      callbacks: [XGBCallback]? = nil) -> CVResult {
     // TODO: handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, param: params,
                             evalMetric: evalMetric, shuffle: true)
 
     var results = CVResult()
     for i in 0 ..< numRound {
+        if callbacks != nil {
+            for callback in callbacks! {
+                if callback.beforeIteration {
+                    callback.callback(env: CallbackEnv(model: nil,
+                                                       cvPacks: cvFolds,
+                                                       currentIter: i,
+                                                       beginIter: 0,
+                                                       endIter: numRound,
+                                                       evalResult: nil,
+                                                       cvEvalResult: nil))
+                }
+            }
+        }
+
         for fold in cvFolds {
             fold.update(i)
         }
@@ -480,6 +512,20 @@ public func xgboostCV(params: Param = [:], data: DMatrix,
             var stds = results[k + "-std"] ?? [Float]()
             stds.append(std)
             results[k + "-std"] = stds
+        }
+
+        if callbacks != nil {
+            for callback in callbacks! {
+                if !callback.beforeIteration {
+                    callback.callback(env: CallbackEnv(model: nil,
+                                                       cvPacks: cvFolds,
+                                                       currentIter: i,
+                                                       beginIter: 0,
+                                                       endIter: numRound,
+                                                       evalResult: nil,
+                                                       cvEvalResult: res))
+                }
+            }
         }
     }
 

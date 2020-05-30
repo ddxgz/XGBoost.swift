@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>Protocols  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Classes" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
 
-    <a title="Classes  Reference"></a>
+    <a title="Protocols  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      Protocols  Reference
     </p>
 
     <div class="content-wrapper">
@@ -114,8 +114,8 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            <h1>Protocols</h1>
+            <p>The following protocols are available globally.</p>
 
           </div>
         </section>
@@ -127,9 +127,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7BoosterC"></a>
-                    <a name="//apple_ref/swift/Class/Booster" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7BoosterC">Booster</a>
+                    <a name="/s:12XGBoostSwift11XGBCallbackP"></a>
+                    <a name="//apple_ref/swift/Protocol/XGBCallback" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift11XGBCallbackP">XGBCallback</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -137,46 +137,19 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A Booster of XGBoost, the model of XGBoost.</p>
+                        <p>protocol for Callback sent to training / cross validation function.
+Custom callback need to implement the <code>callback()</code> method that has 1
+parameter in type of <code><a href="Structs.html#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a></code>. A implementation of callback should also
+have a property <code>beforeIteration</code> to specify whether the callback should be
+executed before a iteration.</p>
 
-                        <a href="Classes/Booster.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/XGBCallback.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Booster</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC"></a>
-                    <a name="//apple_ref/swift/Class/DMatrix" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC">DMatrix</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>DMatrix is a wrap of the internal data structure DMatrix that used by
-XGBoost. You can construct from a file (libsvm (default) or csv) or [Float].
-To load csv file, specify uri parameter &lsquo;path_to_csv?format=csv&rsquo; or set the
-<code>format</code> param to &lsquo;csv&rsquo;.</p>
-
-                        <a href="Classes/DMatrix.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DMatrix</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">XGBCallback</span></code></pre>
 
                         </div>
                       </div>

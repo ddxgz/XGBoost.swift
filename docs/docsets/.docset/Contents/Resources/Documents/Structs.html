@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>Structures  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Classes" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Section/Structures" class="dashAnchor"></a>
 
-    <a title="Classes  Reference"></a>
+    <a title="Structures  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      Structures  Reference
     </p>
 
     <div class="content-wrapper">
@@ -114,8 +114,8 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            <h1>Structures</h1>
+            <p>The following structures are available globally.</p>
 
           </div>
         </section>
@@ -127,9 +127,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7BoosterC"></a>
-                    <a name="//apple_ref/swift/Class/Booster" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7BoosterC">Booster</a>
+                    <a name="/s:12XGBoostSwift11CallbackEnvV"></a>
+                    <a name="//apple_ref/swift/Struct/CallbackEnv" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -137,17 +137,109 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A Booster of XGBoost, the model of XGBoost.</p>
+                        <p>Environment used for callbacks, what can be accessed by method <code>callback()</code></p>
 
-                        <a href="Classes/Booster.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Booster</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">CallbackEnv</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>model</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Booster? - the Booster used when calling callback in training,
+when calling <code>xgboost()</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cvPacks</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>[CVPack]? - the CVPacks used when calling callback in cross
+validation, when calling <code>xgboostCV()</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentIter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Int</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>beginIter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Int</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>endIter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Int</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>evalResult</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>evaluation result during training, when calling <code>xgboost()</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cvEvalResult</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>evaluation result during cross validation, when calling <code>xgboostCV()</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -155,9 +247,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC"></a>
-                    <a name="//apple_ref/swift/Class/DMatrix" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC">DMatrix</a>
+                    <a name="/s:12XGBoostSwift20SimplePrintEvalutionV"></a>
+                    <a name="//apple_ref/swift/Struct/SimplePrintEvalution" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift20SimplePrintEvalutionV">SimplePrintEvalution</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -165,18 +257,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>DMatrix is a wrap of the internal data structure DMatrix that used by
-XGBoost. You can construct from a file (libsvm (default) or csv) or [Float].
-To load csv file, specify uri parameter &lsquo;path_to_csv?format=csv&rsquo; or set the
-<code>format</code> param to &lsquo;csv&rsquo;.</p>
+                        <p>A simple callback printer</p>
 
-                        <a href="Classes/DMatrix.html" class="slightly-smaller">See more</a>
+                        <a href="Structs/SimplePrintEvalution.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DMatrix</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SimplePrintEvalution</span> <span class="p">:</span> <span class="kt"><a href="Protocols/XGBCallback.html">XGBCallback</a></span></code></pre>
 
                         </div>
                       </div>

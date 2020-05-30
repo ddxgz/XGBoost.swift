@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           Documentation - XGBoost.swift
         </a>
-         (75% documented)
+         (77% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -65,13 +65,35 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF">xgboost(params:data:numRound:evalMetric:modelFile:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift22xgbRegisterLogCallbackyyySPys4Int8VGSgXCSgF">xgbRegisterLogCallback(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF">xgboostCV(params:data:numRound:nFold:evalMetric:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set9modelFile9callbacksAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSayAN_SStGSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:data:numRound:evalMetric:evalSet:modelFile:callbacks:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetric9callbacksSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGSayAA11XGBCallback_pGSgtF">xgboostCV(params:data:numRound:nFold:evalMetric:callbacks:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF">xgboostVersion()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/XGBCallback.html">XGBCallback</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs.html#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SimplePrintEvalution.html">SimplePrintEvalution</a>
               </li>
             </ul>
           </li>
@@ -105,9 +127,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF"></a>
-                    <a name="//apple_ref/swift/Function/xgboost(params:data:numRound:evalMetric:modelFile:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric9modelFileAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSSSgtKF">xgboost(params:<wbr>data:<wbr>numRound:<wbr>evalMetric:<wbr>modelFile:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set9modelFile9callbacksAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSayAN_SStGSgSSSgSayAA11XGBCallback_pGSgtKF"></a>
+                    <a name="//apple_ref/swift/Function/xgboost(params:data:numRound:evalMetric:evalSet:modelFile:callbacks:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set9modelFile9callbacksAA7BoosterCSDyS2SG_AA7DMatrixCSiSaySSGSayAN_SStGSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:<wbr>data:<wbr>numRound:<wbr>evalMetric:<wbr>evalSet:<wbr>modelFile:<wbr>callbacks:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -117,15 +139,15 @@
                       <div class="abstract">
                         <p>Train a booster with given parameters.</p>
 
-<p>*</p>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span> <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                    <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Classes/Booster.html">Booster</a></span></code></pre>
+                    <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                    <span class="nv">evalSet</span><span class="p">:</span> <span class="p">[(</span><span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="kt">String</span><span class="p">)]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                    <span class="nv">callbacks</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Protocols/XGBCallback.html">XGBCallback</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Classes/Booster.html">Booster</a></span></code></pre>
 
                         </div>
                       </div>
@@ -185,6 +207,19 @@
                             <tr>
                               <td>
                                 <code>
+                                <em>evalSet</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>list of tuples (DMatrix, name of the eval data). The
+validation sets will evaluated during training.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
                                 <em>modelFile</em>
                                 </code>
                               </td>
@@ -208,9 +243,9 @@ model from that file.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF"></a>
-                    <a name="//apple_ref/swift/Function/xgboostCV(params:data:numRound:nFold:evalMetric:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetricSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGtF">xgboostCV(params:<wbr>data:<wbr>numRound:<wbr>nFold:<wbr>evalMetric:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetric9callbacksSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGSayAA11XGBCallback_pGSgtF"></a>
+                    <a name="//apple_ref/swift/Function/xgboostCV(params:data:numRound:nFold:evalMetric:callbacks:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold10evalMetric9callbacksSDySSSaySfGGSDyS2SG_AA7DMatrixCS2iSaySSGSayAA11XGBCallback_pGSgtF">xgboostCV(params:<wbr>data:<wbr>numRound:<wbr>nFold:<wbr>evalMetric:<wbr>callbacks:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -228,7 +263,8 @@ model from that file.</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span> <span class="o">=</span> <span class="p">[:],</span> <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span>
                       <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
                       <span class="nv">nFold</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-                      <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a></span></code></pre>
+                      <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                      <span class="nv">callbacks</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Protocols/XGBCallback.html">XGBCallback</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a></span></code></pre>
 
                         </div>
                       </div>
@@ -262,6 +298,35 @@ model from that file.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12XGBoostSwift22xgbRegisterLogCallbackyyySPys4Int8VGSgXCSgF"></a>
+                    <a name="//apple_ref/swift/Function/xgbRegisterLogCallback(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift22xgbRegisterLogCallbackyyySPys4Int8VGSgXCSgF">xgbRegisterLogCallback(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Have to set <code>verbosity</code> parameters to 2(info)/3(debug) xgboost to make it
+print log messages. The passing closure should have 1 positional parameter,
+which is the log message.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgbRegisterLogCallback</span><span class="p">(</span><span class="n">_</span> <span class="nv">fn</span><span class="p">:</span> <span class="p">(</span><span class="kd">@convention</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="p">(</span><span class="kt">UnsafePointer</span><span class="o">&lt;</span><span class="kt">Int8</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -270,7 +335,7 @@ model from that file.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-29)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-05-30)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
