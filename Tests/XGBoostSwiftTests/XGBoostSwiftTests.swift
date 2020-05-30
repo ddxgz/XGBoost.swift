@@ -17,6 +17,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ("testBoosterSetParam", testBoosterSetParam),
     ("testCV", testCV),
     ("testBasic", testBasic),
+    ("testCallback", testCallback),
   ]
 
   func testDMatrix() throws {
@@ -220,5 +221,12 @@ final class XGBoostSwiftTests: XCTestCase {
     XCTAssertTrue(confSaved)
 
     try bst.loadConfig(fromFile: configfile)
+  }
+
+  func testCallback() throws {
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+
+    let bst = try xgboost(data: train, numRound: 10,
+                          callbacks: [SimplePrintEvalution()])
   }
 }

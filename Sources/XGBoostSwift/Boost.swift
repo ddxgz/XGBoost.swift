@@ -288,7 +288,8 @@ public class Booster {
 
   **/
 public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
-                    evalMetric: [String] = [], modelFile: String? = nil) throws -> Booster {
+                    evalMetric: [String] = [], modelFile: String? = nil,
+                    callbacks: [XGBCallback]? = nil) throws -> Booster {
     if data.dmHandle == nil {
         throw XGBoostError.unknownError(
             errMsg: "DMatrix handle is nil, XGBoost error: \(lastError())")
@@ -325,9 +326,30 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
 
     for i in 0 ..< numRound {
         debugLog("Round: \(i)")
+
+        if callbacks != nil {
+            for callback in callbacks! {
+                if callback.beforeIteration {
+                    callback.callback(env: CallbackEnv(currentIter: i,
+                                                       beginIter: 0,
+                                                       endIter: numRound))
+                }
+            }
+        }
+
         // TODO: fix nIter as current iter
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
         bst.update(data: data, currentIter: i)
+
+        if callbacks != nil {
+            for callback in callbacks! {
+                if !callback.beforeIteration {
+                    callback.callback(env: CallbackEnv(currentIter: i,
+                                                       beginIter: 0,
+                                                       endIter: numRound))
+                }
+            }
+        }
     }
     return bst
 }

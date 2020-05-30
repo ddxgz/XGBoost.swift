@@ -45,6 +45,9 @@ public func xgboostVersion() -> (major: Int, minor: Int, patch: Int) {
 }
 
 // TODO: investigate what could be provided by this
+/// Have to set `verbosity` parameters to 2(info)/3(debug) xgboost to make it
+/// print log messages. The passing closure should have 1 positional parameter,
+/// which is the log message.
 public func xgbRegisterLogCallback(_ fn: (@convention(c) (UnsafePointer<Int8>?) -> Void)?) {
     XGBRegisterLogCallback(fn)
 }
