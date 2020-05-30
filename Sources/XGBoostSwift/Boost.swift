@@ -184,7 +184,8 @@ public class Booster {
       - Parameters:
           - set: list of tuples (DMatrix, name of the eval data)
           - currentIter: current iteration
-      - Returns: Evaluation result if successful
+      - Returns: Evaluation result if successful, a string in a format like
+        "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
      ```swift
      booster.eval(set: [(train, "train"),
@@ -208,7 +209,8 @@ public class Booster {
           - data: DMatrix to be evaluate on
           - set: name of the eval data
           - currentIter: current iteration
-      - Returns: Evaluation result if successful
+      - Returns: Evaluation result if successful, a string in a format like
+        "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
       **/
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
@@ -281,6 +283,8 @@ public class Booster {
      - param: Dictionary - Booster parameters. If intend to use multiple
       `eval_metric`, they should be provided as the `evalMetric`.
      - evalMetric: [String] - to pass the `eval_metric` parameter to booster.
+     - evalSet: list of tuples (DMatrix, name of the eval data). The
+       validation sets will evaluated during training.
      - modelFile: String - If the modelFile param is provided, it will load the
        model from that file.
 
@@ -288,14 +292,18 @@ public class Booster {
 
   **/
 public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
-                    evalMetric: [String] = [], modelFile: String? = nil,
+                    evalMetric: [String] = [],
+                    evalSet: [(DMatrix, String)]? = nil, modelFile: String? = nil,
                     callbacks: [XGBCallback]? = nil) throws -> Booster {
     if data.dmHandle == nil {
         throw XGBoostError.unknownError(
             errMsg: "DMatrix handle is nil, XGBoost error: \(lastError())")
     }
 
-    var dms = [data.dmHandle]
+    let evalset = evalSet ?? [(DMatrix, String)]()
+    let evals = evalset.map { $0.0.dmHandle }
+
+    var dms = [data.dmHandle] + evals
     let booster = BoosterCreate(dmHandles: &dms)
 
     if booster == nil {
@@ -332,7 +340,8 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
                 if callback.beforeIteration {
                     callback.callback(env: CallbackEnv(currentIter: i,
                                                        beginIter: 0,
-                                                       endIter: numRound))
+                                                       endIter: numRound,
+                                                       evalResult: nil))
                 }
             }
         }
@@ -341,12 +350,20 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
         bst.update(data: data, currentIter: i)
 
+        var evalResult = [(String, Float)]()
+        if evalset.count > 0 {
+            let evalMsg = bst.eval(set: evalset, currentIter: i)!
+            let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
+            evalResult = res.map { (String($0[0]), Float($0[1])!) }
+        }
+
         if callbacks != nil {
             for callback in callbacks! {
                 if !callback.beforeIteration {
                     callback.callback(env: CallbackEnv(currentIter: i,
                                                        beginIter: 0,
-                                                       endIter: numRound))
+                                                       endIter: numRound,
+                                                       evalResult: evalResult))
                 }
             }
         }
