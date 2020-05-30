@@ -58,7 +58,7 @@ It evovles fastly, please constantly check the version.
 
 
 ```swift
-.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0")
+.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.6.0")
 ```
 
 Usage

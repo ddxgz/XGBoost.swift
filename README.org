@@ -45,7 +45,7 @@ Ubuntu is tested by using [[https://swift.org/download/#docker][Swift's docker i
 It evovles fastly, please constantly check the version.
 
 #+begin_src rust
-.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.5.0")
+.package(url: "https://github.com/ddxgz/XGBoost.swift.git", from: "0.6.0")
 #+end_src
 
 ** Usage
