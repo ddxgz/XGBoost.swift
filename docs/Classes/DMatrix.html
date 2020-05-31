@@ -380,9 +380,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC8fromFile6format6silentACSS_SSSbtKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(fromFile:format:silent:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC8fromFile6format6silentACSS_SSSbtKcfc">init(fromFile:<wbr>format:<wbr>silent:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7DMatrixC8fromFile6format5label6weight10baseMargin6silentACSS_SSSaySfGSgA2KSbtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(fromFile:format:label:weight:baseMargin:silent:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC8fromFile6format5label6weight10baseMargin6silentACSS_SSSaySfGSgA2KSbtKcfc">init(fromFile:<wbr>format:<wbr>label:<wbr>weight:<wbr>baseMargin:<wbr>silent:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -397,7 +397,9 @@ is non-nil.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromFile</span> <span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"libsvm"</span><span class="p">,</span> <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromFile</span> <span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"libsvm"</span><span class="p">,</span>
+            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -407,9 +409,9 @@ is non-nil.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7DMatrixC9fromArray5shape7missingACSaySfG_Si3row_Si3coltSftKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(fromArray:shape:missing:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC9fromArray5shape7missingACSaySfG_Si3row_Si3coltSftKcfc">init(fromArray:<wbr>shape:<wbr>missing:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7DMatrixC9fromArray5shape5label6weight10baseMargin7missingACSaySfG_Si3row_Si3coltAJSgA2MSftKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(fromArray:shape:label:weight:baseMargin:missing:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7DMatrixC9fromArray5shape5label6weight10baseMargin7missingACSaySfG_Si3row_Si3coltAJSgA2MSftKcfc">init(fromArray:<wbr>shape:<wbr>label:<wbr>weight:<wbr>baseMargin:<wbr>missing:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -427,6 +429,7 @@ as default).</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromArray</span> <span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">],</span> <span class="nv">shape</span><span class="p">:</span> <span class="p">(</span><span class="nv">row</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">col</span><span class="p">:</span> <span class="kt">Int</span><span class="p">),</span>
+            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
             <span class="n">missing</span> <span class="kt">NaValue</span><span class="p">:</span> <span class="kt">Float</span> <span class="o">=</span> <span class="o">-.</span><span class="n">infinity</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>

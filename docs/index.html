@@ -119,11 +119,13 @@
 <p><img src="https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg" alt="macOS">
 <img src="https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg" alt="Ubuntu"></p>
 
-<p>A new coming Swift interface for
+<p>A Swift interface for
 <a href="https://github.com/dmlc/xgboost">XGBoost</a>.</p>
 
-<p>The current interface is wrapping around the C API of XGBoost$$, tries to conform to the Python API. Document see
+<p>The current interface is wrapping around the C API of XGBoost, tries to conform to the Python API. Document see
 <a href="https://ddxgz.github.io/XGBoost.swift/">docs</a>.</p>
+
+<p>If you run into any problem, please file an <strong>issue</strong> or even better a <strong>pull request</strong>.</p>
 
 <p><strong>Note</strong>: this is not an official XGBoost project.</p>
 
@@ -207,7 +209,7 @@ used for testing.</p>
 
 <span class="c1">// save and load model as json</span>
 <span class="k">let</span> <span class="nv">modelJson</span> <span class="o">=</span> <span class="s">"bst.json"</span>
-<span class="n">bst</span><span class="o">.</span><span class="nf">saveModel</span><span class="p">(</span><span class="nv">toFile</span><span class="p">:</span> <span class="n">modelJson</span><span class="p">)</span> 
+<span class="n">bst</span><span class="o">.</span><span class="nf">saveModel</span><span class="p">(</span><span class="nv">toFile</span><span class="p">:</span> <span class="n">modelJson</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">bstJsonLoaded</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">modelFile</span><span class="p">:</span> <span class="n">modelJson</span><span class="p">)</span>
 
 <span class="c1">// save model config</span>

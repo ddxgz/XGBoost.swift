@@ -80,12 +80,15 @@ public class DMatrix {
     }
 
     /// Construct DMatrix from file
-    public init(fromFile fname: String, format: String = "libsvm", silent: Bool = true) throws {
+    public init(fromFile fname: String, format: String = "libsvm",
+                label: [Float]? = nil, weight: [Float]? = nil, baseMargin: [Float]? = nil,
+                silent: Bool = true) throws {
         var name = fname
         if format.lowercased() == "csv", !fname.contains("format=csv") {
             name += "?format=csv"
         }
         try handle = DMatrixFromFile(name: name, silent: silent)
+        self.setExtra(label: label, weight: weight, baseMargin: baseMargin)
     }
 
     // TODO: add label, weight, base_margin, etc.
@@ -93,11 +96,13 @@ public class DMatrix {
     /// will be filled in automatically or by setting `missing` (Float.infinity
     /// as default).
     public init(fromArray array: [Float], shape: (row: Int, col: Int),
+                label: [Float]? = nil, weight: [Float]? = nil, baseMargin: [Float]? = nil,
                 missing NaValue: Float = -.infinity) throws {
         var values = array
         try handle = DMatrixFromMatrix(values: &values, nRow: UInt64(shape.row),
                                        nCol: UInt64(shape.col),
                                        missingVal: NaValue, nThread: 0)
+        self.setExtra(label: label, weight: weight, baseMargin: baseMargin)
     }
 
     internal init(handle: DMatrixHandle?) {
@@ -134,6 +139,18 @@ public class DMatrix {
     /// the selected rows.
     public func slice(rows idxSet: Range<Int>, allowGroups: Bool = false) -> DMatrix? {
         return slice(rows: Array(idxSet), allowGroups: allowGroups)
+    }
+
+    func setExtra(label: [Float]? = nil, weight: [Float]? = nil, baseMargin: [Float]? = nil) {
+        if label != nil {
+            self.label = label!
+        }
+        if weight != nil {
+            self.weight = weight!
+        }
+        if baseMargin != nil {
+            self.baseMargin = baseMargin!
+        }
     }
 
     func setFloatInfo(field: String, data: [Float]) {

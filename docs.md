@@ -4,11 +4,13 @@ XGBoost.swift
 ![macOS](https://github.com/ddxgz/XGBoost.swift/workflows/macOS/badge.svg)
 ![Ubuntu](https://github.com/ddxgz/XGBoost.swift/workflows/Ubuntu/badge.svg)
 
-A new coming Swift interface for
+A Swift interface for
 [XGBoost](https://github.com/dmlc/xgboost).
 
-The current interface is wrapping around the C API of XGBoost$$, tries to conform to the Python API. Document see
+The current interface is wrapping around the C API of XGBoost, tries to conform to the Python API. Document see
 [docs](https://ddxgz.github.io/XGBoost.swift/).
+
+If you run into any problem, please file an **issue** or even better a **pull request**.
 
 **Note**: this is not an official XGBoost project.
 
