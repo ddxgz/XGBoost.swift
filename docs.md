@@ -7,8 +7,7 @@ XGBoost.swift
 A new coming Swift interface for
 [XGBoost](https://github.com/dmlc/xgboost).
 
-The current interface is wrapping around the C API of XGBoost version
-1.1.0, tries to conform to the Python API. Document see
+The current interface is wrapping around the C API of XGBoost$$, tries to conform to the Python API. Document see
 [docs](https://ddxgz.github.io/XGBoost.swift/).
 
 **Note**: this is not an official XGBoost project.
@@ -80,8 +79,8 @@ You may find more cases in the test file in code repo.
 **Still in early development, use with caution.**
 
 ```swift
-let train = try DMatrix(filename: "data/agaricus.txt.train")
-let test = try DMatrix(filename: "data/agaricus.txt.test")
+let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
 let bst = try xgboost(data: train, numRound: 10)
 let pred = bst.predict(data: test)
@@ -95,7 +94,7 @@ let bstLoaded = try xgboost(data: train, numRound: 0, modelFile: modelBin)
 
 // save and load model as json
 let modelJson = "bst.json"
-bst.saveModel(toFile: modelJson) 
+bst.saveModel(toFile: modelJson)
 let bstJsonLoaded = try xgboost(data: train, numRound: 0, modelFile: modelJson)
 
 // save model config

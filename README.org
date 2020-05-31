@@ -6,7 +6,7 @@
 
 A new coming Swift interface for [[https://github.com/dmlc/xgboost][XGBoost]].
 
-The current interface is wrapping around the C API of XGBoost version 1.1.0, 
+The current interface is wrapping around the C API of XGBoost, 
  tries to conform to the Python API. Document see [[https://ddxgz.github.io/XGBoost.swift/][docs]].
 
 *Note*: this is not an official XGBoost project.
@@ -58,8 +58,8 @@ It evovles fastly, please constantly check the version.
 See more examples in [[https://ddxgz.github.io/XGBoost.swift/][docs]].
 
 #+begin_src rust
-let train = try DMatrix(filename: "data/agaricus.txt.train")
-let test = try DMatrix(filename: "data/agaricus.txt.test")
+let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
 let bst = try xgboost(data: train, numRound: 10)
 let pred = bst.predict(data: test)
