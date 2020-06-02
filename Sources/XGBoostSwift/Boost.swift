@@ -1,7 +1,8 @@
 import Cxgb
 import Foundation
 
-public typealias Param = [String: String]
+/// A pair of parameter name and value to be set for xgboost.
+public typealias Param = (name: String, value: String)
 
 /// A Booster of XGBoost, the model of XGBoost.
 public class Booster {
@@ -33,15 +34,16 @@ public class Booster {
     /**
      Constructor of Booster
       - Parameters:
-        - param: Dictionary - Booster parameters. If intend to use multiple
-         `eval_metric`, they should be provided as the `evalMetric`.
+        - params: [(String, String)] - Booster parameters. It was changed from
+          Dictionary to array of set to enable multiple `eval_metric`, now it
+          does not need to provide `evalMetric` for multiple `eval_metric`.
         - cache: [DMatrix]
         - modelFile: String? - If the modelFile param is provided, it will load the
           model from that file.
 
        - Returns: Booster
      */
-    public init(params: Param = Param(), cache: [DMatrix],
+    public init(params: [Param] = [], cache: [DMatrix],
                 modelFile: String? = nil) throws {
         var dms = cache.map { $0.dmHandle }
         let handle = BoosterCreate(dmHandles: &dms)
@@ -131,35 +133,29 @@ public class Booster {
     // TODO: accept eval_metric param input pass as a string of multiple values
 
     /**
-     Set Parameters by key and value
-
-      To set multiple `eval_metric`, use `setEvalMetrics`, or you can call
-      setParam multiple times with different parameters.
+     Set Parameters by name and value
 
       **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
       throw error during training or evaluating. Check
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-       */
-    public func setParam(key k: String, value v: String) {
+                */
+    public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
     }
 
     /**
-     Set Parameters by dictionary
-
-      To set multiple `eval_metric`, use `setEvalMetrics`, or you can call
-      setParam multiple times with different parameters.
+     Set Parameters by Array of Set in (String, String)
 
       **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
       throw error during training or evaluating. Check
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-      */
-    public func setParam(_ params: [String: String]) {
+               */
+    public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
             BoosterSetParam(handle: handle!, key: k, value: v)
@@ -170,7 +166,7 @@ public class Booster {
     public func setEvalMetric(_ metrics: [String]) {
         for v in metrics {
             debugLog("Set param eval_metric: \(v)")
-            setParam(key: "eval_metric", value: v)
+            setParam(name: "eval_metric", value: v)
         }
     }
 
@@ -223,7 +219,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-      */
+               */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return eval(set: [(data, name)], currentIter: currentIter)
     }
@@ -237,7 +233,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-      */
+               */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -291,9 +287,10 @@ public class Booster {
    - Parameters:
      - data: DMatrix
      - numRound: Int - Number of boosting iterations.
-     - param: Dictionary - Booster parameters. If intend to use multiple
-      `eval_metric`, they should be provided as the `evalMetric`.
-     - evalMetric: [String] - to pass the `eval_metric` parameter to booster.
+     - params: [(String, String)] - Booster parameters. It was changed from
+          Dictionary to array of set to enable multiple `eval_metric`, now it
+          does not need to provide `evalMetric` for multiple `eval_metric`. You 
+          pass multiple sets for `eval_metric` in the params array.
      - evalSet: list of tuples (DMatrix, name of the eval data). The
        validation sets will evaluated during training.
      - modelFile: String - If the modelFile param is provided, it will load the
@@ -302,7 +299,7 @@ public class Booster {
    - Returns: Booster
 
  */
-public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
+public func xgboost(params: [Param] = [], data: DMatrix, numRound: Int = 10,
                     evalMetric: [String] = [],
                     evalSet: [(DMatrix, String)]? = nil, modelFile: String? = nil,
                     callbacks: [XGBCallback]? = nil) throws -> Booster {
@@ -337,11 +334,11 @@ public func xgboost(params: Param = [:], data: DMatrix, numRound: Int = 10,
 
     bst.setParam(params)
 
-    for v in evalMetric {
-        debugLog("Set param eval_metric: \(v)")
-        // BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
-        bst.setParam(key: "eval_metric", value: v)
-    }
+    // for v in evalMetric {
+    //     debugLog("Set param eval_metric: \(v)")
+    //     // BoosterSetParam(handle: booster!, key: "eval_metric", value: v)
+    //     bst.setParam(name: "eval_metric", value: v)
+    // }
 
     for i in 0 ..< numRound {
         debugLog("Round: \(i)")
@@ -416,7 +413,7 @@ internal class CVPack {
     }
 }
 
-internal func makeNFold(data: DMatrix, nFold: Int = 5, param: Param = [:],
+internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
                         evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
     var cvpacks = [CVPack]()
     // var idxSet = [Int32](0 ..< Int32(data.nRow))
@@ -474,13 +471,13 @@ public typealias CVResult = [String: [Float]]
 
 // TODO: support seed, early_stopping_rounds
 /// Cross-validation with given parameters
-public func xgboostCV(params: Param = [:], data: DMatrix,
+public func xgboostCV(params: [Param] = [], data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
                       evalMetric: [String] = [],
                       callbacks: [XGBCallback]? = nil) -> CVResult {
     // TODO: handle metrics
-    let cvFolds = makeNFold(data: data, nFold: nFold, param: params,
+    let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
                             evalMetric: evalMetric, shuffle: true)
 
     var results = CVResult()

@@ -100,8 +100,8 @@ final class XGBoostSwiftTests: XCTestCase {
     let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
     let param = [
-      "objective": "binary:logistic",
-      "max_depth": "2",
+      ("objective", "binary:logistic"),
+      ("max_depth", "2"),
     ]
     let bst = try xgboost(params: param, data: train, numRound: 1, evalMetric: ["auc"])
 
@@ -175,8 +175,8 @@ final class XGBoostSwiftTests: XCTestCase {
   func testCV() throws {
     let train = try DMatrix(fromFile: "data/agaricus.txt.train")
     let param = [
-      "objective": "binary:logistic",
-      "max_depth": "9",
+      ("objective", "binary:logistic"),
+      ("max_depth", "2"),
     ]
     // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
     // ["auc"], shuffle: true)
@@ -194,9 +194,9 @@ final class XGBoostSwiftTests: XCTestCase {
     let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 
     let param = [
-      "objective": "binary:logistic",
-      "max_depth": "2",
-      "verbosity": "3",
+      ("objective", "binary:logistic"),
+      ("max_depth", "2"),
+      ("verbosity", "3"),
     ]
     let bst = try xgboost(params: param, data: train, numRound: 5)
   }
@@ -205,13 +205,13 @@ final class XGBoostSwiftTests: XCTestCase {
     let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 
     let param = [
-      "objective": "binary:logistic",
-      "max_depth": "2",
+      ("objective", "binary:logistic"),
+      ("max_depth", "2"),
     ]
     let bst = try xgboost(params: param, data: train, numRound: 1,
                           evalMetric: ["auc", "error"])
 
-    bst.setParam(key: "alpha", value: "0.1")
+    bst.setParam(name: "alpha", value: "0.1")
     bst.setEvalMetric(["logloss", "rmse"])
 
     // TODO: read json config file to check if it has the set params
