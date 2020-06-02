@@ -65,7 +65,15 @@ See more examples in [[https://ddxgz.github.io/XGBoost.swift/][docs]].
 let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
-let bst = try xgboost(data: train, numRound: 10)
+let params = [
+    ("objective", "binary:logistic"),
+    ("max_depth", "9"),
+    ("eval_metric", "auc"),
+    ("eval_metric", "aucpr"),
+]
+// Construct booster while boosting
+let bst = try xgboost(params: params, data: train, numRound: 10)
+
 let pred = bst.predict(data: test)
 
 let cvResult = xgboostCV(data: train, numRound: 10)

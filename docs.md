@@ -151,17 +151,18 @@ let base_margins = train.base_margin
 let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
-let param = [
-    "objective": "binary:logistic",
-    "max_depth": "2",
+let params = [
+    ("objective", "binary:logistic"),
+    ("max_depth", "9"),
+    ("eval_metric", "auc"),
+    ("eval_metric", "aucpr"),
 ]
 // Construct booster while boosting
-let bst = try xgboost(params: param, data: train, numRound: 10, evalMetric: ["auc"])
+let bst = try xgboost(params: param, data: train, numRound: 10)
 
-// Set parameters by passing dictionary or key-value pair
+// Set parameters by passing dictionary or name-value pair
 bst.setParam(param)
-bst.setParam(key: "alpha", value: "0.1")
-bst.setEvalMetric(["logloss", "rmse"])
+bst.setParam(name: "alpha", value: "0.1")
 
 let result = bst.predict(data: test)
 
@@ -170,8 +171,8 @@ let modelfile = "Tests/tmp/bst.model"
 try bst.saveModel(toFile: modelfile)
 
 // Construct booster from file
-let bstJsonLoaded2 = try Booster(params: param, cache: [train],
-                                    modelFile: modelfileJson)
+let bstJsonLoaded2 = try Booster(params: params, cache: [train],
+                                 modelFile: modelfileJson)
 
 // Save config to json file
 let configfile = "Tests/tmp/config.json"
@@ -190,6 +191,7 @@ let train = try DMatrix(fromFile: "data/agaricus.txt.train")
 let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
 let callbacks = [SimplePrintEvalution(period: 5)]
-let bst = try xgboost(data: train, numRound: 10, evalSet: [(train, "train"), (test, "test")],
-                        callbacks: callbacks)
+let bst = try xgboost(data: train, numRound: 10,
+                      evalSet: [(train, "train"), (test, "test")],
+                      callbacks: callbacks)
 ```

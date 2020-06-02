@@ -140,7 +140,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                */
+                          */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -154,7 +154,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-               */
+                         */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -219,7 +219,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-               */
+                         */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return eval(set: [(data, name)], currentIter: currentIter)
     }
@@ -233,7 +233,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-               */
+                         */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -289,7 +289,7 @@ public class Booster {
      - numRound: Int - Number of boosting iterations.
      - params: [(String, String)] - Booster parameters. It was changed from
           Dictionary to array of set to enable multiple `eval_metric`, now it
-          does not need to provide `evalMetric` for multiple `eval_metric`. You 
+          does not need to provide `evalMetric` for multiple `eval_metric`. You
           pass multiple sets for `eval_metric` in the params array.
      - evalSet: list of tuples (DMatrix, name of the eval data). The
        validation sets will evaluated during training.
@@ -390,13 +390,14 @@ internal class CVPack {
     let train: DMatrix
     let test: DMatrix
 
-    init(train: DMatrix, test: DMatrix) {
+    init(params: [Param], train: DMatrix, test: DMatrix) {
         self.train = train
         self.test = test
 
-        var dms = [self.train.dmHandle, self.test.dmHandle]
+        // var dms = [self.train.dmHandle, self.test.dmHandle]
         // let handle = BoosterCreate(dmHandles: &dms)!
-        self.booster = Booster(dms: &dms)
+        // self.booster = Booster(dms: &dms)
+        self.booster = try! Booster(params: params, cache: [train, test])
     }
 
     internal func update(_ round: Int) {
@@ -414,7 +415,7 @@ internal class CVPack {
 }
 
 internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
-                        evalMetric: [String] = [], shuffle: Bool = true) -> [CVPack] {
+                        shuffle: Bool = true) -> [CVPack] {
     var cvpacks = [CVPack]()
     // var idxSet = [Int32](0 ..< Int32(data.nRow))
     var idxSet = [Int](0 ..< Int(data.nRow))
@@ -430,7 +431,7 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
         let trainIdx = Array(Set(idxSet).subtracting(testIdx))
         let trainFold = data.slice(rows: trainIdx)
         let testFold = data.slice(rows: testIdx)
-        cvpacks.append(CVPack(train: trainFold!, test: testFold!))
+        cvpacks.append(CVPack(params: params, train: trainFold!, test: testFold!))
     }
 
     return cvpacks
@@ -474,11 +475,10 @@ public typealias CVResult = [String: [Float]]
 public func xgboostCV(params: [Param] = [], data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
-                      evalMetric: [String] = [],
                       callbacks: [XGBCallback]? = nil) -> CVResult {
     // TODO: handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
-                            evalMetric: evalMetric, shuffle: true)
+                            shuffle: true)
 
     var results = CVResult()
     for i in 0 ..< numRound {

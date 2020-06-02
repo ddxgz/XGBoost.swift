@@ -228,7 +228,8 @@ final class XGBoostSwiftTests: XCTestCase {
     let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
     let callbacks = [SimplePrintEvalution(period: 1)]
-    let bst = try xgboost(data: train, numRound: 10, evalSet: [(train, "train"), (test, "test")],
+    let bst = try xgboost(data: train, numRound: 10,
+                          evalSet: [(train, "train"), (test, "test")],
                           callbacks: callbacks)
   }
 }
