@@ -4,6 +4,8 @@ import Foundation
 /// A pair of parameter name and value to be set for xgboost.
 public typealias Param = (name: String, value: String)
 
+public typealias FuncEval = ([Float], DMatrix) -> (String, [Float])
+
 /// A Booster of XGBoost, the model of XGBoost.
 public class Booster {
     // TODO: guard handle non-nil
@@ -142,7 +144,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                    */
+                                                            */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -156,7 +158,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                   */
+                                                           */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -210,15 +212,24 @@ public class Booster {
                         (test, "test")], currentIter: 1)
      ```
      */
-    public func eval(set: [(DMatrix, String)], currentIter: Int) -> String? {
+    public func evalSet(evals: [(DMatrix, String)],
+                        currentIter: Int,
+                        fnEval: FuncEval? = nil) -> String? {
         guard handle != nil else {
             errLog("booster not initialized!")
             return nil
         }
-        var dms = set.map { $0.0.dmHandle }
-        let evalNames = set.map { $0.1 }
-        return BoosterEvalOneIter(handle: handle!, currentIter: currentIter,
-                                  dmHandle: &dms, evalNames: evalNames)
+        var dms = evals.map { $0.0.dmHandle }
+        let evalNames = evals.map { $0.1 }
+        let res = BoosterEvalOneIter(handle: handle!,
+                                     currentIter: currentIter,
+                                     dmHandle: &dms,
+                                     evalNames: evalNames)
+
+        // if fnEval != nil {
+        //     for (dm, name) in evals {}
+        // }
+        return res
     }
 
     /**
@@ -230,9 +241,9 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                   */
+                                                           */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
-        return eval(set: [(data, name)], currentIter: currentIter)
+        return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
 
     /**
@@ -244,7 +255,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-                                   */
+                                                           */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -374,7 +385,7 @@ public func xgboost(params: [Param] = [], data: DMatrix, numRound: Int = 10,
 
         var evalResult = [(String, Float)]()
         if evalset.count > 0 {
-            let evalMsg = bst.eval(set: evalset, currentIter: i)!
+            let evalMsg = bst.evalSet(evals: evalset, currentIter: i)!
             let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
             evalResult = res.map { (String($0[0]), Float($0[1])!) }
         }
@@ -419,8 +430,8 @@ internal class CVPack {
     internal func eval(_ round: Int) -> String? {
         // return self.booster.evalSet(dmHandle: [train, test],
         //                             evalNames: ["train", "test"], currentIter: round)
-        return self.booster.eval(set: [(train, "train"), (test, "test")],
-                                 currentIter: round)
+        return self.booster.evalSet(evals: [(train, "train"), (test, "test")],
+                                    currentIter: round)
     }
 }
 

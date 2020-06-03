@@ -145,8 +145,8 @@ final class XGBoostSwiftTests: XCTestCase {
       bst.update(data: train, currentIter: i)
       // let evalResult = bst.evalSet(dmHandle: [train, test],
       //                              evalNames: ["train", "test"], currentIter: i)
-      let evalResult = bst.eval(set: [(train, "train"), (test, "test")],
-                                currentIter: i)
+      let evalResult = bst.evalSet(evals: [(train, "train"), (test, "test")],
+                                   currentIter: i)
 
       let newEval = String(evalResult![evalResult!.index(evalResult!.startIndex, offsetBy: 4)...])
       XCTAssertNotEqual(lastEval, newEval)
