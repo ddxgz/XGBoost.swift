@@ -4,7 +4,9 @@ import Foundation
 /// A pair of parameter name and value to be set for xgboost.
 public typealias Param = (name: String, value: String)
 
-public typealias FuncEval = ([Float], DMatrix) -> (String, [Float])
+/// Function signature for customized evaluation, the returned name should not
+/// contain colon ":"
+public typealias FuncEval = ([Float], DMatrix) -> (name: String, eval: Float)
 
 /// A Booster of XGBoost, the model of XGBoost.
 public class Booster {
@@ -144,7 +146,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                            */
+                                                                                  */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -158,7 +160,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                           */
+                                                                                 */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -221,14 +223,17 @@ public class Booster {
         }
         var dms = evals.map { $0.0.dmHandle }
         let evalNames = evals.map { $0.1 }
-        let res = BoosterEvalOneIter(handle: handle!,
+        var res = BoosterEvalOneIter(handle: handle!,
                                      currentIter: currentIter,
                                      dmHandle: &dms,
                                      evalNames: evalNames)
 
-        // if fnEval != nil {
-        //     for (dm, name) in evals {}
-        // }
+        if fnEval != nil {
+            for (dm, nameEval) in evals {
+                let (nameFn, eval) = fnEval!(self.predict(data: dm), dm)
+                res += "\t\(nameEval)-\(nameFn):\(eval)"
+            }
+        }
         return res
     }
 
@@ -241,7 +246,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                           */
+                                                                                 */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
@@ -255,7 +260,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-                                                           */
+                                                                                 */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -321,9 +326,13 @@ public class Booster {
    - Returns: Booster
 
  */
-public func xgboost(params: [Param] = [], data: DMatrix, numRound: Int = 10,
+public func xgboost(params: [Param] = [],
+                    data: DMatrix,
+                    numRound: Int = 10,
                     evalMetric: [String] = [],
-                    evalSet: [(DMatrix, String)]? = nil, modelFile: String? = nil,
+                    evalSet: [(DMatrix, String)]? = nil,
+                    fnEval: FuncEval? = nil,
+                    modelFile: String? = nil,
                     callbacks: [XGBCallback]? = nil) throws -> Booster {
     if data.dmHandle == nil {
         throw XGBoostError.unknownError(
@@ -385,7 +394,7 @@ public func xgboost(params: [Param] = [], data: DMatrix, numRound: Int = 10,
 
         var evalResult = [(String, Float)]()
         if evalset.count > 0 {
-            let evalMsg = bst.evalSet(evals: evalset, currentIter: i)!
+            let evalMsg = bst.evalSet(evals: evalset, currentIter: i, fnEval: fnEval)!
             let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
             evalResult = res.map { (String($0[0]), Float($0[1])!) }
         }
@@ -427,11 +436,12 @@ internal class CVPack {
         self.booster.update(data: train, currentIter: round)
     }
 
-    internal func eval(_ round: Int) -> String? {
+    internal func eval(_ round: Int, fnEval: FuncEval? = nil) -> String? {
         // return self.booster.evalSet(dmHandle: [train, test],
         //                             evalNames: ["train", "test"], currentIter: round)
         return self.booster.evalSet(evals: [(train, "train"), (test, "test")],
-                                    currentIter: round)
+                                    currentIter: round,
+                                    fnEval: fnEval)
     }
 }
 
@@ -493,9 +503,11 @@ public typealias CVResult = [String: [Float]]
 
 // TODO: support seed, early_stopping_rounds
 /// Cross-validation with given parameters
-public func xgboostCV(params: [Param] = [], data: DMatrix,
+public func xgboostCV(params: [Param] = [],
+                      data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
+                      fnEval: FuncEval? = nil,
                       callbacks: [XGBCallback]? = nil) -> CVResult {
     let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
                             shuffle: true)
@@ -520,7 +532,7 @@ public func xgboostCV(params: [Param] = [], data: DMatrix,
             fold.update(i)
         }
 
-        let res = aggCV(cvFolds.map { $0.eval(i) })
+        let res = aggCV(cvFolds.map { $0.eval(i, fnEval: fnEval) })
         for (k, mean, std) in res {
             var means = results[k + "-mean"] ?? [Float]()
             means.append(mean)

@@ -22,6 +22,7 @@ If you run into any problem, please file an **issue** or even better a **pull re
   - [DMatrix](#dmatrix)
   - [Boosting](#boosting)
   - [Callback](#callback)
+  - [Custom Evaliation Function](#custom-evaliation-function)
 
 Installation and dependency library
 ------------
@@ -193,5 +194,34 @@ let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 let callbacks = [SimplePrintEvalution(period: 5)]
 let bst = try xgboost(data: train, numRound: 10,
                       evalSet: [(train, "train"), (test, "test")],
+                      callbacks: callbacks)
+```
+
+### Custom Evaliation Function
+A custom evaluation function has a signature of `FuncEval`.
+
+```swift
+let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+let test = try DMatrix(fromFile: "data/agaricus.txt.test")
+
+func dumEval(preds: [Float], dmatrix: DMatrix) -> (String, Float) {
+    let labels = dmatrix.label
+    let prob = preds.map { x -> Float in
+        if x > 0 { return 1.0 } else { return 0.0 }
+    }
+    var cnt: Float = 0
+    for (label, pred) in zip(labels, prob) {
+        if label == pred {
+            cnt += 1
+        }
+    }
+    return ("dumEval", cnt / Float(labels.count))
+}
+
+let callbacks = [SimplePrintEvalution(period: 5)]
+
+let bst = try xgboost(data: train, numRound: 10,
+                      evalSet: [(train, "train"), (test, "test")],
+                      fnEval: dumEval,
                       callbacks: callbacks)
 ```

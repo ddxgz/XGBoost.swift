@@ -18,6 +18,7 @@ final class XGBoostSwiftTests: XCTestCase {
     ("testCV", testCV),
     ("testBasic", testBasic),
     ("testCallback", testCallback),
+    ("testFuncEval", testFuncEval),
   ]
 
   func testDMatrix() throws {
@@ -230,6 +231,31 @@ final class XGBoostSwiftTests: XCTestCase {
     let callbacks = [SimplePrintEvalution(period: 1)]
     let bst = try xgboost(data: train, numRound: 10,
                           evalSet: [(train, "train"), (test, "test")],
+                          callbacks: callbacks)
+  }
+
+  func testFuncEval() throws {
+    let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+    let test = try DMatrix(fromFile: "data/agaricus.txt.test")
+
+    func dumEval(preds: [Float], dmatrix: DMatrix) -> (String, Float) {
+      let labels = dmatrix.label
+      let prob = preds.map { x -> Float in
+        if x > 0 { return 1.0 } else { return 0.0 }
+      }
+      var cnt: Float = 0
+      for (label, pred) in zip(labels, prob) {
+        if label == pred {
+          cnt += 1
+        }
+      }
+      return ("dumEval", cnt / Float(labels.count))
+    }
+
+    let callbacks = [SimplePrintEvalution(period: 1)]
+    let bst = try xgboost(data: train, numRound: 10,
+                          evalSet: [(train, "train"), (test, "test")],
+                          fnEval: dumEval,
                           callbacks: callbacks)
   }
 }

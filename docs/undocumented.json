@@ -2,21 +2,21 @@
   "warnings": [
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 90,
+      "line": 96,
       "symbol": "Booster.loadModel(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 260,
+      "line": 287,
       "symbol": "Booster.saveConfig(toFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 273,
+      "line": 300,
       "symbol": "Booster.loadConfig(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -65,7 +65,7 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Wrapper.swift",
-      "line": 41,
+      "line": 42,
       "symbol": "xgboostVersion()",
       "symbol_kind": "source.lang.swift.decl.function.free",
       "warning": "undocumented"
