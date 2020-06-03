@@ -91,7 +91,6 @@ public class DMatrix {
         self.setExtra(label: label, weight: weight, baseMargin: baseMargin)
     }
 
-    // TODO: add label, weight, base_margin, etc.
     /// Construct DMatrix from array of Float, by setting shape, missing values
     /// will be filled in automatically or by setting `missing` (Float.infinity
     /// as default).

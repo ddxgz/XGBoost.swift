@@ -77,6 +77,8 @@ public class Booster {
         }
     }
 
+    // TODO: func _validateFeatures(self, data):
+
     /// Use .json as filename suffix to save model to json.
     /// Refer to [XGBoost doc](https://xgboost.readthedocs.io/en/latest/tutorials/saving_model.html)
     public func saveModel(toFile fname: String) throws {
@@ -140,7 +142,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                          */
+                                    */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -154,7 +156,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                         */
+                                   */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -170,7 +172,7 @@ public class Booster {
         }
     }
 
-    /// Update for 1 iteration
+    /// Update for 1 iteration, should not be called directly
     public func update(data: DMatrix, currentIter: Int) {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -184,7 +186,16 @@ public class Booster {
                              dmHandle: data.dmHandle!)
     }
 
-    // TODO: func boost(dTrain: DMatrix, grad:[Float],hess:[Float]){}
+    // TODO:
+    /// boost for 1 iteration, with customized gradient and hessian, should not be called directly
+    func boost(data: DMatrix, grad: [Float], hess: [Float]) throws {
+        if grad.count != hess.count {
+            throw XGBoostError.valueError(errMsg:
+                "length mismatch between grad \(grad.count) and hess \(hess.count)")
+        }
+        BoosterBoostOneIter(handle: self.handle!, dmHandle: data.dmHandle!,
+                            grad: grad, hess: hess)
+    }
 
     /**
      Evaluate a set of data
@@ -219,7 +230,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                         */
+                                   */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return eval(set: [(data, name)], currentIter: currentIter)
     }
@@ -233,7 +244,7 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-                         */
+                                   */
     public func predict(data: DMatrix, outputMargin: Bool = false,
                         nTreeLimit: Int = 0) -> [Float] {
         guard handle != nil else {
@@ -358,7 +369,6 @@ public func xgboost(params: [Param] = [], data: DMatrix, numRound: Int = 10,
             }
         }
 
-        // TODO: fix nIter as current iter
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
         bst.update(data: data, currentIter: i)
 
@@ -476,7 +486,6 @@ public func xgboostCV(params: [Param] = [], data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
                       callbacks: [XGBCallback]? = nil) -> CVResult {
-    // TODO: handle metrics
     let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
                             shuffle: true)
 

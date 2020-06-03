@@ -20,6 +20,7 @@ enum XGBoostError: Error {
     case modelSaveError(errMsg: String)
     case modelLoadError(errMsg: String)
     case setParamError(errMsg: String)
+    case valueError(errMsg: String)
 }
 
 func lastError() -> String {
@@ -218,7 +219,7 @@ func BoosterFree(_ handle: BoosterHandle) {
     }
 }
 
-// TODO: throws when set param not ok
+// TODO: throws when set param not ok?
 func BoosterSetParam(handle: BoosterHandle, key: String, value: String) {
     guard XGBoosterSetParam(handle, key, value) >= 0 else {
         let errMsg = lastError()
@@ -269,9 +270,22 @@ func BoosterGetAttrNames(handle: BoosterHandle) -> [String]? {
     return attrs
 }
 
-func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int, dmHandle: DMatrixHandle) {
+func BoosterUpdateOneIter(handle: BoosterHandle, currentIter nIter: Int,
+                          dmHandle: DMatrixHandle) {
     let iter: Int32 = Int32(nIter)
     guard XGBoosterUpdateOneIter(handle, iter, dmHandle) >= 0 else {
+        let errMsg = lastError()
+        print("booster update one iter failed, err msg: \(errMsg)")
+        return
+    }
+}
+
+func BoosterBoostOneIter(handle: BoosterHandle, dmHandle: DMatrixHandle,
+                         grad: [Float], hess: [Float]) {
+    var grad = grad
+    var hess = hess
+    guard XGBoosterBoostOneIter(handle, dmHandle, &grad, &hess,
+                                UInt64(grad.count)) >= 0 else {
         let errMsg = lastError()
         print("booster update one iter failed, err msg: \(errMsg)")
         return
