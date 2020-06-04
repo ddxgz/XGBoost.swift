@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           Documentation - XGBoost.swift
         </a>
-         (79% documented)
+         (80% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -68,10 +68,10 @@
                 <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift22xgbRegisterLogCallbackyyySPys4Int8VGSgXCSgF">xgbRegisterLogCallback(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set6fnEval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSaySSGSayAQ_SStGSgSSAM_Sf0H0tSaySfG_AQtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:data:numRound:evalMetric:evalSet:fnEval:modelFile:callbacks:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set5fnObj0K4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSaySSGSayAR_SStGSgSaySfG4grad_AV4hesstAV_ARtcSgSSAN_Sf0H0tAV_ARtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:data:numRound:evalMetric:evalSet:fnObj:fnEval:modelFile:callbacks:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold6fnEval9callbacksSDySSSaySfGGSaySS4name_SS5valuetG_AA7DMatrixCS2iSSAK_Sf4evaltAI_AOtcSgSayAA11XGBCallback_pGSgtF">xgboostCV(params:data:numRound:nFold:fnEval:callbacks:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold5fnObj0J4Eval9callbacksSDySSSaySfGGSaySS4name_SS5valuetG_AA7DMatrixCS2iAJ4grad_AJ4hesstAJ_APtcSgSSAL_Sf4evaltAJ_APtcSgSayAA11XGBCallback_pGSgtF">xgboostCV(params:data:numRound:nFold:fnObj:fnEval:callbacks:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:12XGBoostSwift14xgboostVersionSi5major_Si5minorSi5patchtyF">xgboostVersion()</a>
@@ -105,6 +105,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12XGBoostSwift8FuncEvala">FuncEval</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12XGBoostSwift7FuncObja">FuncObj</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12XGBoostSwift5Parama">Param</a>
@@ -469,9 +472,9 @@ Refer to <a href="https://xgboost.readthedocs.io/en/latest/tutorials/saving_mode
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7BoosterC6update4data11currentIteryAA7DMatrixC_SitF"></a>
-                    <a name="//apple_ref/swift/Method/update(data:currentIter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7BoosterC6update4data11currentIteryAA7DMatrixC_SitF">update(data:<wbr>currentIter:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7BoosterC6update4data11currentIter5fnObjyAA7DMatrixC_SiSaySfG4grad_AJ4hesstAJ_AItcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/update(data:currentIter:fnObj:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC6update4data11currentIter5fnObjyAA7DMatrixC_SiSaySfG4grad_AJ4hesstAJ_AItcSgtF">update(data:<wbr>currentIter:<wbr>fnObj:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -486,7 +489,7 @@ Refer to <a href="https://xgboost.readthedocs.io/en/latest/tutorials/saving_mode
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">currentIter</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">currentIter</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">fnObj</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12XGBoostSwift7FuncObja">FuncObj</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -639,9 +642,9 @@ Refer to <a href="https://xgboost.readthedocs.io/en/latest/tutorials/saving_mode
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimitSaySfGAA7DMatrixC_SbSitF"></a>
-                    <a name="//apple_ref/swift/Method/predict(data:outputMargin:nTreeLimit:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimitSaySfGAA7DMatrixC_SbSitF">predict(data:<wbr>outputMargin:<wbr>nTreeLimit:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimit8trainingSaySfGAA7DMatrixC_SbSiSbtF"></a>
+                    <a name="//apple_ref/swift/Method/predict(data:outputMargin:nTreeLimit:training:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7BoosterC7predict4data12outputMargin10nTreeLimit8trainingSaySfGAA7DMatrixC_SbSiSbtF">predict(data:<wbr>outputMargin:<wbr>nTreeLimit:<wbr>training:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -656,8 +659,10 @@ Refer to <a href="https://xgboost.readthedocs.io/en/latest/tutorials/saving_mode
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">predict</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="nv">outputMargin</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
-                    <span class="nv">nTreeLimit</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">predict</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span>
+                    <span class="nv">outputMargin</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nv">nTreeLimit</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="nv">training</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -774,7 +779,7 @@ trees (default value)</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-03)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

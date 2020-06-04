@@ -4,9 +4,16 @@ import Foundation
 /// A pair of parameter name and value to be set for xgboost.
 public typealias Param = (name: String, value: String)
 
-/// Function signature for customized evaluation, the returned name should not
-/// contain colon ":"
+/// Function signature for customized evaluation. The first parameter is the
+/// predicted values, the second parameter is the DMatrix of training data that
+/// contains label. It returns the name of the evaluation function and the value
+/// of the evaluation. The returned name should not contain colon ":"
 public typealias FuncEval = ([Float], DMatrix) -> (name: String, eval: Float)
+
+/// Function signature for customized objective function. The first parameter is
+/// the predicted values, the second parameter is the DMatrix of training
+/// data that contains label. It returns gradient and second order gradient.
+public typealias FuncObj = ([Float], DMatrix) -> (grad: [Float], hess: [Float])
 
 /// A Booster of XGBoost, the model of XGBoost.
 public class Booster {
@@ -146,7 +153,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                  */
+                                                                                                           */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -160,7 +167,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                 */
+                                                                                                          */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -177,7 +184,7 @@ public class Booster {
     }
 
     /// Update for 1 iteration, should not be called directly
-    public func update(data: DMatrix, currentIter: Int) {
+    public func update(data: DMatrix, currentIter: Int, fnObj: FuncObj? = nil) {
         guard handle != nil else {
             errLog("booster not initialized!")
             return
@@ -186,8 +193,14 @@ public class Booster {
             errLog("data dmatrix not initialized!")
             return
         }
-        BoosterUpdateOneIter(handle: self.handle!, currentIter: currentIter,
-                             dmHandle: data.dmHandle!)
+        if fnObj == nil {
+            BoosterUpdateOneIter(handle: self.handle!, currentIter: currentIter,
+                                 dmHandle: data.dmHandle!)
+        } else {
+            let pred = predict(data: data, outputMargin: true, training: true)
+            let (grad, hess) = fnObj!(pred, data)
+            try! boost(data: data, grad: grad, hess: hess)
+        }
     }
 
     // TODO:
@@ -246,7 +259,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                                                 */
+                                                                                                          */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
@@ -260,9 +273,11 @@ public class Booster {
            trees (default value)
       - Returns: [Float]
 
-                                                                                 */
-    public func predict(data: DMatrix, outputMargin: Bool = false,
-                        nTreeLimit: Int = 0) -> [Float] {
+                                                                                                          */
+    public func predict(data: DMatrix,
+                        outputMargin: Bool = false,
+                        nTreeLimit: Int = 0,
+                        training: Bool = false) -> [Float] {
         guard handle != nil else {
             errLog("booster not initialized!")
             return [Float]()
@@ -275,7 +290,7 @@ public class Booster {
         if outputMargin { option = 1 }
         let result = BoosterPredict(handle: handle!, dmHandle: data.dmHandle!,
                                     optionMask: option,
-                                    nTreeLimit: nTreeLimit, training: false)
+                                    nTreeLimit: nTreeLimit, training: training)
         guard result != nil else {
             errLog("no result predicted")
             return [Float]()
@@ -320,8 +335,12 @@ public class Booster {
           pass multiple sets for `eval_metric` in the params array.
      - evalSet: list of tuples (DMatrix, name of the eval data). The
        validation sets will evaluated during training.
+     - fnObj: pass an optional custom objective function.
+     - fnEval: pass an optional custom evaluation function.
      - modelFile: String - If the modelFile param is provided, it will load the
        model from that file.
+     - callbacks: pass optional callbacks, which should conform to the
+       `XGBCallback` protocol
 
    - Returns: Booster
 
@@ -331,6 +350,7 @@ public func xgboost(params: [Param] = [],
                     numRound: Int = 10,
                     evalMetric: [String] = [],
                     evalSet: [(DMatrix, String)]? = nil,
+                    fnObj: FuncObj? = nil,
                     fnEval: FuncEval? = nil,
                     modelFile: String? = nil,
                     callbacks: [XGBCallback]? = nil) throws -> Booster {
@@ -390,7 +410,7 @@ public func xgboost(params: [Param] = [],
         }
 
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
-        bst.update(data: data, currentIter: i)
+        bst.update(data: data, currentIter: i, fnObj: fnObj)
 
         var evalResult = [(String, Float)]()
         if evalset.count > 0 {
@@ -430,10 +450,10 @@ internal class CVPack {
         self.booster = try! Booster(params: params, cache: [train, test])
     }
 
-    internal func update(_ round: Int) {
+    internal func update(_ round: Int, fnObj: FuncObj? = nil) {
         // BoosterUpdateOneIter(handle: self.booster, nIter: round, dmHandle:
         // self.train)
-        self.booster.update(data: train, currentIter: round)
+        self.booster.update(data: train, currentIter: round, fnObj: fnObj)
     }
 
     internal func eval(_ round: Int, fnEval: FuncEval? = nil) -> String? {
@@ -503,10 +523,26 @@ public typealias CVResult = [String: [Float]]
 
 // TODO: support seed, early_stopping_rounds
 /// Cross-validation with given parameters
+///   - Parameters:
+///     - params: [(String, String)] - Booster parameters. It was changed from
+///          Dictionary to array of set to enable multiple `eval_metric`, now it
+///          does not need to provide `evalMetric` for multiple `eval_metric`. You
+///          pass multiple sets for `eval_metric` in the params array.
+///     - data: DMatrix
+///     - numRound: Int - Number of boosting iterations.
+///     - nFold: number of cross validation folds
+///     - fnObj: pass an optional custom objective function.
+///     - fnEval: pass an optional custom evaluation function.
+///     - callbacks: pass optional callbacks, which should conform to the
+/// `XGBCallback` protocol
+
+///   - Returns: CVResult
+
 public func xgboostCV(params: [Param] = [],
                       data: DMatrix,
                       numRound: Int = 10,
                       nFold: Int = 5,
+                      fnObj: FuncObj? = nil,
                       fnEval: FuncEval? = nil,
                       callbacks: [XGBCallback]? = nil) -> CVResult {
     let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
@@ -529,7 +565,7 @@ public func xgboostCV(params: [Param] = [],
         }
 
         for fold in cvFolds {
-            fold.update(i)
+            fold.update(i, fnObj: fnObj)
         }
 
         let res = aggCV(cvFolds.map { $0.eval(i, fnEval: fnEval) })
