@@ -33,8 +33,7 @@ public struct CallbackEnv {
     var currentIter: Int
     var beginIter: Int
     var endIter: Int
-    var evalResult: [(String, Float)]? = nil
-    var cvEvalResult: CvIterResult? = nil
+    var evalResult: [(String, Float, Float?)]? = nil
 }
 
 /**
@@ -64,9 +63,14 @@ public struct SimplePrintEvalution: XGBCallback {
             var msg = "\(printPrefix)  currentIter: \(i)  beginIter: " +
                 "\(env.beginIter)  endIter: \(env.endIter)"
             if env.evalResult != nil {
-                msg += "  evalResult:"
+                msg += "  evalResult: "
                 for res in env.evalResult! {
-                    msg += "  \(res)"
+                    // msg += "  \(res)"
+                    msg += " (\(res.0): \(res.1)"
+                    if res.2 != nil {
+                        msg += ", std: \(res.2!)"
+                    }
+                    msg += ") "
                 }
             }
             print(msg)

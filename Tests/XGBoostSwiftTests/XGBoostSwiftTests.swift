@@ -105,7 +105,7 @@ final class XGBoostSwiftTests: XCTestCase {
             ("objective", "binary:logistic"),
             ("max_depth", "2"),
         ]
-        let bst = try xgboost(params: param, data: train, numRound: 1, evalMetric: ["auc"])
+        let bst = try xgboost(params: param, data: train, numRound: 1)
 
         XCTAssertTrue(bst is Booster)
 
@@ -118,7 +118,7 @@ final class XGBoostSwiftTests: XCTestCase {
         XCTAssertTrue(saved)
 
         let bstLoaded = try xgboost(params: param, data: train, numRound: 0,
-                                    evalMetric: ["auc"], modelFile: modelfile)
+                                    modelFile: modelfile)
         let resultLoaded = bstLoaded.predict(data: test)
         XCTAssertTrue(resultLoaded.elementsEqual(result))
 
@@ -128,7 +128,7 @@ final class XGBoostSwiftTests: XCTestCase {
         XCTAssertTrue(savedJson)
 
         let bstJsonLoaded = try xgboost(params: param, data: train, numRound: 0,
-                                        evalMetric: ["auc"], modelFile: modelfileJson)
+                                        modelFile: modelfileJson)
         let resultJsonLoaded = bstJsonLoaded.predict(data: test)
         XCTAssertTrue(resultJsonLoaded.elementsEqual(result))
 
@@ -209,9 +209,10 @@ final class XGBoostSwiftTests: XCTestCase {
         let param = [
             ("objective", "binary:logistic"),
             ("max_depth", "2"),
+            ("eval_metric", "auc"),
+            ("eval_metric", "error"),
         ]
-        let bst = try xgboost(params: param, data: train, numRound: 1,
-                              evalMetric: ["auc", "error"])
+        let bst = try xgboost(params: param, data: train, numRound: 1)
 
         bst.setParam(name: "alpha", value: "0.1")
         bst.setEvalMetric(["logloss", "rmse"])
@@ -233,6 +234,16 @@ final class XGBoostSwiftTests: XCTestCase {
         let bst = try xgboost(data: train, numRound: 10,
                               evalSet: [(train, "train"), (test, "test")],
                               callbacks: callbacks)
+
+        let param = [
+            ("objective", "binary:logistic"),
+            ("max_depth", "2"),
+            ("eval_metric", "auc"),
+            ("eval_metric", "error"),
+        ]
+        let cvResults = xgboostCV(params: param, data: train, numRound: 10,
+                                  nFold: 5,
+                                  callbacks: callbacks)
     }
 
     func testFuncEval() throws {

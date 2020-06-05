@@ -153,7 +153,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                           */
+                                                                                                                         */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -167,7 +167,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                          */
+                                                                                                                        */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -203,7 +203,6 @@ public class Booster {
         }
     }
 
-    // TODO:
     /// boost for 1 iteration, with customized gradient and hessian, should not be called directly
     func boost(data: DMatrix, grad: [Float], hess: [Float]) throws {
         if grad.count != hess.count {
@@ -259,21 +258,21 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                                                                          */
+                                                                                                                        */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
 
+    // TODO: support more option mask
     /**
-     Predict labels on the data.
-      - Parameters:
-         - data: DMatrix - The data to predict on
-         - outputMargin: bool - Whether to output the untransformed margin value
-         - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
-           trees (default value)
-      - Returns: [Float]
-
-                                                                                                          */
+      Predict labels on the data.
+       - Parameters:
+          - data: DMatrix - The data to predict on
+          - outputMargin: bool - Whether to output the untransformed margin value
+          - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
+            trees (default value)
+       - Returns: [Float]
+     */
     public func predict(data: DMatrix,
                         outputMargin: Bool = false,
                         nTreeLimit: Int = 0,
@@ -348,7 +347,6 @@ public class Booster {
 public func xgboost(params: [Param] = [],
                     data: DMatrix,
                     numRound: Int = 10,
-                    evalMetric: [String] = [],
                     evalSet: [(DMatrix, String)]? = nil,
                     fnObj: FuncObj? = nil,
                     fnEval: FuncEval? = nil,
@@ -412,11 +410,11 @@ public func xgboost(params: [Param] = [],
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
         bst.update(data: data, currentIter: i, fnObj: fnObj)
 
-        var evalResult = [(String, Float)]()
+        var evalResult = [(String, Float, Float?)]()
         if evalset.count > 0 {
             let evalMsg = bst.evalSet(evals: evalset, currentIter: i, fnEval: fnEval)!
             let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
-            evalResult = res.map { (String($0[0]), Float($0[1])!) }
+            evalResult = res.map { (String($0[0]), Float($0[1])!, nil) }
         }
 
         if callbacks != nil {
@@ -488,7 +486,7 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
     return cvpacks
 }
 
-typealias CvIterResult = [(String, Float, Float)]
+typealias CvIterResult = [(String, Float, Float?)]
 
 func aggCV(_ results: [String?]) -> CvIterResult {
     var cvMap = [String: [Float]]()
@@ -535,13 +533,11 @@ public typealias CVResult = [String: [Float]]
 ///     - fnEval: pass an optional custom evaluation function.
 ///     - callbacks: pass optional callbacks, which should conform to the
 /// `XGBCallback` protocol
-
 ///   - Returns: CVResult
-
 public func xgboostCV(params: [Param] = [],
                       data: DMatrix,
                       numRound: Int = 10,
-                      nFold: Int = 5,
+                      nFold: Int = 3,
                       fnObj: FuncObj? = nil,
                       fnEval: FuncEval? = nil,
                       callbacks: [XGBCallback]? = nil) -> CVResult {
@@ -558,8 +554,7 @@ public func xgboostCV(params: [Param] = [],
                                                        currentIter: i,
                                                        beginIter: 0,
                                                        endIter: numRound,
-                                                       evalResult: nil,
-                                                       cvEvalResult: nil))
+                                                       evalResult: nil))
                 }
             }
         }
@@ -575,8 +570,10 @@ public func xgboostCV(params: [Param] = [],
             results[k + "-mean"] = means
 
             var stds = results[k + "-std"] ?? [Float]()
-            stds.append(std)
-            results[k + "-std"] = stds
+            if std != nil {
+                stds.append(std!)
+                results[k + "-std"] = stds
+            }
         }
 
         if callbacks != nil {
@@ -587,8 +584,7 @@ public func xgboostCV(params: [Param] = [],
                                                        currentIter: i,
                                                        beginIter: 0,
                                                        endIter: numRound,
-                                                       evalResult: nil,
-                                                       cvEvalResult: res))
+                                                       evalResult: res))
                 }
             }
         }
