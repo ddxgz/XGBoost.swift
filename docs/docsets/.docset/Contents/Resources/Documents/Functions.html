@@ -68,7 +68,7 @@
                 <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift22xgbRegisterLogCallbackyyySPys4Int8VGSgXCSgF">xgbRegisterLogCallback(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set5fnObj0K4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSaySSGSayAR_SStGSgSaySfG4grad_AV4hesstAV_ARtcSgSSAN_Sf0H0tAV_ARtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:data:numRound:evalMetric:evalSet:fnObj:fnEval:modelFile:callbacks:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift7xgboost6params4data8numRound7evalSet5fnObj0J4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSayAQ_SStGSgSaySfG4grad_AT4hesstAT_AQtcSgSSAM_Sf0H0tAT_AQtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:data:numRound:evalSet:fnObj:fnEval:modelFile:callbacks:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:12XGBoostSwift9xgboostCV6params4data8numRound5nFold5fnObj0J4Eval9callbacksSDySSSaySfGGSaySS4name_SS5valuetG_AA7DMatrixCS2iAJ4grad_AJ4hesstAJ_APtcSgSSAL_Sf4evaltAJ_APtcSgSayAA11XGBCallback_pGSgtF">xgboostCV(params:data:numRound:nFold:fnObj:fnEval:callbacks:)</a>
@@ -104,6 +104,9 @@
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:12XGBoostSwift10EvalResulta">EvalResult</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12XGBoostSwift8FuncEvala">FuncEval</a>
               </li>
               <li class="nav-group-task">
@@ -133,9 +136,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set5fnObj0K4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSaySSGSayAR_SStGSgSaySfG4grad_AV4hesstAV_ARtcSgSSAN_Sf0H0tAV_ARtcSgSSSgSayAA11XGBCallback_pGSgtKF"></a>
-                    <a name="//apple_ref/swift/Function/xgboost(params:data:numRound:evalMetric:evalSet:fnObj:fnEval:modelFile:callbacks:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12XGBoostSwift7xgboost6params4data8numRound10evalMetric0H3Set5fnObj0K4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSaySSGSayAR_SStGSgSaySfG4grad_AV4hesstAV_ARtcSgSSAN_Sf0H0tAV_ARtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:<wbr>data:<wbr>numRound:<wbr>evalMetric:<wbr>evalSet:<wbr>fnObj:<wbr>fnEval:<wbr>modelFile:<wbr>callbacks:<wbr>)</a>
+                    <a name="/s:12XGBoostSwift7xgboost6params4data8numRound7evalSet5fnObj0J4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSayAQ_SStGSgSaySfG4grad_AT4hesstAT_AQtcSgSSAM_Sf0H0tAT_AQtcSgSSSgSayAA11XGBCallback_pGSgtKF"></a>
+                    <a name="//apple_ref/swift/Function/xgboost(params:data:numRound:evalSet:fnObj:fnEval:modelFile:callbacks:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift7xgboost6params4data8numRound7evalSet5fnObj0J4Eval9modelFile9callbacksAA7BoosterCSaySS4name_SS5valuetG_AA7DMatrixCSiSayAQ_SStGSgSaySfG4grad_AT4hesstAT_AQtcSgSSAM_Sf0H0tAT_AQtcSgSSSgSayAA11XGBCallback_pGSgtKF">xgboost(params:<wbr>data:<wbr>numRound:<wbr>evalSet:<wbr>fnObj:<wbr>fnEval:<wbr>modelFile:<wbr>callbacks:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -153,7 +156,6 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
                     <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span>
                     <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                    <span class="nv">evalMetric</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
                     <span class="nv">evalSet</span><span class="p">:</span> <span class="p">[(</span><span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span> <span class="kt">String</span><span class="p">)]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
                     <span class="nv">fnObj</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift7FuncObja">FuncObj</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
                     <span class="nv">fnEval</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8FuncEvala">FuncEval</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
@@ -301,7 +303,7 @@ model from that file.</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift5Parama">Param</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
                       <span class="nv">data</span><span class="p">:</span> <span class="kt"><a href="Classes/DMatrix.html">DMatrix</a></span><span class="p">,</span>
                       <span class="nv">numRound</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                      <span class="nv">nFold</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+                      <span class="nv">nFold</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
                       <span class="nv">fnObj</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift7FuncObja">FuncObj</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
                       <span class="nv">fnEval</span><span class="p">:</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8FuncEvala">FuncEval</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
                       <span class="nv">callbacks</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Protocols/XGBCallback.html">XGBCallback</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="Typealiases.html#/s:12XGBoostSwift8CVResulta">CVResult</a></span></code></pre>
@@ -474,7 +476,7 @@ which is the log message.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-04)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-05)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -44,12 +44,13 @@ public struct SimplePrintEvalution: XGBCallback {
     public let beforeIteration: Bool = false
 
     public var period: Int = 1
-    // let showSTDV: Bool = false
+    var showSTD: Bool = true
 
     public var printPrefix: String = "[Simple callback printer]"
 
-    public init(period: Int = 1, printPrefix: String? = nil) {
+    public init(period: Int = 1, showSTD: Bool = true, printPrefix: String? = nil) {
         self.period = period
+        self.showSTD = showSTD
         if printPrefix != nil {
             self.printPrefix = printPrefix!
         }
@@ -67,7 +68,7 @@ public struct SimplePrintEvalution: XGBCallback {
                 for res in env.evalResult! {
                     // msg += "  \(res)"
                     msg += " (\(res.0): \(res.1)"
-                    if res.2 != nil {
+                    if showSTD, res.2 != nil {
                         msg += ", std: \(res.2!)"
                     }
                     msg += ") "
