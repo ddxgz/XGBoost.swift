@@ -4,6 +4,10 @@ import Foundation
 /// A pair of parameter name and value to be set for xgboost.
 public typealias Param = (name: String, value: String)
 
+/// Evaluation result, with the name of the measure, mean value and option
+/// standard deviation
+public typealias EvalResult = [(String, Float, Float?)]
+
 /// Function signature for customized evaluation. The first parameter is the
 /// predicted values, the second parameter is the DMatrix of training data that
 /// contains label. It returns the name of the evaluation function and the value
@@ -153,7 +157,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                         */
+                                                                                                                              */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -167,7 +171,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                        */
+                                                                                                                             */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -258,7 +262,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                                                                                        */
+                                                                                                                             */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
@@ -410,7 +414,8 @@ public func xgboost(params: [Param] = [],
         // BoosterUpdateOneIter(handle: booster!, currentIter: i, dmHandle: data.dmHandle!)
         bst.update(data: data, currentIter: i, fnObj: fnObj)
 
-        var evalResult = [(String, Float, Float?)]()
+        // var evalResult = [(String, Float, Float?)]()
+        var evalResult = EvalResult()
         if evalset.count > 0 {
             let evalMsg = bst.evalSet(evals: evalset, currentIter: i, fnEval: fnEval)!
             let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
@@ -486,9 +491,7 @@ internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
     return cvpacks
 }
 
-typealias CvIterResult = [(String, Float, Float?)]
-
-func aggCV(_ results: [String?]) -> CvIterResult {
+func aggCV(_ results: [String?]) -> EvalResult {
     var cvMap = [String: [Float]]()
 
     for (i, line) in results.enumerated() {
@@ -508,7 +511,7 @@ func aggCV(_ results: [String?]) -> CvIterResult {
             cvMap[idxKey] = values
         }
     }
-    var results = CvIterResult()
+    var results = EvalResult()
     for (idxKey, v) in cvMap {
         let k = String(idxKey.split(separator: "\t")[1])
         results.append((k, v.mean(), v.std()))

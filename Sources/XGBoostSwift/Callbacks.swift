@@ -33,7 +33,7 @@ public struct CallbackEnv {
     var currentIter: Int
     var beginIter: Int
     var endIter: Int
-    var evalResult: [(String, Float, Float?)]? = nil
+    var evalResult: EvalResult? = nil
 }
 
 /**
