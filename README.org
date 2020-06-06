@@ -79,10 +79,12 @@ let pred = bst.predict(data: test)
 let cvResult = xgboostCV(data: train, numRound: 10)
 
 // Use callbacks
-// The `SimplePrintEvalution` is a builtin simple example of callback.
+// The `SimplePrintEvalution` and `EarlyStop` are builtin simple example of callback.
 // You can also define a custom callback that conforms to XGBCallback protocol, see
 // more in the document of protocol.
-let callbacks = [SimplePrintEvalution(period: 5)]
+let callbacks = [SimplePrintEvalution(period: 5),
+                 EarlyStop(stoppingRounds: 5)]
+
 let bst = try xgboost(data: train, numRound: 10, evalSet: [(test, "test")],
                         callbacks: callbacks)
 

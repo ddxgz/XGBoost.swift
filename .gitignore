@@ -1,5 +1,6 @@
 playground.swift
 .swiftformat
+.vscode/
 .DS_Store
 
 # Xcode

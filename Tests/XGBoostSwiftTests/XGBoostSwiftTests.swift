@@ -182,7 +182,7 @@ final class XGBoostSwiftTests: XCTestCase {
         ]
         // let cvFolds = XGBoostSwift.makeNFold(data: train, nFold: 5, evalMetric:
         // ["auc"], shuffle: true)
-        let cvResults = xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
+        let cvResults = try xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
         XCTAssertFalse(cvResults.isEmpty)
         XCTAssertEqual(cvResults.first!.value.count, 10)
     }
@@ -230,7 +230,7 @@ final class XGBoostSwiftTests: XCTestCase {
         let train = try DMatrix(fromFile: "data/agaricus.txt.train")
         let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 
-        let callbacks = [SimplePrintEvalution(period: 1, showSTD: true)]
+        var callbacks: [XGBCallback] = [SimplePrintEvalution(period: 1, showSTD: true)]
         let bst = try xgboost(data: train, numRound: 10,
                               evalSet: [(train, "train"), (test, "test")],
                               callbacks: callbacks)
@@ -239,11 +239,13 @@ final class XGBoostSwiftTests: XCTestCase {
             ("objective", "binary:logistic"),
             ("max_depth", "2"),
             ("eval_metric", "auc"),
-            ("eval_metric", "error"),
+            // ("eval_metric", "error"),
         ]
-        let cvResults = xgboostCV(params: param, data: train, numRound: 10,
-                                  nFold: 5,
-                                  callbacks: callbacks)
+
+        callbacks.append(EarlyStop(stoppingRounds: 1, maximize: true))
+        let cvResults = try xgboostCV(params: param, data: train, numRound: 10,
+                                      nFold: 5,
+                                      callbacks: callbacks)
     }
 
     func testFuncEval() throws {

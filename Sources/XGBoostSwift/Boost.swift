@@ -157,7 +157,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                              */
+                                                                                                                                                  */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -171,7 +171,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                             */
+                                                                                                                                                 */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -262,7 +262,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                                                                                             */
+                                                                                                                                                 */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
@@ -364,6 +364,11 @@ public func xgboost(params: [Param] = [],
     let evalset = evalSet ?? [(DMatrix, String)]()
     let evals = evalset.map { $0.0.dmHandle }
 
+    var evalResult: EvalResult?
+    if evalset.count > 0 {
+        evalResult = EvalResult()
+    }
+
     var dms = [data.dmHandle] + evals
     let booster = BoosterCreate(dmHandles: &dms)
 
@@ -399,7 +404,7 @@ public func xgboost(params: [Param] = [],
         if callbacks != nil {
             for callback in callbacks! {
                 if callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(
+                    try callback.callback(env: CallbackEnv(
                         model: bst,
                         cvPacks: nil,
                         currentIter: i,
@@ -415,24 +420,27 @@ public func xgboost(params: [Param] = [],
         bst.update(data: data, currentIter: i, fnObj: fnObj)
 
         // var evalResult = [(String, Float, Float?)]()
-        var evalResult = EvalResult()
         if evalset.count > 0 {
             let evalMsg = bst.evalSet(evals: evalset, currentIter: i, fnEval: fnEval)!
             let res = evalMsg.split(separator: "\t")[1...].map { $0.split(separator: ":") }
             evalResult = res.map { (String($0[0]), Float($0[1])!, nil) }
         }
 
-        if callbacks != nil {
-            for callback in callbacks! {
-                if !callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(model: bst,
-                                                       cvPacks: nil,
-                                                       currentIter: i,
-                                                       beginIter: 0,
-                                                       endIter: numRound,
-                                                       evalResult: evalResult))
+        do {
+            if callbacks != nil {
+                for callback in callbacks! {
+                    if !callback.beforeIteration {
+                        try callback.callback(env: CallbackEnv(model: bst,
+                                                               cvPacks: nil,
+                                                               currentIter: i,
+                                                               beginIter: 0,
+                                                               endIter: numRound,
+                                                               evalResult: evalResult))
+                    }
                 }
             }
+        } catch EarlyStopError.stopAt {
+            break
         }
     }
     return bst
@@ -543,7 +551,7 @@ public func xgboostCV(params: [Param] = [],
                       nFold: Int = 3,
                       fnObj: FuncObj? = nil,
                       fnEval: FuncEval? = nil,
-                      callbacks: [XGBCallback]? = nil) -> CVResult {
+                      callbacks: [XGBCallback]? = nil) throws -> CVResult {
     let cvFolds = makeNFold(data: data, nFold: nFold, params: params,
                             shuffle: true)
 
@@ -552,12 +560,12 @@ public func xgboostCV(params: [Param] = [],
         if callbacks != nil {
             for callback in callbacks! {
                 if callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(model: nil,
-                                                       cvPacks: cvFolds,
-                                                       currentIter: i,
-                                                       beginIter: 0,
-                                                       endIter: numRound,
-                                                       evalResult: nil))
+                    try callback.callback(env: CallbackEnv(model: nil,
+                                                           cvPacks: cvFolds,
+                                                           currentIter: i,
+                                                           beginIter: 0,
+                                                           endIter: numRound,
+                                                           evalResult: nil))
                 }
             }
         }
@@ -579,17 +587,21 @@ public func xgboostCV(params: [Param] = [],
             }
         }
 
-        if callbacks != nil {
-            for callback in callbacks! {
-                if !callback.beforeIteration {
-                    callback.callback(env: CallbackEnv(model: nil,
-                                                       cvPacks: cvFolds,
-                                                       currentIter: i,
-                                                       beginIter: 0,
-                                                       endIter: numRound,
-                                                       evalResult: res))
+        do {
+            if callbacks != nil {
+                for callback in callbacks! {
+                    if !callback.beforeIteration {
+                        try callback.callback(env: CallbackEnv(model: nil,
+                                                               cvPacks: cvFolds,
+                                                               currentIter: i,
+                                                               beginIter: 0,
+                                                               endIter: numRound,
+                                                               evalResult: res))
+                    }
                 }
             }
+        } catch EarlyStopError.stopAt {
+            break
         }
     }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>XGBCallback Protocol Reference</title>
+    <title>EarlyStop Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/XGBCallback" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/EarlyStop" class="dashAnchor"></a>
 
-    <a title="XGBCallback Protocol Reference"></a>
+    <a title="EarlyStop Class Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html"> Reference</a>
       <img class="carat" src="../img/carat.png" />
-      XGBCallback Protocol Reference
+      EarlyStop Class Reference
     </p>
 
     <div class="content-wrapper">
@@ -126,18 +126,14 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>XGBCallback</h1>
+            <h1>EarlyStop</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">XGBCallback</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">EarlyStop</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/XGBCallback.html">XGBCallback</a></span></code></pre>
 
                 </div>
               </div>
-            <p>protocol for Callback sent to training / cross validation function.
-Custom callback need to implement the <code>callback()</code> method that has 1
-parameter in type of <code><a href="../Structs.html#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a></code>. A implementation of callback should also
-have a property <code>beforeIteration</code> to specify whether the callback should be
-executed before a iteration.</p>
+            <p>Callback for early stop</p>
 
           </div>
         </section>
@@ -159,14 +155,67 @@ executed before a iteration.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>To specify is the callback should be called before an iteration</p>
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">beforeIteration</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12XGBoostSwift9EarlyStopC14stoppingRoundsSivp"></a>
+                    <a name="//apple_ref/swift/Property/stoppingRounds" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift9EarlyStopC14stoppingRoundsSivp">stoppingRounds</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">beforeIteration</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">stoppingRounds</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12XGBoostSwift9EarlyStopC14stoppingRounds8maximizeACSi_Sbtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(stoppingRounds:maximize:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12XGBoostSwift9EarlyStopC14stoppingRounds8maximizeACSi_Sbtcfc">init(stoppingRounds:<wbr>maximize:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">stoppingRounds</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">maximize</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -186,14 +235,13 @@ executed before a iteration.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The function to be called</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">callback</span><span class="p">(</span><span class="nv">env</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">callback</span><span class="p">(</span><span class="nv">env</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:12XGBoostSwift11CallbackEnvV">CallbackEnv</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
