@@ -88,7 +88,7 @@ let test = try DMatrix(fromFile: "data/agaricus.txt.test")
 let bst = try xgboost(data: train, numRound: 10)
 let pred = bst.predict(data: test)
 
-let cvResult = xgboostCV(data: train, numRound: 10)
+let cvResult = try xgboostCV(data: train, numRound: 10)
 
 // save and load model as binary
 let modelBin = "bst.bin"
@@ -180,7 +180,7 @@ let configfile = "Tests/tmp/config.json"
 try bst.saveConfig(toFile: configfile)
 
 // Cross Validation
-let cvResults = xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
+let cvResults = try xgboostCV(params: param, data: train, numRound: 10, nFold: 5)
 ```
 
 ### Callback

@@ -213,7 +213,7 @@ used for testing.</p>
 <span class="k">let</span> <span class="nv">bst</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">xgboost</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">pred</span> <span class="o">=</span> <span class="n">bst</span><span class="o">.</span><span class="nf">predict</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">test</span><span class="p">)</span>
 
-<span class="k">let</span> <span class="nv">cvResult</span> <span class="o">=</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">cvResult</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="c1">// save and load model as binary</span>
 <span class="k">let</span> <span class="nv">modelBin</span> <span class="o">=</span> <span class="s">"bst.bin"</span>
@@ -301,7 +301,7 @@ used for testing.</p>
 <span class="k">try</span> <span class="n">bst</span><span class="o">.</span><span class="nf">saveConfig</span><span class="p">(</span><span class="nv">toFile</span><span class="p">:</span> <span class="n">configfile</span><span class="p">)</span>
 
 <span class="c1">// Cross Validation</span>
-<span class="k">let</span> <span class="nv">cvResults</span> <span class="o">=</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">nFold</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">cvResults</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">xgboostCV</span><span class="p">(</span><span class="nv">params</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="nv">numRound</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">nFold</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre>
 <h3 id='callback' class='heading'>Callback</h3>
 

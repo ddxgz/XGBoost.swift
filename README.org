@@ -76,7 +76,7 @@ let bst = try xgboost(params: params, data: train, numRound: 10)
 
 let pred = bst.predict(data: test)
 
-let cvResult = xgboostCV(data: train, numRound: 10)
+let cvResult = try xgboostCV(data: train, numRound: 10)
 
 // Use callbacks
 // The `SimplePrintEvalution` and `EarlyStop` are builtin simple example of callback.
