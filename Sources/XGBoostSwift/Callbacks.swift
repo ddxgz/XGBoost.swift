@@ -42,8 +42,7 @@ public struct CallbackEnv {
 
 /**
  A simple callback printer
-
-    - Parameters:
+   - Parameters:
         - period: how often to print the evaluation result
         - showSTD: whether to show the standard deviation
         - printPrefix: the prefix string for each printed message, default as
@@ -90,7 +89,7 @@ public struct SimplePrintEvalution: XGBCallback {
 }
 
 /// Callback for early stop
-///  - Parameters:
+///   - Parameters:
 ///     - stoppingRounds: how many iterations allowed for no improving
 ///     - maximize: if to maximize the evaluation metric
 public class EarlyStop: XGBCallback {

@@ -15,7 +15,7 @@ public class DMatrix {
     public var initialized: Bool { handle != nil }
 
     /// The number of rows in the DMatrix
-    public var nRow: UInt64 {
+    public var numRow: UInt64 {
         if handle != nil {
             let n = DMatrixNumRow(handle!)
             guard n != nil else { return 0 }
@@ -24,7 +24,7 @@ public class DMatrix {
     }
 
     /// The number of cols in the DMatrix
-    public var nCol: UInt64 {
+    public var numCol: UInt64 {
         if handle != nil {
             let n = DMatrixNumCol(handle!)
             guard n != nil else { return 0 }
@@ -32,8 +32,8 @@ public class DMatrix {
         } else { return 0 }
     }
 
-    /// The shape of the DMatrix, [nRow, nCol]
-    public var shape: [UInt64] { [nRow, nCol] }
+    /// The shape of the DMatrix, [numRow, numCol]
+    public var shape: [UInt64] { [numRow, numCol] }
 
     /// The labels of the DMatrix
     public var label: [Float] {

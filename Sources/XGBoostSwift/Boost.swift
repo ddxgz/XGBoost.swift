@@ -479,15 +479,15 @@ internal class CVPack {
 internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
                         shuffle: Bool = true) -> [CVPack] {
     var cvpacks = [CVPack]()
-    // var idxSet = [Int32](0 ..< Int32(data.nRow))
-    var idxSet = [Int](0 ..< Int(data.nRow))
+    // var idxSet = [Int32](0 ..< Int32(data.numRow))
+    var idxSet = [Int](0 ..< Int(data.numRow))
 
     if shuffle {
         // idxSet = [Int32](idxSet.shuffled())
         idxSet = [Int](idxSet.shuffled())
     }
 
-    let foldSize = Int(data.nRow) / nFold
+    let foldSize = Int(data.numRow) / nFold
     for i in 0 ..< nFold {
         let testIdx = Array(idxSet[Int(i) * foldSize ..< (i + 1) * foldSize])
         let trainIdx = Array(Set(idxSet).subtracting(testIdx))

@@ -54,7 +54,7 @@ final class XGBoostSwiftTests: XCTestCase {
 
         let base_margins = train.base_margin
         XCTAssertEqual(base_margins.count, 0)
-        let base_marginSet = [Float](repeating: 1, count: Int(train.nRow))
+        let base_marginSet = [Float](repeating: 1, count: Int(train.numRow))
         train.base_margin = base_marginSet
         let base_marginGet = train.base_margin
         XCTAssertTrue(base_marginSet.elementsEqual(base_marginGet))
@@ -110,7 +110,7 @@ final class XGBoostSwiftTests: XCTestCase {
         XCTAssertTrue(bst is Booster)
 
         let result = bst.predict(data: test)
-        XCTAssertEqual(UInt64(result.count), test.nRow)
+        XCTAssertEqual(UInt64(result.count), test.numRow)
 
         let modelfile = "Tests/tmp/bst.model"
         try bst.saveModel(toFile: modelfile)
@@ -155,7 +155,7 @@ final class XGBoostSwiftTests: XCTestCase {
             lastEval = newEval
         }
         let result2 = bst.predict(data: test)
-        XCTAssertEqual(UInt64(result2.count), test.nRow)
+        XCTAssertEqual(UInt64(result2.count), test.numRow)
         XCTAssertFalse(result2.elementsEqual(result))
 
         // for i in 0 ..< 5

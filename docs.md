@@ -131,6 +131,11 @@ let trainRanged = train.slice(rows: 0 ..< 10)!
 // allow groups
 let trainSlicedGroup = train.slice(rows: [0, 3], allowGroups: true)!
 
+// get shape of DMatrix
+train.shape
+train.numRow
+train.numCol
+
 // Save DMatrix to binary file
 let dmFile = "Tests/tmp/dmfile.sliced"
 try trainSliced.saveBinary(toFile: dmFile)

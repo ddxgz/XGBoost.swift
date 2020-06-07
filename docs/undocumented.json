@@ -23,35 +23,35 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
-      "line": 55,
+      "line": 54,
       "symbol": "SimplePrintEvalution.period",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
-      "line": 58,
+      "line": 57,
       "symbol": "SimplePrintEvalution.printPrefix",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
-      "line": 60,
+      "line": 59,
       "symbol": "SimplePrintEvalution.init(period:showSTD:printPrefix:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
-      "line": 99,
+      "line": 98,
       "symbol": "EarlyStop.stoppingRounds",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
-      "line": 112,
+      "line": 111,
       "symbol": "EarlyStop.init(stoppingRounds:maximize:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
