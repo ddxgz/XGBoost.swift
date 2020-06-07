@@ -42,11 +42,6 @@ public struct CallbackEnv {
 
 /**
  A simple callback printer
-   - Parameters:
-        - period: how often to print the evaluation result
-        - showSTD: whether to show the standard deviation
-        - printPrefix: the prefix string for each printed message, default as
-          "[Simple callback printer]"
  */
 public struct SimplePrintEvalution: XGBCallback {
     public let beforeIteration: Bool = false
@@ -56,6 +51,13 @@ public struct SimplePrintEvalution: XGBCallback {
 
     public var printPrefix: String = "[Simple callback printer]"
 
+    /**
+      - Parameters:
+           - period: how often to print the evaluation result
+           - showSTD: whether to show the standard deviation
+           - printPrefix: the prefix string for each printed message, default as
+             "[Simple callback printer]"
+     */
     public init(period: Int = 1, showSTD: Bool = true, printPrefix: String? = nil) {
         self.period = period
         self.showSTD = showSTD
@@ -89,9 +91,6 @@ public struct SimplePrintEvalution: XGBCallback {
 }
 
 /// Callback for early stop
-///   - Parameters:
-///     - stoppingRounds: how many iterations allowed for no improving
-///     - maximize: if to maximize the evaluation metric
 public class EarlyStop: XGBCallback {
     public let beforeIteration: Bool = false
 
@@ -108,6 +107,9 @@ public class EarlyStop: XGBCallback {
 
     var state: State?
 
+    ///   - Parameters:
+    ///     - stoppingRounds: how many iterations allowed for no improving
+    ///     - maximize: if to maximize the evaluation metric
     public init(stoppingRounds: Int, maximize: Bool = false) {
         self.stoppingRounds = stoppingRounds
         self.maximizeScore = maximize
