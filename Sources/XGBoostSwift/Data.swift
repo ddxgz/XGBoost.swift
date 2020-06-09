@@ -80,8 +80,11 @@ public class DMatrix {
     }
 
     /// Construct DMatrix from file
-    public init(fromFile fname: String, format: String = "libsvm",
-                label: [Float]? = nil, weight: [Float]? = nil, baseMargin: [Float]? = nil,
+    public init(fromFile fname: String,
+                format: String = "libsvm",
+                label: [Float]? = nil,
+                weight: [Float]? = nil,
+                baseMargin: [Float]? = nil,
                 silent: Bool = true) throws {
         var name = fname
         if format.lowercased() == "csv", !fname.contains("format=csv") {
@@ -94,8 +97,11 @@ public class DMatrix {
     /// Construct DMatrix from array of Float, by setting shape, missing values
     /// will be filled in automatically or by setting `missing` (Float.infinity
     /// as default).
-    public init(fromArray array: [Float], shape: (row: Int, col: Int),
-                label: [Float]? = nil, weight: [Float]? = nil, baseMargin: [Float]? = nil,
+    public init(fromArray array: [Float],
+                shape: (row: Int, col: Int),
+                label: [Float]? = nil,
+                weight: [Float]? = nil,
+                baseMargin: [Float]? = nil,
                 missing NaValue: Float = -.infinity) throws {
         var values = array
         try handle = DMatrixFromMatrix(values: &values, nRow: UInt64(shape.row),

@@ -19,6 +19,7 @@ enum XGBoostError: Error {
     case unknownError(errMsg: String)
     case modelSaveError(errMsg: String)
     case modelLoadError(errMsg: String)
+    case modelDumpError(errMsg: String)
     case setParamError(errMsg: String)
     case valueError(errMsg: String)
 }
@@ -75,6 +76,8 @@ func DMatrixFromMatrix(values: inout [Float], nRow: UInt64, nCol: UInt64,
 
     return handle
 }
+
+// func DMatrixCreateFromCSR()
 
 func DMatrixSaveBinary(handle: DMatrixHandle, fname: String,
                        silent: Bool = true) throws {
@@ -342,6 +345,28 @@ func BoosterLoadModel(handle: BoosterHandle, fname: String) throws {
         let errMsg = lastError()
         throw XGBoostError.modelLoadError(errMsg: errMsg)
     }
+}
+
+func BoosterDumpModel(handle: BoosterHandle,
+                      fmap: String = "",
+                      withStats: Bool = false,
+                      format: String = "text") throws -> [String] {
+    // Assume a boost tree won't be larger than UInt64.max
+    var len = UInt64.max
+    let outDump = UnsafeMutablePointer<UnsafeMutablePointer<UnsafePointer<Int8>?>?>.allocate(capacity: 1)
+
+    try check { XGBoosterDumpModelEx(handle,
+                                     fmap,
+                                     withStats ? 1 : 0,
+                                     format,
+                                     &len,
+                                     outDump) }
+
+    guard len < UInt64.max else {
+        throw XGBoostError.modelDumpError(
+            errMsg: "call to xgboost might be failed, the length unchanged")
+    }
+    return (0 ..< Int(len)).map { String(cString: outDump.pointee![$0]!) }
 }
 
 func BoosterSaveJsonConfig(handle: BoosterHandle) -> String? {

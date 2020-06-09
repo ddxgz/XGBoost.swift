@@ -104,6 +104,27 @@ public class Booster {
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
 
+    public func dumpModel(toFile fname: String,
+                          featMapName fmap: String = "",
+                          withStats: Bool = false,
+                          dumpFormat: String = "text") throws {
+        let dump = try BoosterDumpModel(handle: handle!, withStats: withStats,
+                                        format: dumpFormat)
+
+        var content = ""
+        if dumpFormat == "json" {
+            content += "[\n"
+            // content += dump.reduce("[\n") { $0 + $1 + "," }
+            content += dump.joined(separator: ",")
+            content += "\n]"
+        } else {
+            content += dump.enumerated().reduce("") { $0 + "booster:[\($1.0)]\n" + $1.1 }
+        }
+        let data: Data? = content.data(using: .utf8)
+        let ok = FileManager().createFile(atPath: fname, contents: data)
+        if !ok { errLog("dump model failed!") }
+    }
+
     public func loadModel(fromFile fname: String) throws {
         // TODO: should create handle if nil?
         try BoosterLoadModel(handle: handle!, fname: fname)
@@ -157,7 +178,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                                                  */
+                                                                                                                                                                              */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -171,7 +192,7 @@ public class Booster {
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
       to make sure they are right.
 
-                                                                                                                                                 */
+                                                                                                                                                                             */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -262,7 +283,7 @@ public class Booster {
       - Returns: Evaluation result if successful, a string in a format like
         "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
 
-                                                                                                                                                 */
+                                                                                                                                                                             */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
@@ -476,6 +497,7 @@ internal class CVPack {
     }
 }
 
+// TODO: deterministic randomness for shuffle
 internal func makeNFold(data: DMatrix, nFold: Int = 5, params: [Param] = [],
                         shuffle: Bool = true) -> [CVPack] {
     var cvpacks = [CVPack]()

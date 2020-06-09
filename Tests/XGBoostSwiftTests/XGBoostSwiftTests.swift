@@ -172,6 +172,10 @@ final class XGBoostSwiftTests: XCTestCase {
         XCTAssertTrue(bst2.initialized)
         let bst3 = try Booster(cache: [train, test])
         XCTAssertTrue(bst3.initialized)
+
+        try bst.dumpModel(toFile: "Tests/tmp/testmodeldump.txt")
+        try bst.dumpModel(toFile: "Tests/tmp/testmodeldump.json", dumpFormat: "json")
+        try bst.dumpModel(toFile: "Tests/tmp/testmodeldump.dot", dumpFormat: "dot")
     }
 
     func testCV() throws {
