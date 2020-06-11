@@ -103,13 +103,23 @@ public class Booster {
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
 
+    // TODO: support feature featMapName
     /// Dump model to a text or json file
-    /// -
+    ///   - Parameters:
+    ///     - toFile: file name of the output model dump
+    ///     - featMapName: file name contains the feature map names
+    ///     - withStats: whether output split statistics
+    ///     - dumpFormat: the format to dump, "text", "json" or "dot"
     public func dumpModel(toFile fname: String,
                           featMapName fmap: String = "",
                           withStats: Bool = false,
                           dumpFormat: String = "text") throws {
-        let dump = try BoosterDumpModel(handle: handle!, withStats: withStats,
+        if fmap != "", !FileManager().fileExists(atPath: fmap) {
+            throw IOError.FileNotExistError("feature map file: \(fmap) not exist!")
+        }
+        let dump = try BoosterDumpModel(handle: handle!,
+                                        fmap: fmap,
+                                        withStats: withStats,
                                         format: dumpFormat)
 
         var content = ""

@@ -10,6 +10,10 @@ internal func debugLog(_ msg: Logger.Message) {
     logger.debug(msg)
 }
 
+enum IOError: Error {
+    case FileNotExistError(String)
+}
+
 extension Array where Element: FloatingPoint {
     func sum() -> Element {
         return self.reduce(0, +)
