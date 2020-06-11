@@ -409,8 +409,11 @@ is non-nil.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromFile</span> <span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"libsvm"</span><span class="p">,</span>
-            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromFile</span> <span class="nv">fname</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+            <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"libsvm"</span><span class="p">,</span>
+            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
             <span class="nv">silent</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
@@ -440,8 +443,11 @@ as default).</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromArray</span> <span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">],</span> <span class="nv">shape</span><span class="p">:</span> <span class="p">(</span><span class="nv">row</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">col</span><span class="p">:</span> <span class="kt">Int</span><span class="p">),</span>
-            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">fromArray</span> <span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">],</span>
+            <span class="nv">shape</span><span class="p">:</span> <span class="p">(</span><span class="nv">row</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">col</span><span class="p">:</span> <span class="kt">Int</span><span class="p">),</span>
+            <span class="nv">label</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">weight</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">baseMargin</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
             <span class="n">missing</span> <span class="kt">NaValue</span><span class="p">:</span> <span class="kt">Float</span> <span class="o">=</span> <span class="o">-.</span><span class="n">infinity</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
@@ -540,7 +546,7 @@ the selected rows.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-07)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">ddxgz</a>. All rights reserved. (Last updated: 2020-06-11)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

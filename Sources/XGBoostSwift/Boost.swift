@@ -56,8 +56,7 @@ public class Booster {
         - modelFile: String? - If the modelFile param is provided, it will load the
           model from that file.
 
-       - Returns: Booster
-     */
+       - Returns: Booster */
     public init(params: [Param] = [], cache: [DMatrix],
                 modelFile: String? = nil) throws {
         var dms = cache.map { $0.dmHandle }
@@ -104,6 +103,8 @@ public class Booster {
         try BoosterSaveModel(handle: handle!, fname: fname)
     }
 
+    /// Dump model to a text or json file
+    /// -
     public func dumpModel(toFile fname: String,
                           featMapName fmap: String = "",
                           withStats: Bool = false,
@@ -176,9 +177,7 @@ public class Booster {
       **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
       throw error during training or evaluating. Check
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
-      to make sure they are right.
-
-                                                                                                                                                                              */
+      to make sure they are right. */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
         BoosterSetParam(handle: handle!, key: k, value: v)
@@ -190,9 +189,7 @@ public class Booster {
       **Note**: XGBoost C API accepts wrong param key-value pairs when setting, but will
       throw error during training or evaluating. Check
       [document](https://xgboost.readthedocs.io/en/latest/parameter.html)
-      to make sure they are right.
-
-                                                                                                                                                                             */
+      to make sure they are right. */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
             debugLog("Set param: \(k): \(v)")
@@ -249,8 +246,7 @@ public class Booster {
      ```swift
      booster.eval(set: [(train, "train"),
                         (test, "test")], currentIter: 1)
-     ```
-     */
+     ``` */
     public func evalSet(evals: [(DMatrix, String)],
                         currentIter: Int,
                         fnEval: FuncEval? = nil) -> String? {
@@ -281,23 +277,20 @@ public class Booster {
           - set: name of the eval data
           - currentIter: current iteration
       - Returns: Evaluation result if successful, a string in a format like
-        "[1]\ttrain-auc:0.938960\ttest-auc:0.948914",
-
-                                                                                                                                                                             */
+        "[1]\ttrain-auc:0.938960\ttest-auc:0.948914" */
     public func eval(data: DMatrix, name: String, currentIter: Int = 0) -> String? {
         return evalSet(evals: [(data, name)], currentIter: currentIter)
     }
 
     // TODO: support more option mask
     /**
-      Predict labels on the data.
-       - Parameters:
-          - data: DMatrix - The data to predict on
-          - outputMargin: bool - Whether to output the untransformed margin value
-          - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
-            trees (default value)
-       - Returns: [Float]
-     */
+     Predict labels on the data.
+      - Parameters:
+         - data: DMatrix - The data to predict on
+         - outputMargin: bool - Whether to output the untransformed margin value
+         - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
+           trees (default value)
+      - Returns: [Float] */
     public func predict(data: DMatrix,
                         outputMargin: Bool = false,
                         nTreeLimit: Int = 0,
@@ -366,9 +359,7 @@ public class Booster {
      - callbacks: pass optional callbacks, which should conform to the
        `XGBCallback` protocol
 
-   - Returns: Booster
-
- */
+   - Returns: Booster */
 public func xgboost(params: [Param] = [],
                     data: DMatrix,
                     numRound: Int = 10,

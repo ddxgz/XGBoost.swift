@@ -28,9 +28,7 @@ enum EarlyStopError: Error {
      - currentIter: Int
      - beginIter: Int
      - endIter: Int
-     - evalResult: evaluation result during training, when calling `xgboost()`.
-
- */
+     - evalResult: evaluation result during training, when calling `xgboost()`. */
 public struct CallbackEnv {
     var model: Booster? = nil
     var cvPacks: [CVPack]? = nil
