@@ -300,10 +300,15 @@ public class Booster {
          - outputMargin: bool - Whether to output the untransformed margin value
          - nTreeLimit: Int - Limit the number of trees, set to 0 to use all the
            trees (default value)
+         - predLeaf: Output leaf index of trees instead of leaf value, note leaf
+           index is unique per tree
+         - predContribs: Output feature contributions to individual predictions 
       - Returns: [Float] */
     public func predict(data: DMatrix,
                         outputMargin: Bool = false,
                         nTreeLimit: Int = 0,
+                        predLeaf: Bool = false,
+                        predContribs: Bool = false,
                         training: Bool = false) -> [Float] {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -313,10 +318,15 @@ public class Booster {
             errLog("DMatrix not initialized!")
             return [Float]()
         }
-        var option = 0
-        if outputMargin { option = 1 }
+        var optionMask = 0x00
+        if outputMargin { optionMask |= 0x01 }
+        if predLeaf { optionMask |= 0x02 }
+        if predContribs { optionMask |= 0x04 }
+        // if approxContribs { optionMask |= 0x08 }
+        // if predInteractions { optionMask |= 0x10 }
+
         let result = BoosterPredict(handle: handle!, dmHandle: data.dmHandle!,
-                                    optionMask: option,
+                                    optionMask: optionMask,
                                     nTreeLimit: nTreeLimit, training: training)
         guard result != nil else {
             errLog("no result predicted")

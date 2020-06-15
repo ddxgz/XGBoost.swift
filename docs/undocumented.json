@@ -9,14 +9,14 @@
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 329,
+      "line": 339,
       "symbol": "Booster.saveConfig(toFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 342,
+      "line": 352,
       "symbol": "Booster.loadConfig(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

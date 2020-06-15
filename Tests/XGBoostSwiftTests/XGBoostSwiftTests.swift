@@ -15,6 +15,7 @@ final class XGBoostSwiftTests: XCTestCase {
         ("testDMatrix", testDMatrix),
         ("testBooster", testBooster),
         ("testBoosterSetParam", testBoosterSetParam),
+        ("testBoosterPredict", testBoosterPredict),
         ("testCV", testCV),
         ("testBasic", testBasic),
         ("testCallback", testCallback),
@@ -145,7 +146,7 @@ final class XGBoostSwiftTests: XCTestCase {
         var lastEval: String = ""
         for i in 1 ... 5 {
             bst.update(data: train, currentIter: i)
-            // let evalResult = bst.evalSet(dmHandle: [train, test],
+            // let evalResult = bPredictst.evalSet(dmHandle: [train, test],
             //                              evalNames: ["train", "test"], currentIter: i)
             let evalResult = bst.evalSet(evals: [(train, "train"), (test, "test")],
                                          currentIter: i)
@@ -315,5 +316,28 @@ final class XGBoostSwiftTests: XCTestCase {
                               fnObj: logLossObj,
                               fnEval: dumEval,
                               callbacks: callbacks)
+    }
+
+    func testBoosterPredict() throws {
+        let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+        let test = try DMatrix(fromFile: "data/agaricus.txt.test")
+
+        let param = [
+            ("objective", "binary:logistic"),
+            ("max_depth", "2"),
+        ]
+        let bst = try xgboost(params: param, data: train, numRound: 1)
+
+        let result = bst.predict(data: test)
+        XCTAssertTrue(result.reduce(true) { $0 && ($1 <= 1) })
+        let result1 = bst.predict(data: test, outputMargin: true)
+        XCTAssertFalse(result.elementsEqual(result1))
+        let result3 = bst.predict(data: test, outputMargin: true, predLeaf: true)
+        XCTAssertFalse(result3.elementsEqual(result1))
+        let result4 = bst.predict(data: test, outputMargin: false, predLeaf: false,
+                             predContribs: true)
+        let result5 = bst.predict(data: test, outputMargin: true, predLeaf: false,
+                             predContribs: true)
+        XCTAssertTrue(result4.elementsEqual(result5))
     }
 }

@@ -127,6 +127,7 @@ public class DMatrix {
         try DMatrixSaveBinary(handle: handle!, fname: fname, silent: silent)
     }
 
+    // TODO: subscript()?
     // TODO: accept differnt types of rows
     /// Slice the DMatrix by using an array of row indexes, return a DMatrix of
     /// the selected rows.
