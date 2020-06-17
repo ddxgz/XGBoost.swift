@@ -235,7 +235,8 @@ public class Booster {
         }
     }
 
-    /// boost for 1 iteration, with customized gradient and hessian, should not be called directly
+    /// boost for 1 iteration, with customized gradient and hessian, should not
+    /// be called directly
     func boost(data: DMatrix, grad: [Float], hess: [Float]) throws {
         if grad.count != hess.count {
             throw XGBoostError.valueError(errMsg:
@@ -303,6 +304,8 @@ public class Booster {
          - predLeaf: Output leaf index of trees instead of leaf value, note leaf
            index is unique per tree
          - predContribs: Output feature contributions to individual predictions 
+         - training: whether the predicted value is to be used for training,
+           e.g., for `update()` 
       - Returns: [Float] */
     public func predict(data: DMatrix,
                         outputMargin: Bool = false,
