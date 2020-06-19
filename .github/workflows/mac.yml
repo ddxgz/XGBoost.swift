@@ -17,7 +17,6 @@ jobs:
         brew install pkg-config
         brew install libomp
         brew install xgboost
-        cp xgboost.pc /usr/local/lib/pkgconfig/
     - name: Build
       run: swift build -v
     - name: Run tests
