@@ -23,6 +23,7 @@ public typealias FuncObj = ([Float], DMatrix) -> (grad: [Float], hess: [Float])
 public class Booster {
     // TODO: guard handle non-nil
     internal var handle: BoosterHandle?
+    internal var booster = "gbtree"
 
     /// If the Booster is initialized, by simply checking if the BoosterHandle
     /// is non-nil.
@@ -190,6 +191,8 @@ public class Booster {
       to make sure they are right. */
     public func setParam(name k: String, value v: String) {
         debugLog("Set param: \(k): \(v)")
+        if k == "booster" { self.booster = v }
+
         BoosterSetParam(handle: handle!, key: k, value: v)
     }
 
@@ -202,8 +205,9 @@ public class Booster {
       to make sure they are right. */
     public func setParam(_ params: [Param]) {
         for (k, v) in params {
-            debugLog("Set param: \(k): \(v)")
-            BoosterSetParam(handle: handle!, key: k, value: v)
+            // debugLog("Set param: \(k): \(v)")
+            // BoosterSetParam(handle: handle!, key: k, value: v)
+            setParam(name: k, value: v)
         }
     }
 
@@ -303,7 +307,7 @@ public class Booster {
            trees (default value)
          - predLeaf: Output leaf index of trees instead of leaf value, note leaf
            index is unique per tree
-         - predContribs: Output feature contributions to individual predictions 
+         - predContribs: Output feature contributions to individual predictions
          - training: whether the predicted value is to be used for training,
            e.g., for `update()` 
       - Returns: [Float] */
@@ -362,6 +366,10 @@ public class Booster {
 
         BoosterLoadJsonConfig(handle: self.handle!, json: &data)
     }
+
+    // func getScore(featMapName fmap: String = "", importanceType: String = "weight"){
+
+    // }
 }
 
 /**
