@@ -21,6 +21,7 @@ final class XGBoostSwiftTests: XCTestCase {
         ("testCallback", testCallback),
         ("testFuncEval", testFuncEval),
         ("testFuncObj", testFuncObj),
+        ("testImportance", testImportance),
     ]
 
     func testDMatrix() throws {
@@ -335,9 +336,22 @@ final class XGBoostSwiftTests: XCTestCase {
         let result3 = bst.predict(data: test, outputMargin: true, predLeaf: true)
         XCTAssertFalse(result3.elementsEqual(result1))
         let result4 = bst.predict(data: test, outputMargin: false, predLeaf: false,
-                             predContribs: true)
+                                  predContribs: true)
         let result5 = bst.predict(data: test, outputMargin: true, predLeaf: false,
-                             predContribs: true)
+                                  predContribs: true)
         XCTAssertTrue(result4.elementsEqual(result5))
+    }
+
+    func testImportance() throws {
+        let train = try DMatrix(fromFile: "data/agaricus.txt.train")
+
+        let param = [
+            ("objective", "binary:logistic"),
+            ("max_depth", "2"),
+            ("verbosity", "3"),
+        ]
+        let bst = try xgboost(params: param, data: train, numRound: 5)
+        let importance = try bst.getScore()
+        XCTAssertTrue(importance.count != 0)
     }
 }

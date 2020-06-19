@@ -2,21 +2,21 @@
   "warnings": [
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 139,
+      "line": 158,
       "symbol": "Booster.loadModel(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 342,
+      "line": 364,
       "symbol": "Booster.saveConfig(toFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 355,
+      "line": 377,
       "symbol": "Booster.loadConfig(fromFile:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

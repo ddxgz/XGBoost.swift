@@ -1,6 +1,11 @@
 import Cxgb
 import Foundation
 
+enum BoosterError: Error {
+    case featureImportanceNotDefiendForBoosterType(_ msg: String)
+    case importanceTypeNotSupported(_ msg: String)
+}
+
 /// A pair of parameter name and value to be set for xgboost.
 public typealias Param = (name: String, value: String)
 
@@ -115,13 +120,13 @@ public class Booster {
                           featMapName fmap: String = "",
                           withStats: Bool = false,
                           dumpFormat: String = "text") throws {
-        if fmap != "", !FileManager().fileExists(atPath: fmap) {
-            throw IOError.FileNotExistError("feature map file: \(fmap) not exist!")
-        }
-        let dump = try BoosterDumpModel(handle: handle!,
-                                        fmap: fmap,
-                                        withStats: withStats,
-                                        format: dumpFormat)
+        // let dump = try BoosterDumpModel(handle: handle!,
+        //                                 fmap: fmap,
+        //                                 withStats: withStats,
+        //                                 format: dumpFormat)
+        let dump = try getDump(fmap: fmap,
+                               withStats: withStats,
+                               dumpFormat: dumpFormat)
 
         var content = ""
         if dumpFormat == "json" {
@@ -135,6 +140,19 @@ public class Booster {
         let data: Data? = content.data(using: .utf8)
         let ok = FileManager().createFile(atPath: fname, contents: data)
         if !ok { errLog("dump model failed!") }
+    }
+
+    func getDump(fmap: String = "",
+                 withStats: Bool = false,
+                 dumpFormat: String = "text") throws -> [String] {
+        if fmap != "", !FileManager().fileExists(atPath: fmap) {
+            throw IOError.FileNotExistError("feature map file: \(fmap) not exist!")
+        }
+        let dump = try BoosterDumpModel(handle: handle!,
+                                        fmap: fmap,
+                                        withStats: withStats,
+                                        format: dumpFormat)
+        return dump
     }
 
     public func loadModel(fromFile fname: String) throws {
@@ -367,9 +385,36 @@ public class Booster {
         BoosterLoadJsonConfig(handle: self.handle!, json: &data)
     }
 
-    // func getScore(featMapName fmap: String = "", importanceType: String = "weight"){
+    /// Get feature importance of each feature, currently only `weight` is
+    /// supported.
+    public func getScore(featMapName fmap: String = "",
+                         importanceType: String = "weight") throws -> [String: Float] {
+        if !["gbtree", "dart"].contains(self.booster) {
+            throw BoosterError.featureImportanceNotDefiendForBoosterType(
+                "booster type: \(self.booster)")
+        }
 
-    // }
+        let supportedTypes = ["weight"]
+        if !supportedTypes.contains(importanceType) {
+            throw BoosterError.importanceTypeNotSupported(
+                "expected one of \(supportedTypes)")
+        }
+
+        var score = [String: Float]()
+        if importanceType == "weight" {
+            let trees = try getDump(fmap: fmap, withStats: false)
+            for tree in trees {
+                for line in tree.split(separator: "\n") {
+                    let arr = line.split(separator: "[")
+                    if arr.count == 1 { continue }
+
+                    let fid = arr[1].split(separator: "]")[0].split(separator: "<")[0]
+                    score[String(fid), default: 0] += 1
+                }
+            }
+        }
+        return score
+    }
 }
 
 /**
