@@ -347,11 +347,20 @@ final class XGBoostSwiftTests: XCTestCase {
 
         let param = [
             ("objective", "binary:logistic"),
-            ("max_depth", "2"),
+            ("max_depth", "10"),
             ("verbosity", "3"),
         ]
-        let bst = try xgboost(params: param, data: train, numRound: 5)
-        let importance = try bst.getScore()
+        let bst = try xgboost(params: param, data: train, numRound: 10)
+        var importance = try bst.getScore()
+        XCTAssertTrue(importance.count != 0)
+
+        importance = try bst.getScore(importanceType: "gain")
+        XCTAssertTrue(importance.count != 0)
+        importance = try bst.getScore(importanceType: "total_gain")
+        XCTAssertTrue(importance.count != 0)
+        importance = try bst.getScore(importanceType: "cover")
+        XCTAssertTrue(importance.count != 0)
+        importance = try bst.getScore(importanceType: "total_cover")
         XCTAssertTrue(importance.count != 0)
     }
 }

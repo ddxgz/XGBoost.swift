@@ -21,7 +21,7 @@ enum XGBoostError: Error {
     case modelLoadError(errMsg: String)
     case modelDumpError(errMsg: String)
     case setParamError(errMsg: String)
-    case valueError(errMsg: String)
+    case valueError(_ errMsg: String = "")
 }
 
 func lastError() -> String {

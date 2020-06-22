@@ -261,7 +261,7 @@ public class Booster {
     /// be called directly
     func boost(data: DMatrix, grad: [Float], hess: [Float]) throws {
         if grad.count != hess.count {
-            throw XGBoostError.valueError(errMsg:
+            throw XGBoostError.valueError(
                 "length mismatch between grad \(grad.count) and hess \(hess.count)")
         }
         BoosterBoostOneIter(handle: self.handle!, dmHandle: data.dmHandle!,
@@ -385,17 +385,34 @@ public class Booster {
         BoosterLoadJsonConfig(handle: self.handle!, json: &data)
     }
 
-    /// Get feature importance of each feature, currently only `weight` is
-    /// supported.
+    /// Get feature importance of each feature.
+    /// - Parameters:
+    ///     - featMapName: file name contains the feature map names
+    ///     - importanceType: can be one of `weight`, `gain`, `cover`,
+    ///       `total_gain`, `total_cover`
+    ///
+    /// - importanceType:
+    ///     - weight: the number of times a feature is used to split the data
+    ///     - gain: the average gain of the feature is used to split across all
+    ///       features
+    ///     - total_gain: the total gain of the feature is used to split across
+    ///       all features
+    ///     - cover: the average coverage of the feature is used to split across all
+    ///       features
+    ///     - total_cover: the total coverage of the feature is used to split across all
+    ///       features
+    /// - Returns: a dictionary of feature: score
     public func getScore(featMapName fmap: String = "",
                          importanceType: String = "weight") throws -> [String: Float] {
-        if !["gbtree", "dart"].contains(self.booster) {
+        guard ["gbtree", "dart"].contains(self.booster) else {
             throw BoosterError.featureImportanceNotDefiendForBoosterType(
                 "booster type: \(self.booster)")
         }
 
-        let supportedTypes = ["weight"]
-        if !supportedTypes.contains(importanceType) {
+        let importanceGains = ["gain", "total_gain"]
+        let importanceCovers = ["cover", "total_cover"]
+        let supportedTypes = ["weight"] + importanceGains + importanceCovers
+        guard supportedTypes.contains(importanceType) else {
             throw BoosterError.importanceTypeNotSupported(
                 "expected one of \(supportedTypes)")
         }
@@ -412,8 +429,51 @@ public class Booster {
                     score[String(fid), default: 0] += 1
                 }
             }
+            return score
         }
-        return score
+
+        var scoreType = importanceType
+        var performAvg = true
+        if scoreType == "total_gain" {
+            scoreType = "gain"
+            performAvg = false
+        } else if scoreType == "total_cover" {
+            scoreType = "cover"
+            performAvg = false
+        }
+        scoreType += "="
+
+        var features = [String: Float]()
+        var gains = [String: Float]()
+
+        let trees = try getDump(fmap: fmap, withStats: true)
+        for tree in trees {
+            for line in tree.split(separator: "\n") {
+                let arr = line.split(separator: "[")
+                if arr.count == 1 { continue }
+
+                let feat = arr[1].split(separator: "]")
+
+                let gain = Float(feat[1].components(
+                    separatedBy: scoreType)[1].split(separator: ",")[0])
+                let fid = feat[0].split(separator: "<")[0]
+
+                features[String(fid), default: 0] += 1
+
+                guard gain != nil else {
+                    throw XGBoostError.valueError(
+                        "cannot convert gain from string to float")
+                }
+                gains[String(fid), default: 0] += gain!
+            }
+        }
+        if performAvg {
+            for fid in gains.keys {
+                gains[fid] = gains[fid]! / features[fid]!
+            }
+        }
+
+        return gains
     }
 }
 
