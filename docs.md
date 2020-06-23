@@ -12,8 +12,6 @@ The current interface is wrapping around the C API of XGBoost, tries to conform 
 
 If you run into any problem, please file an **issue** or even better a **pull request**.
 
-**Note**: this is not an official XGBoost project.
-
 - [Installation and dependency library](#installation-and-dependency-library)
   - [macOS](#macos)
   - [Ubuntu](#ubuntu)
