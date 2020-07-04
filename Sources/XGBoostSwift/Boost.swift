@@ -155,12 +155,13 @@ public class Booster {
         return dump
     }
 
+    /// Load previously saved model from file
     public func loadModel(fromFile fname: String) throws {
         // TODO: should create handle if nil?
         try BoosterLoadModel(handle: handle!, fname: fname)
     }
 
-    /// Get attribute by key
+    /// Get an attribute by key
     public func attr(key: String) -> String? {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -189,7 +190,7 @@ public class Booster {
         return attributes
     }
 
-    /// Set attribute, pass `value` as nil to delete an attribute.
+    /// Set an attribute, pass `value` as nil to delete an attribute.
     public func setAttr(key: String, value: String?) {
         guard handle != nil else {
             errLog("booster not initialized!")
@@ -229,7 +230,8 @@ public class Booster {
         }
     }
 
-    /// Set eval_metric
+    /// Set eval_metric. *Deprecated* use setParam() with parameter name
+    /// `eval_metric` instead.
     public func setEvalMetric(_ metrics: [String]) {
         for v in metrics {
             debugLog("Set param eval_metric: \(v)")
@@ -361,6 +363,7 @@ public class Booster {
     }
 
     // TODO: provide option to force create dir when it doesn't exist
+    /// Save model config to a file.
     public func saveConfig(toFile fname: String) throws {
         try _guardHandle()
 
@@ -374,6 +377,7 @@ public class Booster {
         if !ok { errLog("save json config failed!") }
     }
 
+    /// Load model config from a file
     public func loadConfig(fromFile fname: String) throws {
         try _guardHandle()
 

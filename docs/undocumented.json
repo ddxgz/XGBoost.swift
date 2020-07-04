@@ -1,27 +1,6 @@
 {
   "warnings": [
     {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 158,
-      "symbol": "Booster.loadModel(fromFile:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 364,
-      "symbol": "Booster.saveConfig(toFile:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Boost.swift",
-      "line": 377,
-      "symbol": "Booster.loadConfig(fromFile:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/pcx/code/XGBoost.swift/Sources/XGBoostSwift/Callbacks.swift",
       "line": 47,
       "symbol": "SimplePrintEvalution.period",
