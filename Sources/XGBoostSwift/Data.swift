@@ -44,6 +44,7 @@ public class DMatrix {
         }
     }
 
+    /// The weight of the DMatrix
     public var weight: [Float] {
         get {
             getFloatInfo(field: "weight")
@@ -63,11 +64,13 @@ public class DMatrix {
         }
     }
 
+    /// Use baseMargin instead
     public var base_margin: [Float] {
         get { baseMargin }
         set { baseMargin = newValue }
     }
 
+    /// Set group info for the DMatrix
     public func setGroup(_ newValue: [UInt]) {
         setUIntInfo(field: "group", data: newValue)
     }
@@ -110,6 +113,9 @@ public class DMatrix {
         self.setExtra(label: label, weight: weight, baseMargin: baseMargin)
     }
 
+    // TODO: construct from Tensor
+    // public init(fromTensor tensor: Tensor) throws {}
+
     internal init(handle: DMatrixHandle?) {
         self.handle = handle
     }
@@ -122,6 +128,9 @@ public class DMatrix {
     }
 
     /// Save the DMatrix to file
+    /// - Parameters:   
+    ///     - toFile: filename  
+    ///     - silent: if print debug infomation
     public func saveBinary(toFile fname: String, silent: Bool = true) throws {
         try _guardHandle()
         try DMatrixSaveBinary(handle: handle!, fname: fname, silent: silent)
